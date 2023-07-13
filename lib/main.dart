@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_details/screen/home_screen.dart';
+import 'package:movies_details/utils/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple.shade800),
+        primarySwatch: mainColor,
+        scaffoldBackgroundColor: mainColor.shade800,
+        iconTheme: const IconThemeData(color: Colors.yellowAccent),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w500
+          )
+        )
       ),
       home: const HomeScreen(),
     );
