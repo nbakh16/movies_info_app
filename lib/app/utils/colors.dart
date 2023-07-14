@@ -6,14 +6,14 @@ const MaterialColor mainColor = MaterialColor(_mainColorPrimaryValue, <int, Colo
   200: Color(0xFFDECBC0),
   300: Color(0xFFC9A997),
   400: Color(0xFFA36C4D),
-  500: Color(_mainColorPrimaryValue),
-  600: Color(0xFF6E2900),
+  500: Color(0xFF7B2D00),
+  600: Color(_mainColorPrimaryValue),
   700: Color(0xFF4A1B00),
   800: Color(0xFF381500),
   900: Color(0xFF240E00),
 });
 
-const int _mainColorPrimaryValue = 0xFF7B2D00;
+const int _mainColorPrimaryValue = 0xFF6E2900;
 
 const MaterialColor mainColorAccent = MaterialColor(_mainColorAccentValue, <int, Color>{
   100: Color(0xFFFF8E7F),

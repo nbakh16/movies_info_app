@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import '../../../utils/api_key.dart';
+import 'package:movies_details/app/modules/details/views/details_view.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/custom_network_image.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -23,10 +22,10 @@ class HomeView extends GetView<HomeController> {
         actions: [
           IconButton(onPressed: (){
             print(screenWidth);
-          }, icon: Icon(Icons.refresh))
+          }, icon: const Icon(Icons.bug_report))
         ],
       ),
-      body: Obx(()=> homeController.isLoading.isTrue ? CircularProgressIndicator() :
+      body: Obx(()=> homeController.isLoading.isTrue ? const CircularProgressIndicator() :
       GridView.builder(
         shrinkWrap: true,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -36,82 +35,85 @@ class HomeView extends GetView<HomeController> {
         itemCount: homeController.moviesList.length,
         //Image.network('${posterUrl}${moviesList[index].posterPath}',
         itemBuilder: (context, index) {
-          return Card(
-              shape: const RoundedRectangleBorder(
-                side: BorderSide(
-                  color: mainColor,
-                ),
+          return InkWell(
+            onTap: () {
+              Get.to(()=> DetailsView(
+                movieName: homeController.moviesList[index].originalTitle,
+                overview: homeController.moviesList[index].overview,
+                backdropImagePath: homeController.moviesList[index].backdropPath,
+                releaseDate: homeController.moviesList[index].releaseDate,
+                voteAvg: homeController.moviesList[index].voteAverage,
+                voteCount: homeController.moviesList[index].voteCount,
+                genreIdList: homeController.moviesList[index].genreIds,
               ),
-              elevation: 4,
-              child: Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          mainColor.shade700,
-                          mainColor.shade700,
-                          mainColor,
-                          mainColor.shade400,
-                        ]
-                    )
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        flex: 7,
-                        child: Image.network('${homeController.posterUrl}${homeController.moviesList[index].posterPath}',
-                          alignment: Alignment.center,
-                          height: double.infinity,
-                          width: double.infinity,
-                          fit: BoxFit.fitWidth,
-                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loading) {
-                            if (loading == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value: loading.expectedTotalBytes != null
-                                    ? loading.cumulativeBytesLoaded/loading.expectedTotalBytes! : null,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Text(homeController.moviesList[index].originalTitle.toString(),
-                                style: TextStyle(
-                                  fontSize: screenWidth<400 ? 14 : screenWidth<700 ? 16 : 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  const Icon(Icons.star, size: 14,),
-                                  Text(homeController.moviesList[index].voteAverage.toString()),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                transition: Transition.downToUp
+              );
+            },
+            child: Card(
+                shape: const RoundedRectangleBorder(
+                  side: BorderSide(
+                    color: mainColor,
                   ),
                 ),
-              )
+                elevation: 4,
+                child: Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            mainColor.shade700,
+                            mainColor.shade700,
+                            mainColor,
+                            mainColor.shade400,
+                          ]
+                      )
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          flex: 7,
+                          child: CustomNetworkImage(
+                            imgUrl: '${homeController.posterUrl}${homeController.moviesList[index].posterPath}'
+                          ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Text(homeController.moviesList[index].originalTitle.toString(),
+                                  style: TextStyle(
+                                    fontSize: screenWidth<400 ? 14 : screenWidth<700 ? 16 : 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    const Icon(Icons.star, size: 14,),
+                                    Text(homeController.moviesList[index].voteAverage.toString()),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+            ),
           );
         },
       )

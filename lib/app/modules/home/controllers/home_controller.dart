@@ -15,6 +15,7 @@ class HomeController extends GetxController {
   String posterUrl = 'https://image.tmdb.org/t/p/original';
 
   void getMovies() async {
+    isLoading = false.obs;
     String moviesListUrl = '${baseUrl}discover/movie?page=1&api_key=$apiKey';
 
     Response response = await get(Uri.parse(moviesListUrl));
@@ -26,7 +27,7 @@ class HomeController extends GetxController {
       print(response.body);
 
       for(var e in decodedResponse['results']) {
-        moviesList.value.add(
+        moviesList.add(
             Result.fromJson(e)
         );
       }

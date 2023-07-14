@@ -20,7 +20,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DETAILS,
-      page: () => const DetailsView(),
+      page: () => DetailsView(),
       binding: DetailsBinding(),
     ),
   ];
