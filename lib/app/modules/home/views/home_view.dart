@@ -44,7 +44,7 @@ class HomeView extends GetView<HomeController> {
                 releaseDate: homeController.moviesList[index].releaseDate,
                 voteAvg: homeController.moviesList[index].voteAverage,
                 voteCount: homeController.moviesList[index].voteCount,
-                genreIdList: homeController.moviesList[index].genreIds,
+                genreIdList: homeController.moviesList[index].genreIds.obs,
               ),
                 transition: Transition.downToUp
               );
