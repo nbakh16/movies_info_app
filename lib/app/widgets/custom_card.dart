@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../utils/colors.dart';
@@ -77,7 +79,8 @@ class CustomCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Icon(subIcon, size: 14,),
-                          Text(subTitle),
+                          Flexible(fit: FlexFit.tight,
+                              child: Text(subTitle)),
                         ],
                       ),
                     ),

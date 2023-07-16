@@ -24,6 +24,9 @@ class CustomNetworkImage extends StatelessWidget {
           ),
         );
       },
+      errorBuilder: (_, __, ___) {
+        return const Icon(Icons.image, size: 22,);
+      }
     );
   }
 }

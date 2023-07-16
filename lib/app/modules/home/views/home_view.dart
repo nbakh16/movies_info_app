@@ -41,6 +41,8 @@ class HomeView extends GetView<HomeController> {
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
+              homeController.getMovieCasts(homeController.moviesList[index].id);
+
               Get.to(()=> DetailsView(
                 movieName: homeController.moviesList[index].originalTitle,
                 overview: homeController.moviesList[index].overview,
@@ -49,12 +51,13 @@ class HomeView extends GetView<HomeController> {
                 voteAvg: homeController.moviesList[index].voteAverage,
                 voteCount: homeController.moviesList[index].voteCount,
                 genreNames: getGenreNames(index),
+                castList: homeController.movieCastsList,
               ),
                 transition: Transition.downToUp
               );
             },
             child: CustomCard(
-              image: '${homeController.posterUrl}${homeController.moviesList[index].posterPath}',
+              image: '${homeController.baseImageUrl}${homeController.moviesList[index].posterPath}',
               title: homeController.moviesList[index].originalTitle.toString(),
               subTitle: homeController.moviesList[index].voteAverage.toString(),
               subIcon: Icons.star,

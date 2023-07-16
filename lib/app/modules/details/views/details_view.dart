@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
 
+import '../../../data/models/cast_model.dart';
+import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_divider.dart';
 import '../controllers/details_controller.dart';
 
@@ -12,6 +14,7 @@ class DetailsView extends GetView<DetailsController> {
   final double? voteAvg;
   final int? voteCount;
   final List<String>? genreNames;
+  final RxList<Cast>? castList;
 
   const DetailsView({
     this.movieName,
@@ -21,6 +24,7 @@ class DetailsView extends GetView<DetailsController> {
     this.voteAvg,
     this.voteCount,
     this.genreNames,
+    this.castList,
     Key? key}) : super(key: key);
 
   // DetailsController detailsController = Get.put(DetailsController());
@@ -87,33 +91,103 @@ class DetailsView extends GetView<DetailsController> {
                       background: CustomNetworkImage(imgUrl: backdropImage,)
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(14.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                SliverPadding(
+                  padding: const EdgeInsets.all(12.0),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate (
+                      [
                         releaseDataAndRatingRow(
-                          releaseDate!, voteCount!, voteAvg!
+                            releaseDate!, voteCount!, voteAvg!
                         ),
                         const CustomDivider(),
-                        Text('Genre: ${genreNames!.join(', ')}'),
+                        Text('Genre: ${genreNames!.join(', ')}',
+                          style: const TextStyle(fontSize: 18),
+                        ),
                         const CustomDivider(),
                         Text(overview!,
                           style: const TextStyle(fontSize: 16),
                           textAlign: TextAlign.justify,
                         ),
+                        // const CustomDivider(),
+                        // Text('Director'),
+                        // const CustomDivider(),
+                        // Text('Writers'),
                         const CustomDivider(),
-                        Text('Director'),
-                        const CustomDivider(),
-                        Text('Writers'),
-                        const CustomDivider(),
-                        Text("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
-                        const CustomDivider(),
-                      ],
-                    ),
+                        const Text('Actor(s)',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        )
+                      ]
+                    )
                   ),
+                ),
+                Obx(()=>
+                    SliverGrid(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          childAspectRatio: 0.75
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                          return CustomCard(
+                            image: 'https://image.tmdb.org/t/p/original${castList![index].profilePath}',
+                            title: '${castList![index].name}',
+                            subTitle: '${castList![index].character}',
+                          );
+                        },
+                        childCount: castList!.length <= 10 ? castList!.length : 10,
+                      ),
+                    ),
                 )
+                // SliverToBoxAdapter(
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(14.0),
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       mainAxisSize: MainAxisSize.min,
+                //       children: [
+                //         releaseDataAndRatingRow(
+                //           releaseDate!, voteCount!, voteAvg!
+                //         ),
+                //         const CustomDivider(),
+                //         Text('Genre: ${genreNames!.join(', ')}'),
+                //         const CustomDivider(),
+                //         Text(overview!,
+                //           style: const TextStyle(fontSize: 16),
+                //           textAlign: TextAlign.justify,
+                //         ),
+                //         const CustomDivider(),
+                //         Text('Director'),
+                //         const CustomDivider(),
+                //         Text('Writers'),
+                //         const CustomDivider(),
+                //         SliverList(delegate: SliverChildBuilderDelegate((context, index) {
+                //           return Container();
+                //         })),
+                //         Container(
+                //           height: 100,
+                //           width: 300,
+                //           child: ListView.builder(
+                //             shrinkWrap: true,
+                //             scrollDirection: Axis.horizontal,
+                //             itemCount: 10,
+                //             itemBuilder: (context, index) {
+                //               return InkWell(
+                //                 onTap: () {
+                //
+                //                 },
+                //                 child: CustomCard(
+                //                   image: 'dd',
+                //                   title: 'Actor Name',
+                //                 )
+                //               );
+                //             },
+                //           ),
+                //         ),
+                //         const CustomDivider(),
+                //       ],
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ),
@@ -125,6 +199,7 @@ class DetailsView extends GetView<DetailsController> {
       ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(releaseDate.toString()),
         Row(

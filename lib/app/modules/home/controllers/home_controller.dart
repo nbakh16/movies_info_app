@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart';
+import '../../../data/models/cast_model.dart';
 import '../../../data/models/movies_model.dart';
 import '../../../utils/api_key.dart';
 
@@ -11,20 +12,22 @@ class HomeController extends GetxController {
   RxList<Result> moviesList = <Result>[].obs;
   RxBool isLoading = true.obs;
 
+  RxList<Cast> movieCastsList = <Cast>[].obs;
+  RxList<Crew> movieCrewsList = <Crew>[].obs;
+
   String baseUrl = 'https://api.themoviedb.org/3/';
-  String posterUrl = 'https://image.tmdb.org/t/p/original';
+  String baseImageUrl = 'https://image.tmdb.org/t/p/original';
 
   void getMovies() async {
     isLoading = false.obs;
     String moviesListUrl = '${baseUrl}discover/movie?page=1&api_key=$apiKey';
-
     Response response = await get(Uri.parse(moviesListUrl));
-    print(response.statusCode);
+    // print(response.statusCode);
 
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
-      print(decodedResponse['page']);
-      print(response.body);
+      // print(decodedResponse['page']);
+      // print(response.body);
 
       for(var e in decodedResponse['results']) {
         moviesList.add(
@@ -35,12 +38,39 @@ class HomeController extends GetxController {
       isLoading = false.obs;
       moviesList.refresh();
     }
+    else {
+      throw Exception('Failed to load movies list');
+    }
+  }
+
+  void getMovieCasts(int movieId) async {
+    isLoading = false.obs;
+    movieCastsList.clear();
+    String castListByMovieIdUrl = '$baseUrl/movie/$movieId/credits?api_key=$apiKey';
+
+    Response response = await get(Uri.parse(castListByMovieIdUrl));
+    print(response.statusCode);
+
+    if(response.statusCode == 200) {
+      Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+      // print(decodedResponse);
+
+      for(var e in decodedResponse['cast']) {
+        movieCastsList.add(
+            Cast.fromJson(e)
+        );
+      }
+    }
+    else {
+      throw Exception('Failed to load movie casts');
+    }
   }
 
   @override
   void onInit() {
     super.onInit();
     getMovies();
+    // getMovieCasts();
   }
 
   @override
