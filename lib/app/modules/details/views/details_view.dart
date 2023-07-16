@@ -8,12 +8,12 @@ import '../../../widgets/custom_divider.dart';
 import '../controllers/details_controller.dart';
 
 class DetailsView extends GetView<DetailsController> {
-  String? movieName, overview, backdropImagePath, releaseDate;
-  double? voteAvg;
-  int? voteCount;
-  String? genreNames;
+  final String? movieName, overview, backdropImagePath, releaseDate;
+  final double? voteAvg;
+  final int? voteCount;
+  final List<String>? genreNames;
 
-  DetailsView({
+  const DetailsView({
     this.movieName,
     this.overview,
     this.backdropImagePath,
@@ -23,20 +23,11 @@ class DetailsView extends GetView<DetailsController> {
     this.genreNames,
     Key? key}) : super(key: key);
 
-  DetailsController detailsController = Get.put(DetailsController());
+  // DetailsController detailsController = Get.put(DetailsController());
 
   @override
   Widget build(BuildContext context) {
     String backdropImage = 'https://image.tmdb.org/t/p/original$backdropImagePath';
-
-    // String genreNames = detailsController.genres
-    //     .where((genre) => genreIdList!.contains(genre.id))
-    //     .map((genre) => genre.name)
-    //     .toList().join(', ');
-    // final Rx<String> genreNames = detailsController.genres
-    //     .where((genre) => genreIdList!.contains(genre.id))
-    //     .map((genre) => genre.name)
-    //     .toList().join(', ').obs;
 
     return Container(
       decoration: BoxDecoration(
@@ -102,26 +93,11 @@ class DetailsView extends GetView<DetailsController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(releaseDate!),
-                            Row(
-                              children: [
-                                Icon(Icons.star, size: 28,),
-                                Column(
-                                  children: [
-                                    Text('$voteAvg/10',
-                                      style: const TextStyle(fontWeight: FontWeight.w800),),
-                                    Text('$voteCount')
-                                  ],
-                                )
-                              ],
-                            )
-                          ],
+                        releaseDataAndRatingRow(
+                          releaseDate!, voteCount!, voteAvg!
                         ),
                         const CustomDivider(),
-                        Text('Genre: $genreNames'),
+                        Text('Genre: ${genreNames!.join(', ')}'),
                         const CustomDivider(),
                         Text(overview!,
                           style: const TextStyle(fontSize: 16),
@@ -141,6 +117,30 @@ class DetailsView extends GetView<DetailsController> {
               ],
             ),
           ),
+    );
+  }
+
+  Row releaseDataAndRatingRow(
+      String releaseDate, int voteCount, double voteAvg
+      ) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Text(releaseDate.toString()),
+        Row(
+          children: [
+            const Icon(Icons.star, size: 26,),
+            Column(
+              children: [
+                Text('$voteAvg/10',
+                  style: const TextStyle(fontWeight: FontWeight.w900),),
+                Text(voteCount.toString(),
+                  style: const TextStyle(fontWeight: FontWeight.w400),)
+              ],
+            )
+          ],
+        )
+      ],
     );
   }
 }
