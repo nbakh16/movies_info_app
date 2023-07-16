@@ -4,16 +4,27 @@ import 'package:get/get.dart';
 import 'package:movies_details/app/modules/details/views/details_view.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/custom_network_image.dart';
+import '../../details/controllers/details_controller.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   HomeView({Key? key}) : super(key: key);
 
   HomeController homeController = Get.put(HomeController());
+  DetailsController detailsController = Get.put(DetailsController());
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.sizeOf(context).width;
+
+    String getGenreNames(int index) {
+      List<int> genreIdList = homeController.moviesList[index].genreIds;
+      String genreNames = detailsController.genres
+          .where((genre) => genreIdList.contains(genre.id))
+          .map((genre) => genre.name)
+          .toList().join(', ');
+      return genreNames;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +55,7 @@ class HomeView extends GetView<HomeController> {
                 releaseDate: homeController.moviesList[index].releaseDate,
                 voteAvg: homeController.moviesList[index].voteAverage,
                 voteCount: homeController.moviesList[index].voteCount,
-                genreIdList: homeController.moviesList[index].genreIds.obs,
+                genreNames: getGenreNames(index),
               ),
                 transition: Transition.downToUp
               );

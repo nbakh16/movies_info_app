@@ -11,7 +11,7 @@ class DetailsView extends GetView<DetailsController> {
   String? movieName, overview, backdropImagePath, releaseDate;
   double? voteAvg;
   int? voteCount;
-  RxList<int>? genreIdList;
+  String? genreNames;
 
   DetailsView({
     this.movieName,
@@ -20,7 +20,7 @@ class DetailsView extends GetView<DetailsController> {
     this.releaseDate,
     this.voteAvg,
     this.voteCount,
-    this.genreIdList,
+    this.genreNames,
     Key? key}) : super(key: key);
 
   DetailsController detailsController = Get.put(DetailsController());
@@ -30,14 +30,13 @@ class DetailsView extends GetView<DetailsController> {
     String backdropImage = 'https://image.tmdb.org/t/p/original$backdropImagePath';
 
     // String genreNames = detailsController.genres
-    //     .where((genre) => genreIdList.contains(genre.id))
+    //     .where((genre) => genreIdList!.contains(genre.id))
     //     .map((genre) => genre.name)
     //     .toList().join(', ');
-
-    final Rx<String> genreNames = detailsController.genres
-        .where((genre) => genreIdList!.contains(genre.id))
-        .map((genre) => genre.name)
-        .toList().join(', ').obs;
+    // final Rx<String> genreNames = detailsController.genres
+    //     .where((genre) => genreIdList!.contains(genre.id))
+    //     .map((genre) => genre.name)
+    //     .toList().join(', ').obs;
 
     return Container(
       decoration: BoxDecoration(
@@ -122,7 +121,7 @@ class DetailsView extends GetView<DetailsController> {
                           ],
                         ),
                         const CustomDivider(),
-                        Text('Genre: ${genreNames.value}'),
+                        Text('Genre: $genreNames'),
                         const CustomDivider(),
                         Text(overview!,
                           style: const TextStyle(fontSize: 16),
