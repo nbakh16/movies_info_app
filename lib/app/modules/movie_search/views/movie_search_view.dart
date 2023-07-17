@@ -69,8 +69,11 @@ class MovieSearchView extends GetView<MovieSearchController> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        apiService.getMovieCasts(apiService.searchedMoviesList[index].id);
-                        apiService.getMovieCrews(apiService.searchedMoviesList[index].id);
+                        apiService.getMovieCasts(apiService.searchedMoviesList[index].id!);
+                        apiService.getMovieCrews(apiService.searchedMoviesList[index].id!);
+                        apiService.getSimilarMovies(apiService.searchedMoviesList[index].id!);
+
+
                         Get.to(()=> DetailsView(
                           movieName: apiService.searchedMoviesList[index].originalTitle,
                           overview: apiService.searchedMoviesList[index].overview,
@@ -81,13 +84,14 @@ class MovieSearchView extends GetView<MovieSearchController> {
                           genreNames: getGenreNames(index),
                           castList: apiService.movieCastsList,
                           crewList: apiService.movieCrewsList,
+                          similarMoviesList: apiService.similarMoviesList,
                         ),
                             transition: Transition.downToUp
                         );
                       },
                       child: CustomCard(
                         image: '${apiService.baseImageUrl}${apiService.searchedMoviesList[index].posterPath}',
-                        title: apiService.searchedMoviesList[index].originalTitle,
+                        title: apiService.searchedMoviesList[index].originalTitle!,
                         subTitle: apiService.searchedMoviesList[index].voteAverage.toString(),
                         subIcon: Icons.star,
                       ),
@@ -118,7 +122,7 @@ class MovieSearchView extends GetView<MovieSearchController> {
   );
 
   List<String> getGenreNames(int index) {
-    List<int> genreIdList = homeController.moviesList[index].genreIds;
+    List<int> genreIdList = apiService.searchedMoviesList[index].genreIds!;
     var genreNames = detailsController.genres
         .where((genre) => genreIdList.contains(genre.id))
         .map((genre) => genre.name)

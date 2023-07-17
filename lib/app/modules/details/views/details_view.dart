@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
 
 import '../../../data/models/cast_model.dart';
+import '../../../data/models/movies_model.dart';
+import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_divider.dart';
 import '../../../widgets/people_list_widget.dart';
 import '../controllers/details_controller.dart';
@@ -17,6 +20,7 @@ class DetailsView extends GetView<DetailsController> {
   final List<String>? genreNames;
   final RxList<Cast>? castList;
   final RxList<Crew>? crewList;
+  final RxList<Result>? similarMoviesList;
 
   const DetailsView({
     this.movieName,
@@ -28,6 +32,7 @@ class DetailsView extends GetView<DetailsController> {
     this.genreNames,
     this.castList,
     this.crewList,
+    this.similarMoviesList,
     Key? key}) : super(key: key);
 
   // DetailsController detailsController = Get.put(DetailsController());
@@ -133,17 +138,16 @@ class DetailsView extends GetView<DetailsController> {
                   )
                 ),
                 PeopleListWidget(
-                    category: 'Crew(s)',
+                    category: 'Related Movies',
                     obxListView: Obx(()=>
                         ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,
-                            itemCount: crewList!.length,
+                            itemCount: similarMoviesList!.length,
                             itemBuilder: (context, index){
                               return CustomCardPeople(
-                                image: 'https://image.tmdb.org/t/p/original${crewList![index].profilePath}',
-                                title: '${crewList![index].name}',
-                                subTitle: '${crewList![index].job}',
+                                image: 'https://image.tmdb.org/t/p/original${similarMoviesList![index].posterPath}',
+                                title: similarMoviesList![index].originalTitle.toString(),
                                 // subTitle: '(${crewList![index].job})',
                               );
                             })

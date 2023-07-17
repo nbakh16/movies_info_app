@@ -65,6 +65,31 @@ class ApiService{
     }
   }
 
+  ///get similar movies
+  RxList<Result> similarMoviesList = <Result>[].obs;
+  void getSimilarMovies(int movieId) async {
+    isLoading = false.obs;
+    similarMoviesList.clear();
+    String similarMoviesByMovieIdUrl = '${baseUrl}movie/$movieId/similar?api_key=$apiKey';
+
+    Response response = await get(Uri.parse(similarMoviesByMovieIdUrl));
+    print('similar: $similarMoviesByMovieIdUrl');
+
+    if(response.statusCode == 200) {
+      Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+      // print(decodedResponse);
+
+      for(var e in decodedResponse['results']) {
+        similarMoviesList.add(
+            Result.fromJson(e)
+        );
+      }
+    }
+    else {
+      throw Exception('Failed to load similar movies');
+    }
+  }
+
   ///search by movie name
   RxList<Result> searchedMoviesList = <Result>[].obs;
   void getSearchedMovie(String queryText) async {

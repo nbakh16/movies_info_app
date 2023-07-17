@@ -55,8 +55,9 @@ class HomeView extends GetView<HomeController> {
               itemBuilder: (context, index) {
                 return InkWell(
                     onTap: () {
-                      apiService.getMovieCasts(homeController.moviesList[index].id);
-                      apiService.getMovieCrews(homeController.moviesList[index].id);
+                      apiService.getMovieCasts(homeController.moviesList[index].id!);
+                      apiService.getMovieCrews(homeController.moviesList[index].id!);
+                      apiService.getSimilarMovies(homeController.moviesList[index].id!);
 
                       Get.to(()=> DetailsView(
                         movieName: homeController.moviesList[index].originalTitle,
@@ -68,6 +69,7 @@ class HomeView extends GetView<HomeController> {
                         genreNames: getGenreNames(index),
                         castList: apiService.movieCastsList,
                         crewList: apiService.movieCrewsList,
+                        similarMoviesList: apiService.similarMoviesList,
                       ),
                           transition: Transition.downToUp
                       );
@@ -107,7 +109,7 @@ class HomeView extends GetView<HomeController> {
   }
 
   List<String> getGenreNames(int index) {
-    List<int> genreIdList = homeController.moviesList[index].genreIds;
+    List<int> genreIdList = homeController.moviesList[index].genreIds!;
     var genreNames = detailsController.genres
         .where((genre) => genreIdList.contains(genre.id))
         .map((genre) => genre.name)
