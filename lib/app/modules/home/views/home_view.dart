@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/modules/details/views/details_view.dart';
+import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/widgets/two_btn_row_widget.dart';
 import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_drawer.dart';
@@ -13,6 +14,7 @@ class HomeView extends GetView<HomeController> {
 
   final HomeController homeController = Get.put(HomeController());
   final DetailsController detailsController = Get.put(DetailsController());
+  final ApiService apiService = ApiService();
 
   RxInt counter = 1.obs;
 
@@ -26,7 +28,7 @@ class HomeView extends GetView<HomeController> {
         centerTitle: true,
         actions: [
           IconButton(onPressed: (){
-            print(homeController.pageNumber);
+            print(homeController.isLoading.isTrue.toString());
           }, icon: const Icon(Icons.bug_report))
         ],
       ),
@@ -52,8 +54,8 @@ class HomeView extends GetView<HomeController> {
               itemBuilder: (context, index) {
                 return InkWell(
                     onTap: () {
-                      homeController.getMovieCasts(homeController.moviesList[index].id);
-                      homeController.getMovieCrews(homeController.moviesList[index].id);
+                      apiService.getMovieCasts(homeController.moviesList[index].id);
+                      apiService.getMovieCrews(homeController.moviesList[index].id);
 
                       Get.to(()=> DetailsView(
                         movieName: homeController.moviesList[index].originalTitle,
@@ -63,8 +65,8 @@ class HomeView extends GetView<HomeController> {
                         voteAvg: homeController.moviesList[index].voteAverage,
                         voteCount: homeController.moviesList[index].voteCount,
                         genreNames: getGenreNames(index),
-                        castList: homeController.movieCastsList,
-                        crewList: homeController.movieCrewsList,
+                        castList: apiService.movieCastsList,
+                        crewList: apiService.movieCrewsList,
                       ),
                           transition: Transition.downToUp
                       );
