@@ -12,17 +12,20 @@ class HomeController extends GetxController {
   RxList<Result> moviesList = <Result>[].obs;
   RxBool isLoading = true.obs;
 
+  int pageNumber = 1;
+
   RxList<Cast> movieCastsList = <Cast>[].obs;
   RxList<Crew> movieCrewsList = <Crew>[].obs;
 
   String baseUrl = 'https://api.themoviedb.org/3/';
   String baseImageUrl = 'https://image.tmdb.org/t/p/original';
 
-  void getMovies() async {
+  void getMovies(int page) async {
     isLoading = false.obs;
-    String moviesListUrl = '${baseUrl}discover/movie?page=1&api_key=$apiKey';
+    moviesList.clear();
+    String moviesListUrl = '${baseUrl}discover/movie?page=$page&api_key=$apiKey';
     Response response = await get(Uri.parse(moviesListUrl));
-    // print(response.statusCode);
+    print('page: $page');
 
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
@@ -85,9 +88,9 @@ class HomeController extends GetxController {
         );
       }
 
-      List<Map<String, dynamic>> castingValues = decodedResponse['crew']
-          .where((item) => item['job'] == 'Director')
-          .toList();
+      // List<Map<String, dynamic>> castingValues = decodedResponse['crew']
+      //     .where((item) => item['job'] == 'Director')
+      //     .toList();
 
     }
     else {
@@ -98,7 +101,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getMovies();
+    getMovies(pageNumber);
   }
 
   @override
