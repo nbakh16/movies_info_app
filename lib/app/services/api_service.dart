@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import '../data/models/cast_model.dart';
 import 'package:http/http.dart';
+import '../data/models/movies_model.dart';
 import '../utils/api_key.dart';
 
 class ApiService{
@@ -62,5 +63,31 @@ class ApiService{
     else {
       throw Exception('Failed to load movie casts');
     }
+  }
+
+  ///search by movie name
+  RxList<Result> searchedMoviesList = <Result>[].obs;
+  void getSearchedMovie(String queryText) async {
+    searchedMoviesList.clear();
+    String searchedMovieUrl = '${baseUrl}search/movie?api_key=$apiKey&query=$queryText';
+
+    Response response = await get(Uri.parse(searchedMovieUrl));
+    print(response.statusCode);
+
+    if(response.statusCode == 200) {
+      Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+      print(decodedResponse);
+
+      for(var e in decodedResponse['results']) {
+        searchedMoviesList.add(
+            Result.fromJson(e)
+        );
+      }
+    }
+    else {
+      throw Exception('Failed to load movie search results');
+    }
+
+
   }
 }

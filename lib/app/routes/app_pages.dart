@@ -4,6 +4,8 @@ import '../modules/details/bindings/details_binding.dart';
 import '../modules/details/views/details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/movie_search/bindings/movie_search_binding.dart';
+import '../modules/movie_search/views/movie_search_view.dart';
 
 part 'app_routes.dart';
 
@@ -22,6 +24,11 @@ class AppPages {
       name: _Paths.DETAILS,
       page: () => DetailsView(),
       binding: DetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.MOVIE_SEARCH,
+      page: () => MovieSearchView(),
+      binding: MovieSearchBinding(),
     ),
   ];
 }

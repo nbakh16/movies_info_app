@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/modules/details/views/details_view.dart';
+import 'package:movies_details/app/modules/movie_search/views/movie_search_view.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/widgets/two_btn_row_widget.dart';
 import '../../../widgets/custom_card.dart';
@@ -28,20 +29,20 @@ class HomeView extends GetView<HomeController> {
         centerTitle: true,
         actions: [
           IconButton(onPressed: (){
-            print(homeController.isLoading.isTrue.toString());
-          }, icon: const Icon(Icons.bug_report))
+            Get.to(()=>MovieSearchView());
+          }, icon: const Icon(Icons.search))
         ],
       ),
       drawer: SafeArea(
         child: CustomDrawer(),
       ),
       body: SingleChildScrollView(
-        child: Column(
+        child: Obx(()=> homeController.moviesList.isEmpty ? const Center(child: CircularProgressIndicator()) :
+        Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             pageChangeButtons(),
-            Obx(()=> homeController.isLoading.isTrue ? const CircularProgressIndicator() :
             GridView.builder(
               physics: const ScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -79,11 +80,10 @@ class HomeView extends GetView<HomeController> {
                     )
                 );
               },
-            )
             ),
             pageChangeButtons(),
           ],
-        ),
+        ),)
       )
     );
   }

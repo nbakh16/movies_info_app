@@ -10,17 +10,30 @@ void main() {
     GetMaterialApp(
       title: "Movies Details",
       theme: ThemeData(
-          primarySwatch: mainColor,
-          scaffoldBackgroundColor: mainColor.shade800,
-          iconTheme: const IconThemeData(color: Colors.yellowAccent),
-          progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
-          textTheme: const TextTheme(
-              bodyMedium: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500
-              )
-          )
+        primarySwatch: mainColor,
+        scaffoldBackgroundColor: mainColor.shade800,
+        iconTheme: const IconThemeData(color: Colors.yellowAccent),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
+        textTheme: const TextTheme(
+            bodyMedium: TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500
+            )
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.white, fontSize: 18),
+          hintStyle: TextStyle(color: Colors.white70),
+          counterStyle: TextStyle(color: Colors.white),
+          outlineBorder: BorderSide(color: Colors.white),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: mainColor),
+              borderRadius: BorderRadius.all(Radius.circular(18))
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(18))
+          ),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: AppPages.INITIAL,
