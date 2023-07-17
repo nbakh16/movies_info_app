@@ -42,6 +42,7 @@ class HomeView extends GetView<HomeController> {
           return InkWell(
             onTap: () {
               homeController.getMovieCasts(homeController.moviesList[index].id);
+              homeController.getMovieCrews(homeController.moviesList[index].id);
 
               Get.to(()=> DetailsView(
                 movieName: homeController.moviesList[index].originalTitle,
@@ -52,6 +53,7 @@ class HomeView extends GetView<HomeController> {
                 voteCount: homeController.moviesList[index].voteCount,
                 genreNames: getGenreNames(index),
                 castList: homeController.movieCastsList,
+                crewList: homeController.movieCrewsList,
               ),
                 transition: Transition.downToUp
               );

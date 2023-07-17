@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_details/app/utils/colors.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   const CustomNetworkImage({
@@ -25,7 +26,7 @@ class CustomNetworkImage extends StatelessWidget {
         );
       },
       errorBuilder: (_, __, ___) {
-        return const Icon(Icons.image, size: 22,);
+        return Icon(Icons.image, size: 40, color: mainColor.shade300,);
       }
     );
   }

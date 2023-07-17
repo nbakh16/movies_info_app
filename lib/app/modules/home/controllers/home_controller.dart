@@ -66,11 +66,39 @@ class HomeController extends GetxController {
     }
   }
 
+  void getMovieCrews(int movieId) async {
+    isLoading = false.obs;
+    movieCrewsList.clear();
+
+    String crewListByMovieIdUrl = '$baseUrl/movie/$movieId/credits?api_key=$apiKey';
+
+    Response response = await get(Uri.parse(crewListByMovieIdUrl));
+    print(response.statusCode);
+
+    if(response.statusCode == 200) {
+      Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+      // print(decodedResponse);
+
+      for(var e in decodedResponse['crew']) {
+        movieCrewsList.add(
+            Crew.fromJson(e)
+        );
+      }
+
+      List<Map<String, dynamic>> castingValues = decodedResponse['crew']
+          .where((item) => item['job'] == 'Director')
+          .toList();
+
+    }
+    else {
+      throw Exception('Failed to load movie casts');
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
     getMovies();
-    // getMovieCasts();
   }
 
   @override

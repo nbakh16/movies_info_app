@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/utils/colors.dart';
+import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
 
 import '../../../data/models/cast_model.dart';
-import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_divider.dart';
+import '../../../widgets/people_list_widget.dart';
 import '../controllers/details_controller.dart';
 
 class DetailsView extends GetView<DetailsController> {
@@ -15,6 +16,7 @@ class DetailsView extends GetView<DetailsController> {
   final int? voteCount;
   final List<String>? genreNames;
   final RxList<Cast>? castList;
+  final RxList<Crew>? crewList;
 
   const DetailsView({
     this.movieName,
@@ -25,6 +27,7 @@ class DetailsView extends GetView<DetailsController> {
     this.voteCount,
     this.genreNames,
     this.castList,
+    this.crewList,
     Key? key}) : super(key: key);
 
   // DetailsController detailsController = Get.put(DetailsController());
@@ -108,86 +111,44 @@ class DetailsView extends GetView<DetailsController> {
                           style: const TextStyle(fontSize: 16),
                           textAlign: TextAlign.justify,
                         ),
-                        // const CustomDivider(),
-                        // Text('Director'),
-                        // const CustomDivider(),
-                        // Text('Writers'),
-                        const CustomDivider(),
-                        const Text('Actor(s)',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        )
                       ]
                     )
                   ),
                 ),
-                Obx(()=>
-                    SliverGrid(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          childAspectRatio: 0.75
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                          return CustomCard(
-                            image: 'https://image.tmdb.org/t/p/original${castList![index].profilePath}',
-                            title: '${castList![index].name}',
-                            subTitle: '${castList![index].character}',
-                          );
-                        },
-                        childCount: castList!.length <= 10 ? castList!.length : 10,
-                      ),
-                    ),
-                )
-                // SliverToBoxAdapter(
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(14.0),
-                //     child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       mainAxisSize: MainAxisSize.min,
-                //       children: [
-                //         releaseDataAndRatingRow(
-                //           releaseDate!, voteCount!, voteAvg!
-                //         ),
-                //         const CustomDivider(),
-                //         Text('Genre: ${genreNames!.join(', ')}'),
-                //         const CustomDivider(),
-                //         Text(overview!,
-                //           style: const TextStyle(fontSize: 16),
-                //           textAlign: TextAlign.justify,
-                //         ),
-                //         const CustomDivider(),
-                //         Text('Director'),
-                //         const CustomDivider(),
-                //         Text('Writers'),
-                //         const CustomDivider(),
-                //         SliverList(delegate: SliverChildBuilderDelegate((context, index) {
-                //           return Container();
-                //         })),
-                //         Container(
-                //           height: 100,
-                //           width: 300,
-                //           child: ListView.builder(
-                //             shrinkWrap: true,
-                //             scrollDirection: Axis.horizontal,
-                //             itemCount: 10,
-                //             itemBuilder: (context, index) {
-                //               return InkWell(
-                //                 onTap: () {
-                //
-                //                 },
-                //                 child: CustomCard(
-                //                   image: 'dd',
-                //                   title: 'Actor Name',
-                //                 )
-                //               );
-                //             },
-                //           ),
-                //         ),
-                //         const CustomDivider(),
-                //       ],
-                //     ),
-                //   ),
-                // )
+                PeopleListWidget(
+                  category: 'Cast(s)',
+                  obxListView: Obx(()=>
+                      ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: castList!.length,
+                          itemBuilder: (context, index){
+                            return CustomCardPeople(
+                              image: 'https://image.tmdb.org/t/p/original${castList![index].profilePath}',
+                              title: '${castList![index].name}',
+                              subTitle: '${castList![index].character}',
+                              // subTitle: '(${crewList![index].job})',
+                            );
+                          })
+                  )
+                ),
+                PeopleListWidget(
+                    category: 'Crew(s)',
+                    obxListView: Obx(()=>
+                        ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: crewList!.length,
+                            itemBuilder: (context, index){
+                              return CustomCardPeople(
+                                image: 'https://image.tmdb.org/t/p/original${crewList![index].profilePath}',
+                                title: '${crewList![index].name}',
+                                subTitle: '${crewList![index].job}',
+                                // subTitle: '(${crewList![index].job})',
+                              );
+                            })
+                    )
+                ),
               ],
             ),
           ),
