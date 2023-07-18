@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_card.dart';
+import 'package:movies_details/app/widgets/cutom_button.dart';
 
+import '../../../data/models/genre_model.dart';
 import '../../details/controllers/details_controller.dart';
 import '../../details/views/details_view.dart';
 import '../../home/controllers/home_controller.dart';
@@ -45,8 +47,8 @@ class MovieSearchView extends GetView<MovieSearchController> {
                 style: const TextStyle(color: Colors.white),
               ),
               const SizedBox(height: 10.0),
-              ElevatedButton(
-                onPressed: () {
+              CustomButton(
+                onTap: () {
                   apiService.getSearchedMovie(searchTEController.text.trim());
                   FocusScope.of(context).requestFocus(FocusNode());
 
@@ -54,7 +56,11 @@ class MovieSearchView extends GetView<MovieSearchController> {
                     emptySearchText = 'No movie found!';
                   }
                 },
-                child: const Text('Search', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+                btnText: 'Search',
+                textSize: 20,
+                bgColor: mainColor,
+                shadowColor: mainColor.shade300,
+                btnElevation: 5,
               ),
               Obx(()=> apiService.searchedMoviesList.isEmpty ? movieEmptyContainer() :
               GridView.builder(
@@ -81,7 +87,7 @@ class MovieSearchView extends GetView<MovieSearchController> {
                           releaseDate: apiService.searchedMoviesList[index].releaseDate,
                           voteAvg: apiService.searchedMoviesList[index].voteAverage,
                           voteCount: apiService.searchedMoviesList[index].voteCount,
-                          genreNames: getGenreNames(index),
+                          movieGenre: getGenreListOfMovie(index),
                           castList: apiService.movieCastsList,
                           crewList: apiService.movieCrewsList,
                           similarMoviesList: apiService.similarMoviesList,
@@ -121,12 +127,14 @@ class MovieSearchView extends GetView<MovieSearchController> {
     ),
   );
 
-  List<String> getGenreNames(int index) {
+  List<GenreElement> getGenreListOfMovie(int index) {
     List<int> genreIdList = apiService.searchedMoviesList[index].genreIds!;
-    var genreNames = detailsController.genres
-        .where((genre) => genreIdList.contains(genre.id))
-        .map((genre) => genre.name)
+
+    var genreListOfMovie = detailsController.genreList
+        .where((genre) => genreIdList
+        .contains(genre.id))
         .toList();
-    return genreNames;
+
+    return genreListOfMovie;
   }
 }

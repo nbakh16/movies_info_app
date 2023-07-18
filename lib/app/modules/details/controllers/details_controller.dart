@@ -11,7 +11,7 @@ class DetailsController extends GetxController {
   //TODO: Implement DetailsController
 
   RxBool isLoading = true.obs;
-  RxList<GenreElement> genres = <GenreElement>[].obs;
+  RxList<GenreElement> genreList = <GenreElement>[].obs;
 
   Future<List<GenreElement>> fetchGenres() async {
     isLoading = false.obs;
@@ -21,7 +21,7 @@ class DetailsController extends GetxController {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
       final List<dynamic> genresData = responseData['genres'];
 
-      genres = genresData.map((json) => GenreElement.fromJson(json)).toList().obs;
+      genreList = genresData.map((json) => GenreElement.fromJson(json)).toList().obs;
 
 
       // List<String> genreNames = genres

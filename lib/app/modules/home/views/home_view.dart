@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:movies_details/app/data/models/genre_model.dart';
 import 'package:movies_details/app/modules/details/views/details_view.dart';
 import 'package:movies_details/app/modules/movie_search/views/movie_search_view.dart';
 import 'package:movies_details/app/services/api_service.dart';
@@ -66,7 +67,7 @@ class HomeView extends GetView<HomeController> {
                         releaseDate: homeController.moviesList[index].releaseDate,
                         voteAvg: homeController.moviesList[index].voteAverage,
                         voteCount: homeController.moviesList[index].voteCount,
-                        genreNames: getGenreNames(index),
+                        movieGenre: getGenreListOfMovie(index),
                         castList: apiService.movieCastsList,
                         crewList: apiService.movieCrewsList,
                         similarMoviesList: apiService.similarMoviesList,
@@ -108,12 +109,14 @@ class HomeView extends GetView<HomeController> {
           );
   }
 
-  List<String> getGenreNames(int index) {
+  List<GenreElement> getGenreListOfMovie(int index) {
     List<int> genreIdList = homeController.moviesList[index].genreIds!;
-    var genreNames = detailsController.genres
-        .where((genre) => genreIdList.contains(genre.id))
-        .map((genre) => genre.name)
+
+    var genreListOfMovie = detailsController.genreList
+        .where((genre) => genreIdList
+        .contains(genre.id))
         .toList();
-    return genreNames;
+
+    return genreListOfMovie;
   }
 }

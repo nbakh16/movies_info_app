@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:movies_details/app/services/api_service.dart';
+import 'package:movies_details/app/data/models/genre_model.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
+import 'package:movies_details/app/widgets/cutom_button.dart';
 
 import '../../../data/models/cast_model.dart';
 import '../../../data/models/movies_model.dart';
-import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_divider.dart';
 import '../../../widgets/people_list_widget.dart';
 import '../controllers/details_controller.dart';
@@ -17,7 +17,7 @@ class DetailsView extends GetView<DetailsController> {
   final String? movieName, overview, backdropImagePath, releaseDate;
   final double? voteAvg;
   final int? voteCount;
-  final List<String>? genreNames;
+  final List<GenreElement>? movieGenre;
   final RxList<Cast>? castList;
   final RxList<Crew>? crewList;
   final RxList<Result>? similarMoviesList;
@@ -29,7 +29,7 @@ class DetailsView extends GetView<DetailsController> {
     this.releaseDate,
     this.voteAvg,
     this.voteCount,
-    this.genreNames,
+    this.movieGenre,
     this.castList,
     this.crewList,
     this.similarMoviesList,
@@ -39,6 +39,7 @@ class DetailsView extends GetView<DetailsController> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.sizeOf(context).width;
     String backdropImage = 'https://image.tmdb.org/t/p/original$backdropImagePath';
 
     return Container(
@@ -108,8 +109,28 @@ class DetailsView extends GetView<DetailsController> {
                             releaseDate!, voteCount!, voteAvg!
                         ),
                         const CustomDivider(),
-                        Text('Genre: ${genreNames!.join(', ')}',
-                          style: const TextStyle(fontSize: 18),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.zero,
+                          itemCount: movieGenre!.length,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
+                            mainAxisExtent: 50,
+                            crossAxisSpacing: 3.0,
+                            mainAxisSpacing: 3.0,
+                          ),
+                          itemBuilder: (context, index) {
+                            return Center(
+                              child: CustomButton(
+                                onTap: (){
+                                  print('${movieGenre![index].id} <> ${movieGenre![index].name}');
+                                  // TODO: api call to get movies according to genre
+                                },
+                                btnText: movieGenre![index].name,
+                              ),
+                            );
+                          }
                         ),
                         const CustomDivider(),
                         Text(overview!,

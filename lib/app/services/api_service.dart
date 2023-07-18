@@ -18,7 +18,6 @@ class ApiService{
     String castListByMovieIdUrl = '$baseUrl/movie/$movieId/credits?api_key=$apiKey';
 
     Response response = await get(Uri.parse(castListByMovieIdUrl));
-    print(response.statusCode);
 
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
@@ -44,7 +43,6 @@ class ApiService{
     String crewListByMovieIdUrl = '$baseUrl/movie/$movieId/credits?api_key=$apiKey';
 
     Response response = await get(Uri.parse(crewListByMovieIdUrl));
-    print(response.statusCode);
 
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
@@ -73,7 +71,6 @@ class ApiService{
     String similarMoviesByMovieIdUrl = '${baseUrl}movie/$movieId/similar?api_key=$apiKey';
 
     Response response = await get(Uri.parse(similarMoviesByMovieIdUrl));
-    print('similar: $similarMoviesByMovieIdUrl');
 
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
@@ -97,11 +94,9 @@ class ApiService{
     String searchedMovieUrl = '${baseUrl}search/movie?api_key=$apiKey&query=$queryText';
 
     Response response = await get(Uri.parse(searchedMovieUrl));
-    print(response.statusCode);
 
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
-      print(decodedResponse);
 
       for(var e in decodedResponse['results']) {
         searchedMoviesList.add(
