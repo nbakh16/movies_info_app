@@ -5,11 +5,11 @@ class PeopleListWidget extends StatelessWidget {
   const PeopleListWidget({
     super.key,
     this.category,
-    this.obxListView
+    this.listView
   });
 
   final String? category;
-  final Widget? obxListView;
+  final Widget? listView;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class PeopleListWidget extends StatelessWidget {
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                     Expanded(
-                      child: obxListView!
+                      child: listView!
                     )
               ],
             ),

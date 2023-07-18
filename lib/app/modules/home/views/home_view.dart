@@ -34,61 +34,75 @@ class HomeView extends GetView<HomeController> {
           }, icon: const Icon(Icons.search))
         ],
       ),
-      drawer: SafeArea(
+      drawer: const SafeArea(
         child: CustomDrawer(),
       ),
-      body: SingleChildScrollView(
-        child: Obx(()=> homeController.moviesList.isEmpty ? const Center(child: CircularProgressIndicator()) :
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            pageChangeButtons(),
-            GridView.builder(
-              physics: const ScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: screenWidth<700 ? 2 : screenWidth<900 ? 3 : 4,
-                childAspectRatio: 0.65
-              ),
-              itemCount: homeController.moviesList.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                    onTap: () {
-                      apiService.getMovieCasts(homeController.moviesList[index].id!);
-                      apiService.getMovieCrews(homeController.moviesList[index].id!);
-                      apiService.getSimilarMovies(homeController.moviesList[index].id!);
-
-                      Get.to(()=> DetailsView(
-                        movieName: homeController.moviesList[index].originalTitle,
-                        overview: homeController.moviesList[index].overview,
-                        backdropImagePath: homeController.moviesList[index].backdropPath,
-                        releaseDate: homeController.moviesList[index].releaseDate,
-                        voteAvg: homeController.moviesList[index].voteAverage,
-                        voteCount: homeController.moviesList[index].voteCount,
-                        movieGenre: getGenreListOfMovie(index),
-                        castList: apiService.movieCastsList,
-                        crewList: apiService.movieCrewsList,
-                        similarMoviesList: apiService.similarMoviesList,
-                      ),
-                          transition: Transition.downToUp
-                      );
-                    },
-                    child: CustomCard(
-                      image: '${homeController.baseImageUrl}${homeController.moviesList[index].posterPath}',
-                      title: homeController.moviesList[index].originalTitle.toString(),
-                      subTitle: homeController.moviesList[index].voteAverage.toString(),
-                      subIcon: Icons.star,
-                    )
-                );
-              },
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Obx(()=>
+                Visibility(
+                  visible: homeController.moviesList.isNotEmpty,
+                  replacement: const CircularProgressIndicator(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      pageChangeButtons(),
+                      moviesListGridView(screenWidth),
+                      pageChangeButtons(),
+                    ],
+                  ),
+                )
             ),
-            pageChangeButtons(),
-          ],
-        ),)
+          )
+        ),
       )
     );
+  }
+
+  GridView moviesListGridView(double screenWidth) {
+    return GridView.builder(
+            physics: const ScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: screenWidth<700 ? 2 : screenWidth<900 ? 3 : 4,
+              childAspectRatio: 0.65
+            ),
+            itemCount: homeController.moviesList.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                  onTap: () {
+                    apiService.getMovieCasts(homeController.moviesList[index].id!);
+                    apiService.getMovieCrews(homeController.moviesList[index].id!);
+                    apiService.getSimilarMovies(homeController.moviesList[index].id!);
+
+                    Get.to(()=> DetailsView(
+                      movieName: homeController.moviesList[index].originalTitle,
+                      overview: homeController.moviesList[index].overview,
+                      backdropImagePath: homeController.moviesList[index].backdropPath,
+                      releaseDate: homeController.moviesList[index].releaseDate,
+                      voteAvg: homeController.moviesList[index].voteAverage,
+                      voteCount: homeController.moviesList[index].voteCount,
+                      movieGenre: getGenreListOfMovie(index),
+                      castList: apiService.movieCastsList,
+                      crewList: apiService.movieCrewsList,
+                      similarMoviesList: apiService.similarMoviesList,
+                    ),
+                        transition: Transition.downToUp
+                    );
+                  },
+                  child: CustomCard(
+                    image: '${homeController.baseImageUrl}${homeController.moviesList[index].posterPath}',
+                    title: homeController.moviesList[index].originalTitle.toString(),
+                    subTitle: homeController.moviesList[index].voteAverage.toString(),
+                    subIcon: Icons.star,
+                  )
+              );
+            },
+          );
   }
 
   Obx pageChangeButtons() {

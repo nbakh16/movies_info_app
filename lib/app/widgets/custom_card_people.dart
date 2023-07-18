@@ -6,11 +6,13 @@ import 'custom_network_image.dart';
 class CustomCardPeople extends StatelessWidget {
 
   final String image, title, subTitle;
+  final IconData? subIcon;
 
   const CustomCardPeople({
     required this.image,
     this.title = '',
     this.subTitle = '',
+    this.subIcon,
     Key? key}) : super(key: key);
 
   @override
@@ -27,7 +29,7 @@ class CustomCardPeople extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(borderRadius)
         ),
-        elevation: 4,
+        elevation: 5,
         child: Container(
           height: double.maxFinite,
           width: MediaQuery.sizeOf(context).width * 0.35,
@@ -45,7 +47,7 @@ class CustomCardPeople extends StatelessWidget {
               borderRadius: BorderRadius.circular(borderRadius)
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.all(4.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -62,26 +64,32 @@ class CustomCardPeople extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Text(title,
-                          style: TextStyle(
-                            fontSize: screenWidth<400 ? 14 : screenWidth<700 ? 16 : 20,
-                            fontWeight: FontWeight.w900,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                      Text(title,
+                        style: TextStyle(
+                          fontSize: screenWidth<400 ? 14 : screenWidth<700 ? 16 : 20,
+                          fontWeight: FontWeight.w900,
                         ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(subTitle,
-                          style: TextStyle(
-                            fontSize: screenWidth<400 ? 12 : screenWidth<700 ? 14 : 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white70
+                      Wrap(
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.center,
+                        spacing: 2.5,
+                        children: [
+                          Icon(subIcon,
+                            size: screenWidth<400 ? 12 : screenWidth<700 ? 14 : 18,
                           ),
-                        ),
+                          Text(subTitle,
+                            style: TextStyle(
+                              fontSize: screenWidth<400 ? 12 : screenWidth<700 ? 14 : 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white70
+                            ),
+                            maxLines: screenWidth<300 ? 1 : 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                     ],
                   ),

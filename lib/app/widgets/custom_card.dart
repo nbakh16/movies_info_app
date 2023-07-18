@@ -45,7 +45,7 @@ class CustomCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius)
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
+          padding: const EdgeInsets.all(4.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

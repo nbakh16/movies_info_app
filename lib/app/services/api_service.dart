@@ -63,12 +63,11 @@ class ApiService{
     }
   }
 
-  ///get similar movies
+  ///get recommended movies
   RxList<Result> similarMoviesList = <Result>[].obs;
   void getSimilarMovies(int movieId) async {
-    isLoading = false.obs;
     similarMoviesList.clear();
-    String similarMoviesByMovieIdUrl = '${baseUrl}movie/$movieId/similar?api_key=$apiKey';
+    String similarMoviesByMovieIdUrl = '${baseUrl}movie/$movieId/recommendations?api_key=$apiKey';
 
     Response response = await get(Uri.parse(similarMoviesByMovieIdUrl));
 
@@ -98,11 +97,13 @@ class ApiService{
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
 
+      print(decodedResponse);
       for(var e in decodedResponse['results']) {
         searchedMoviesList.add(
             Result.fromJson(e)
         );
       }
+      isLoading = false.obs;
     }
     else {
       throw Exception('Failed to load movie search results');

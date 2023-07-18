@@ -11,23 +11,32 @@ class CustomNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(imgUrl,
-      alignment: Alignment.center,
-      height: double.infinity,
-      width: double.infinity,
-      fit: BoxFit.cover,
-      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loading) {
-        if (loading == null) return child;
-        return Center(
-          child: CircularProgressIndicator(
-            value: loading.expectedTotalBytes != null
-                ? loading.cumulativeBytesLoaded/loading.expectedTotalBytes! : null,
-          ),
-        );
-      },
-      errorBuilder: (_, __, ___) {
-        return Icon(Icons.image, size: 40, color: mainColor.shade300,);
-      }
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(6.0),
+          topLeft: Radius.circular(6.0),
+        )
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Image.network(imgUrl,
+        alignment: Alignment.center,
+        height: double.infinity,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loading) {
+          if (loading == null) return child;
+          return Center(
+            child: CircularProgressIndicator(
+              value: loading.expectedTotalBytes != null
+                  ? loading.cumulativeBytesLoaded/loading.expectedTotalBytes! : null,
+            ),
+          );
+        },
+        errorBuilder: (_, __, ___) {
+          return Icon(Icons.image, size: 40, color: mainColor.shade300,);
+        }
+      ),
     );
   }
 }
