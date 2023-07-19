@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/data/models/genre_model.dart';
+import 'package:movies_details/app/modules/movies/views/movies_view.dart';
+import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
@@ -22,7 +24,7 @@ class DetailsView extends GetView<DetailsController> {
   final RxList<Crew>? crewList;
   final RxList<Result>? similarMoviesList;
 
-  const DetailsView({
+  DetailsView({
     this.movieName,
     this.overview,
     this.backdropImagePath,
@@ -36,6 +38,7 @@ class DetailsView extends GetView<DetailsController> {
     Key? key}) : super(key: key);
 
   // DetailsController detailsController = Get.put(DetailsController());
+  ApiService apiService = ApiService();
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +112,7 @@ class DetailsView extends GetView<DetailsController> {
                     const CustomDivider(),
                     GridView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       itemCount: movieGenre!.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -122,8 +125,14 @@ class DetailsView extends GetView<DetailsController> {
                         return Center(
                           child: CustomButton(
                             onTap: (){
-                              print('${movieGenre![index].id} <> ${movieGenre![index].name}');
-                              // TODO: api call to get movies according to genre
+                              apiService.getMoviesListByGenre(movieGenre![index].id, 1);
+                              Get.to(()=>MoviesView(
+                                  moviesList: apiService.moviesListByGenre,
+                                  genreId: movieGenre![index].id,
+                                  genreName: movieGenre![index].name,
+                                ),
+                                transition: Transition.fadeIn
+                              );
                             },
                             btnText: movieGenre![index].name,
                           ),

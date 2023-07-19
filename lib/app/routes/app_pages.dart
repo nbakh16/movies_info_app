@@ -6,6 +6,8 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/movie_search/bindings/movie_search_binding.dart';
 import '../modules/movie_search/views/movie_search_view.dart';
+import '../modules/movies/bindings/movies_binding.dart';
+import '../modules/movies/views/movies_view.dart';
 
 part 'app_routes.dart';
 
@@ -29,6 +31,11 @@ class AppPages {
       name: _Paths.MOVIE_SEARCH,
       page: () => MovieSearchView(),
       binding: MovieSearchBinding(),
+    ),
+    GetPage(
+      name: _Paths.MOVIES,
+      page: () => MoviesView(),
+      binding: MoviesBinding(),
     ),
   ];
 }

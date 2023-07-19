@@ -97,7 +97,6 @@ class ApiService{
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
 
-      print(decodedResponse);
       for(var e in decodedResponse['results']) {
         searchedMoviesList.add(
             Result.fromJson(e)
@@ -108,7 +107,31 @@ class ApiService{
     else {
       throw Exception('Failed to load movie search results');
     }
+  }
 
+  ///get movies by genre
+  RxList<Result> moviesListByGenre = <Result>[].obs;
+  void getMoviesListByGenre(int genreID, int pageNumber) async {
+    moviesListByGenre.clear();
+    String moviesListByGenreUrl = '${baseUrl}discover/movie?api_key=$apiKey&with_genres=$genreID&page=$pageNumber';
+    print(moviesListByGenreUrl);
 
+    Response response = await get(Uri.parse(moviesListByGenreUrl));
+
+    if(response.statusCode == 200) {
+      Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+
+      for(var e in decodedResponse['results']) {
+        moviesListByGenre.add(
+            Result.fromJson(e)
+        );
+      }
+      print('${moviesListByGenre[0].title}');
+      print('$decodedResponse');
+      isLoading = false.obs;
+    }
+    else {
+      throw Exception('Failed to load movies by genre');
+    }
   }
 }
