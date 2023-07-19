@@ -6,4 +6,4 @@ https://developer.themoviedb.org/docs
 
 ## License
 
-[MIT License] (LICENSE)
+[MIT License](LICENSE)
