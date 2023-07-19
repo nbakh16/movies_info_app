@@ -9,6 +9,7 @@ import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_drawer.dart';
 import '../../../widgets/two_btn_row_widget.dart';
 import '../../details/controllers/details_controller.dart';
+import '../../details/views/details_view.dart';
 import '../../movie_search/views/movie_search_view.dart';
 import '../controllers/movies_controller.dart';
 
@@ -84,24 +85,24 @@ class MoviesView extends GetView<MoviesController> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
-              // apiService.getMovieCasts(homeController.moviesList[index].id!);
-              // apiService.getMovieCrews(homeController.moviesList[index].id!);
-              // apiService.getSimilarMovies(homeController.moviesList[index].id!);
-              //
-              // Get.to(()=> DetailsView(
-              //   movieName: homeController.moviesList[index].originalTitle,
-              //   overview: homeController.moviesList[index].overview,
-              //   backdropImagePath: homeController.moviesList[index].backdropPath,
-              //   releaseDate: homeController.moviesList[index].releaseDate,
-              //   voteAvg: homeController.moviesList[index].voteAverage,
-              //   voteCount: homeController.moviesList[index].voteCount,
-              //   movieGenre: getGenreListOfMovie(index),
-              //   castList: apiService.movieCastsList,
-              //   crewList: apiService.movieCrewsList,
-              //   similarMoviesList: apiService.similarMoviesList,
-              // ),
-              //     transition: Transition.downToUp
-              // );
+              apiService.getMovieCasts(moviesList![index].id!);
+              apiService.getMovieCrews(moviesList![index].id!);
+              apiService.getSimilarMovies(moviesList![index].id!);
+
+              Get.to(()=> DetailsView(
+                movieName: moviesList![index].originalTitle,
+                overview: moviesList![index].overview,
+                backdropImagePath: moviesList![index].backdropPath,
+                releaseDate: moviesList![index].releaseDate,
+                voteAvg: moviesList![index].voteAverage,
+                voteCount: moviesList![index].voteCount,
+                movieGenre: getGenreListOfMovie(index),
+                castList: apiService.movieCastsList,
+                crewList: apiService.movieCrewsList,
+                similarMoviesList: apiService.similarMoviesList,
+              ),
+                  transition: Transition.downToUp
+              );
             },
             child: CustomCard(
               image: '${apiService.baseImageUrl}${moviesList![index].posterPath}',
