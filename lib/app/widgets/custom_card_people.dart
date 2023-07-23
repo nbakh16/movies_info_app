@@ -7,12 +7,14 @@ class CustomCardPeople extends StatelessWidget {
 
   final String image, title, subTitle;
   final IconData? subIcon;
+  final Function()? onTap;
 
   const CustomCardPeople({
     required this.image,
     this.title = '',
     this.subTitle = '',
     this.subIcon,
+    this.onTap,
     Key? key}) : super(key: key);
 
   @override
@@ -20,7 +22,9 @@ class CustomCardPeople extends StatelessWidget {
     double screenWidth = MediaQuery.sizeOf(context).width;
     double borderRadius = 6.0;
 
-    return Card(
+    return InkWell(
+      onTap: onTap,
+      child: Card(
         clipBehavior: Clip.hardEdge,
         shape: RoundedRectangleBorder(
             side: BorderSide(
@@ -98,6 +102,7 @@ class CustomCardPeople extends StatelessWidget {
             ),
           ),
         )
+      ),
     );
   }
 }

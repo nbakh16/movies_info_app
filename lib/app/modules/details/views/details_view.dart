@@ -16,13 +16,13 @@ import '../../../widgets/people_list_widget.dart';
 import '../controllers/details_controller.dart';
 
 class DetailsView extends GetView<DetailsController> {
-  final String? movieName, overview, backdropImagePath, releaseDate;
-  final double? voteAvg;
-  final int? voteCount;
-  final List<GenreElement>? movieGenre;
-  final RxList<Cast>? castList;
-  final RxList<Crew>? crewList;
-  final RxList<Result>? similarMoviesList;
+  String? movieName, overview, backdropImagePath, releaseDate;
+  double? voteAvg;
+  int? voteCount;
+  List<GenreElement>? movieGenre;
+  RxList<Cast>? castList;
+  RxList<Crew>? crewList;
+  RxList<Result>? similarMoviesList;
 
   DetailsView({
     this.movieName,
@@ -37,7 +37,7 @@ class DetailsView extends GetView<DetailsController> {
     this.similarMoviesList,
     Key? key}) : super(key: key);
 
-  // DetailsController detailsController = Get.put(DetailsController());
+  DetailsController detailsController = Get.put(DetailsController());
   ApiService apiService = ApiService();
 
   @override
@@ -126,7 +126,7 @@ class DetailsView extends GetView<DetailsController> {
                           child: CustomButton(
                             onTap: (){
                               apiService.getMoviesListByGenre(movieGenre![index].id, 1);
-                              Get.to(()=>MoviesView(
+                              Get.off(()=>MoviesView(
                                   moviesList: apiService.moviesListByGenre,
                                   genreId: movieGenre![index].id,
                                   genreName: movieGenre![index].name,
@@ -183,6 +183,23 @@ class DetailsView extends GetView<DetailsController> {
                       itemCount: similarMoviesList!.length,
                       itemBuilder: (context, index){
                         return CustomCardPeople(
+                          onTap: () {
+                            apiService.getMovieCasts(similarMoviesList![index].id!);
+                            apiService.getMovieCrews(similarMoviesList![index].id!);
+                            apiService.getSimilarMovies(similarMoviesList![index].id!);
+
+
+                            movieName= similarMoviesList![index].originalTitle;
+                            overview= similarMoviesList![index].overview;
+                            backdropImagePath= similarMoviesList![index].backdropPath;
+                            releaseDate= similarMoviesList![index].releaseDate;
+                            voteAvg= similarMoviesList![index].voteAverage;
+                            voteCount= similarMoviesList![index].voteCount;
+                            movieGenre= getGenreListOfMovie(index);
+                            castList= apiService.movieCastsList;
+                            crewList= apiService.movieCrewsList;
+                            similarMoviesList= apiService.similarMoviesList;
+                          },
                           image: 'https://image.tmdb.org/t/p/original${similarMoviesList![index].posterPath}',
                           title: similarMoviesList![index].originalTitle.toString().trim(),
                           subTitle: similarMoviesList![index].voteAverage.toString().trim(),
@@ -223,5 +240,16 @@ class DetailsView extends GetView<DetailsController> {
         )
       ],
     );
+  }
+
+  List<GenreElement> getGenreListOfMovie(int index) {
+    List<int> genreIdList = similarMoviesList![index].genreIds!;
+
+    var genreListOfMovie = detailsController.genreList
+        .where((genre) => genreIdList
+        .contains(genre.id))
+        .toList();
+
+    return genreListOfMovie;
   }
 }
