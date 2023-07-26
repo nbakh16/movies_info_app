@@ -113,6 +113,16 @@ class HomeView extends GetView<HomeController> {
                   counter -= homeController.pageNumber;
                   homeController.getMovies(counter.value);
                 }
+                else {
+                  Get.snackbar(
+                    'Page: 1',
+                    'Already on First Page!',
+                    icon: const Icon(Icons.info_outline),
+                    snackPosition: SnackPosition.BOTTOM,
+                    colorText: Colors.white,
+                    backgroundColor: Colors.redAccent.withOpacity(0.33)
+                  );
+                }
               },
               btnRightOnTap: (){
                 counter += homeController.pageNumber;

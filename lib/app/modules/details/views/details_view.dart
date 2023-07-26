@@ -82,7 +82,7 @@ class DetailsView extends GetView<DetailsController> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(movieName!,
+                      child: Text(movieName!.toString(),
                         style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold
@@ -107,7 +107,7 @@ class DetailsView extends GetView<DetailsController> {
                 delegate: SliverChildListDelegate (
                   [
                     releaseDataAndRatingRow(
-                        releaseDate!, voteCount!, voteAvg!
+                        releaseDate!.toString(), voteCount!, voteAvg!
                     ),
                     const CustomDivider(),
                     GridView.builder(
@@ -140,7 +140,7 @@ class DetailsView extends GetView<DetailsController> {
                       }
                     ),
                     const CustomDivider(),
-                    Text(overview!,
+                    Text(overview!.toString(),
                       style: const TextStyle(fontSize: 16),
                       textAlign: TextAlign.justify,
                     ),
@@ -184,21 +184,32 @@ class DetailsView extends GetView<DetailsController> {
                       itemBuilder: (context, index){
                         return CustomCardPeople(
                           onTap: () {
-                            apiService.getMovieCasts(similarMoviesList![index].id!);
-                            apiService.getMovieCrews(similarMoviesList![index].id!);
-                            apiService.getSimilarMovies(similarMoviesList![index].id!);
-
-
-                            movieName= similarMoviesList![index].originalTitle;
-                            overview= similarMoviesList![index].overview;
-                            backdropImagePath= similarMoviesList![index].backdropPath;
-                            releaseDate= similarMoviesList![index].releaseDate;
-                            voteAvg= similarMoviesList![index].voteAverage;
-                            voteCount= similarMoviesList![index].voteCount;
-                            movieGenre= getGenreListOfMovie(index);
-                            castList= apiService.movieCastsList;
-                            crewList= apiService.movieCrewsList;
-                            similarMoviesList= apiService.similarMoviesList;
+                            // similarMoviesList!.clear();
+                            // apiService.getMovieCasts(similarMoviesList![index].id!);
+                            // apiService.getMovieCrews(similarMoviesList![index].id!);
+                            // apiService.getSimilarMovies(similarMoviesList![index].id!);
+                            //
+                            //
+                            // similarMoviesList!.isEmpty ? CircularProgressIndicator() :
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => Obx(() =>
+                            //     DetailsView(
+                            //     movieName: similarMoviesList![index].originalTitle,
+                            //   )
+                            //   )
+                            //   ),
+                            // );
+                            // movieName= similarMoviesList![index].originalTitle;
+                            // overview= similarMoviesList![index].overview;
+                            // backdropImagePath= similarMoviesList![index].backdropPath;
+                            // releaseDate= similarMoviesList![index].releaseDate;
+                            // voteAvg= similarMoviesList![index].voteAverage;
+                            // voteCount= similarMoviesList![index].voteCount;
+                            // movieGenre= getGenreListOfMovie(index);
+                            // castList= apiService.movieCastsList;
+                            // crewList= apiService.movieCrewsList;
+                            // similarMoviesList= apiService.similarMoviesList;
                           },
                           image: 'https://image.tmdb.org/t/p/original${similarMoviesList![index].posterPath}',
                           title: similarMoviesList![index].originalTitle.toString().trim(),

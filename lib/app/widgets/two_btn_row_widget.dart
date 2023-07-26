@@ -7,10 +7,13 @@ class TwoButtonRowWidget extends StatelessWidget {
     this.btnLeftText = 'Prev',
     this.btnRightText = 'Next',
     this.centerText = '',
+    this.iconLeft = Icons.chevron_left,
+    this.iconRight = Icons.chevron_right,
     Key? key}) : super(key: key);
 
   final Function() btnLeftOnTap, btnRightOnTap;
   final String btnLeftText, btnRightText, centerText;
+  final IconData iconLeft, iconRight;
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +22,22 @@ class TwoButtonRowWidget extends StatelessWidget {
       children: [
         ElevatedButton(
             onPressed: btnLeftOnTap,
-            child: Text(btnLeftText)
+            child: Row(
+              children: [
+                Icon(iconLeft),
+                Text(btnLeftText),
+              ],
+            )
         ),
         Text(centerText),
         ElevatedButton(
             onPressed: btnRightOnTap,
-            child: Text(btnRightText)
+            child: Row(
+              children: [
+                Text(btnRightText),
+                Icon(iconRight),
+              ],
+            )
         ),
       ],
     );
