@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/data/models/genre_model.dart';
@@ -61,168 +62,175 @@ class DetailsView extends GetView<DetailsController> {
           ]
         )
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: CustomScrollView(
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverAppBar(
-              // title: Text('Movie Name'),
-              toolbarHeight: 100,
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(10),
-                child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: mainColor.withOpacity(0.5),
-                        border: Border(
-                            bottom: BorderSide(width: 4, color: mainColor.shade900)
-                        )
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(movieName!.toString(),
-                        style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold
-                        ),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: CustomScrollView(
+            shrinkWrap: true,
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverAppBar(
+                // title: Text('Movie Name'),
+                toolbarHeight: 100,
+                leading: IconButton(
+                  icon: Icon(IconlyLight.arrowLeft2,
+                      size: MediaQuery.sizeOf(context).height * 0.05),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(10),
+                  child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: mainColor.withOpacity(0.5),
+                          border: Border(
+                              bottom: BorderSide(width: 4, color: mainColor.shade900)
+                          )
                       ),
-                    )
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(movieName!.toString(),
+                          style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      )
+                  ),
+                ),
+                elevation: 0,
+                pinned: true,
+                stretch: true,
+                stretchTriggerOffset: 22,
+                expandedHeight: 300.0,
+                flexibleSpace: Center(child: CustomNetworkImage(imgUrl: backdropImage,)),
+                // flexibleSpace: Positioned.fill(
+                //     child: CustomNetworkImage(imgUrl: backdropImage,)
+                // ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.all(12.0),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate (
+                    [
+                      releaseDataAndRatingRow(
+                          releaseDate!.toString(), voteCount!, voteAvg!
+                      ),
+                      const CustomDivider(),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        itemCount: movieGenre!.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
+                          mainAxisExtent: 50,
+                          crossAxisSpacing: 3.0,
+                          mainAxisSpacing: 3.0,
+                        ),
+                        itemBuilder: (context, index) {
+                          return Center(
+                            child: CustomButton(
+                              onTap: (){
+                                apiService.getMoviesListByGenre(movieGenre![index].id, 1);
+                                Get.off(()=>MoviesView(
+                                    moviesList: apiService.moviesListByGenre,
+                                    genreId: movieGenre![index].id,
+                                    genreName: movieGenre![index].name,
+                                  ),
+                                  transition: Transition.fadeIn
+                                );
+                              },
+                              btnText: movieGenre![index].name,
+                            ),
+                          );
+                        }
+                      ),
+                      const CustomDivider(),
+                      Text(overview!.toString(),
+                        style: const TextStyle(fontSize: 16),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ]
+                  )
                 ),
               ),
-              elevation: 0,
-              pinned: true,
-              stretch: true,
-              stretchTriggerOffset: 22,
-              expandedHeight: 300.0,
-              flexibleSpace: CustomNetworkImage(imgUrl: backdropImage,),
-              // flexibleSpace: Positioned.fill(
-              //     child: CustomNetworkImage(imgUrl: backdropImage,)
-              // ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.all(12.0),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate (
-                  [
-                    releaseDataAndRatingRow(
-                        releaseDate!.toString(), voteCount!, voteAvg!
+              // TODO: Fix ListView for landscape orientation
+              Obx(()=>
+                  Visibility(
+                    visible: castList!.isNotEmpty,
+                    replacement: const SliverToBoxAdapter(),
+                    child: PeopleListWidget(
+                      category: 'Cast(s)',
+                      listView: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: castList!.length,
+                        itemBuilder: (context, index){
+                          return CustomCardPeople(
+                            image: 'https://image.tmdb.org/t/p/original${castList![index].profilePath}',
+                            title: castList![index].name.toString().trim(),
+                            subTitle: castList![index].character.toString().trim(),
+                            // subTitle: '(${crewList![index].job})',
+                          );
+                        }
+                      )
                     ),
-                    const CustomDivider(),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      itemCount: movieGenre!.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
-                        mainAxisExtent: 50,
-                        crossAxisSpacing: 3.0,
-                        mainAxisSpacing: 3.0,
-                      ),
-                      itemBuilder: (context, index) {
-                        return Center(
-                          child: CustomButton(
-                            onTap: (){
-                              apiService.getMoviesListByGenre(movieGenre![index].id, 1);
-                              Get.off(()=>MoviesView(
-                                  moviesList: apiService.moviesListByGenre,
-                                  genreId: movieGenre![index].id,
-                                  genreName: movieGenre![index].name,
-                                ),
-                                transition: Transition.fadeIn
-                              );
-                            },
-                            btnText: movieGenre![index].name,
-                          ),
-                        );
-                      }
-                    ),
-                    const CustomDivider(),
-                    Text(overview!.toString(),
-                      style: const TextStyle(fontSize: 16),
-                      textAlign: TextAlign.justify,
-                    ),
-                  ]
-                )
+                  )
               ),
-            ),
-            // TODO: Fix ListView for landscape orientation
-            Obx(()=>
-                Visibility(
-                  visible: castList!.isNotEmpty,
-                  replacement: const SliverToBoxAdapter(),
-                  child: PeopleListWidget(
-                    category: 'Cast(s)',
-                    listView: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: castList!.length,
-                      itemBuilder: (context, index){
-                        return CustomCardPeople(
-                          image: 'https://image.tmdb.org/t/p/original${castList![index].profilePath}',
-                          title: castList![index].name.toString().trim(),
-                          subTitle: castList![index].character.toString().trim(),
-                          // subTitle: '(${crewList![index].job})',
-                        );
-                      }
-                    )
-                  ),
-                )
-            ),
-            Obx(()=>
-                Visibility(
-                  visible: similarMoviesList!.isNotEmpty,
-                  replacement: const SliverToBoxAdapter(),
-                  child: PeopleListWidget(
-                    category: 'Related Movies',
-                    listView: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: similarMoviesList!.length,
-                      itemBuilder: (context, index){
-                        return CustomCardPeople(
-                          onTap: () {
-                            // similarMoviesList!.clear();
-                            // apiService.getMovieCasts(similarMoviesList![index].id!);
-                            // apiService.getMovieCrews(similarMoviesList![index].id!);
-                            // apiService.getSimilarMovies(similarMoviesList![index].id!);
-                            //
-                            //
-                            // similarMoviesList!.isEmpty ? CircularProgressIndicator() :
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => Obx(() =>
-                            //     DetailsView(
-                            //     movieName: similarMoviesList![index].originalTitle,
-                            //   )
-                            //   )
-                            //   ),
-                            // );
-                            // movieName= similarMoviesList![index].originalTitle;
-                            // overview= similarMoviesList![index].overview;
-                            // backdropImagePath= similarMoviesList![index].backdropPath;
-                            // releaseDate= similarMoviesList![index].releaseDate;
-                            // voteAvg= similarMoviesList![index].voteAverage;
-                            // voteCount= similarMoviesList![index].voteCount;
-                            // movieGenre= getGenreListOfMovie(index);
-                            // castList= apiService.movieCastsList;
-                            // crewList= apiService.movieCrewsList;
-                            // similarMoviesList= apiService.similarMoviesList;
-                          },
-                          image: 'https://image.tmdb.org/t/p/original${similarMoviesList![index].posterPath}',
-                          title: similarMoviesList![index].originalTitle.toString().trim(),
-                          subTitle: similarMoviesList![index].voteAverage.toString().trim(),
-                          subIcon: Icons.star,
-                          // subTitle: '(${crewList![index].job})',
-                        );
-                      }
-                    )
-                  ),
-                )
-            ),
-          ],
+              Obx(()=>
+                  Visibility(
+                    visible: similarMoviesList!.isNotEmpty,
+                    replacement: const SliverToBoxAdapter(),
+                    child: PeopleListWidget(
+                      category: 'Related Movies',
+                      listView: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: similarMoviesList!.length,
+                        itemBuilder: (context, index){
+                          return CustomCardPeople(
+                            onTap: () {
+                              // similarMoviesList!.clear();
+                              // apiService.getMovieCasts(similarMoviesList![index].id!);
+                              // apiService.getMovieCrews(similarMoviesList![index].id!);
+                              // apiService.getSimilarMovies(similarMoviesList![index].id!);
+                              //
+                              //
+                              // similarMoviesList!.isEmpty ? CircularProgressIndicator() :
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(builder: (context) => Obx(() =>
+                              //     DetailsView(
+                              //     movieName: similarMoviesList![index].originalTitle,
+                              //   )
+                              //   )
+                              //   ),
+                              // );
+                              // movieName= similarMoviesList![index].originalTitle;
+                              // overview= similarMoviesList![index].overview;
+                              // backdropImagePath= similarMoviesList![index].backdropPath;
+                              // releaseDate= similarMoviesList![index].releaseDate;
+                              // voteAvg= similarMoviesList![index].voteAverage;
+                              // voteCount= similarMoviesList![index].voteCount;
+                              // movieGenre= getGenreListOfMovie(index);
+                              // castList= apiService.movieCastsList;
+                              // crewList= apiService.movieCrewsList;
+                              // similarMoviesList= apiService.similarMoviesList;
+                            },
+                            image: 'https://image.tmdb.org/t/p/original${similarMoviesList![index].posterPath}',
+                            title: similarMoviesList![index].originalTitle.toString().trim(),
+                            subTitle: similarMoviesList![index].voteAverage.toString().trim(),
+                            subIcon: Icons.star,
+                            // subTitle: '(${crewList![index].job})',
+                          );
+                        }
+                      )
+                    ),
+                  )
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -251,16 +259,5 @@ class DetailsView extends GetView<DetailsController> {
         )
       ],
     );
-  }
-
-  List<GenreElement> getGenreListOfMovie(int index) {
-    List<int> genreIdList = similarMoviesList![index].genreIds!;
-
-    var genreListOfMovie = detailsController.genreList
-        .where((genre) => genreIdList
-        .contains(genre.id))
-        .toList();
-
-    return genreListOfMovie;
   }
 }

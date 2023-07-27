@@ -6,6 +6,7 @@ import 'package:movies_details/app/modules/details/views/details_view.dart';
 import 'package:movies_details/app/modules/movie_search/views/movie_search_view.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/widgets/two_btn_row_widget.dart';
+import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_drawer.dart';
 import '../../details/controllers/details_controller.dart';
@@ -25,15 +26,7 @@ class HomeView extends GetView<HomeController> {
     double screenWidth = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trending Movies'),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: (){
-            Get.to(()=>MovieSearchView());
-          }, icon: const Icon(Icons.search))
-        ],
-      ),
+      appBar: const CustomAppBar(title: 'Trending Movies'),
       drawer: const SafeArea(
         child: CustomDrawer(),
       ),
@@ -86,7 +79,7 @@ class HomeView extends GetView<HomeController> {
                       releaseDate: homeController.moviesList[index].releaseDate,
                       voteAvg: homeController.moviesList[index].voteAverage,
                       voteCount: homeController.moviesList[index].voteCount,
-                      movieGenre: getGenreListOfMovie(index),
+                      movieGenre: getGenreListOfMovie(homeController.moviesList[index].genreIds!),
                       castList: apiService.movieCastsList,
                       crewList: apiService.movieCrewsList,
                       similarMoviesList: apiService.similarMoviesList,
@@ -133,8 +126,7 @@ class HomeView extends GetView<HomeController> {
           );
   }
 
-  List<GenreElement> getGenreListOfMovie(int index) {
-    List<int> genreIdList = homeController.moviesList[index].genreIds!;
+  List<GenreElement> getGenreListOfMovie(List<int> genreIdList) {
 
     var genreListOfMovie = detailsController.genreList
         .where((genre) => genreIdList

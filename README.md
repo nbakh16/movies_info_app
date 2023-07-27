@@ -13,7 +13,7 @@
 <summary>Installation</summary>
 
 - Clone the repository, ```git clone https://github.com/nbakh16/movies_info_app```.
-- Create a file named ```api_keky.dart``` in ```utils``` folder and store your api key in ```apiKey``` string variable.
+- Create a file named ```api_key.dart``` in ```utils``` folder and store your api key in ```apiKey``` string variable.
 - Run ```dart pub get```
 
 </details>

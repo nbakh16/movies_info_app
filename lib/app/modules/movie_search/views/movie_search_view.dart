@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/services/api_service.dart';
@@ -21,6 +22,8 @@ class MovieSearchView extends GetView<MovieSearchController> {
   final HomeController homeController = Get.put(HomeController());
   final DetailsController detailsController = Get.put(DetailsController());
 
+  final FocusNode focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.sizeOf(context).width;
@@ -31,6 +34,10 @@ class MovieSearchView extends GetView<MovieSearchController> {
         appBar: AppBar(
           title: const Text('Search for Movies'),
           centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(IconlyLight.arrowLeft2),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -41,11 +48,21 @@ class MovieSearchView extends GetView<MovieSearchController> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   // TODO: Add validator
-                  child: TextFormField(
+                  child: TextFormField(focusNode: focusNode,
                     controller: searchTEController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Search',
                       hintText: 'Enter a movie name',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          searchTEController.clear();
+                          FocusScope.of(context).requestFocus(focusNode);
+                        },
+                        icon: Icon(
+                          IconlyBold.closeSquare,
+                          color: mainColor.shade200,
+                        )
+                      )
                     ),
                     style: const TextStyle(color: Colors.white),
                     autofocus: true,
@@ -131,7 +148,7 @@ class MovieSearchView extends GetView<MovieSearchController> {
     double resSize = MediaQuery.sizeOf(context).height * 0.2;
     return Padding(
         padding: EdgeInsets.only(top: resSize),
-        child: Icon(Icons.info_outline,
+        child: Icon(IconlyBroken.infoCircle,
           size: resSize,
           color: mainColor.shade600,
         ),

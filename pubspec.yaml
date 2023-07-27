@@ -10,6 +10,7 @@ dependencies:
   http: ^1.1.0
   get: 4.6.5
   google_fonts: ^5.1.0
+  flutter_iconly: ^1.0.2
 
   #caching
   flutter_cache_manager: ^3.3.1

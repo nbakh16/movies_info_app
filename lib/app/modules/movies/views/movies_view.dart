@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:movies_details/app/modules/home/views/home_view.dart';
+import 'package:movies_details/app/widgets/custom_app_bar.dart';
 
-import '../../../data/models/genre_model.dart';
 import '../../../data/models/movies_model.dart';
 import '../../../services/api_service.dart';
 import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_drawer.dart';
 import '../../../widgets/two_btn_row_widget.dart';
-import '../../details/controllers/details_controller.dart';
 import '../../details/views/details_view.dart';
-import '../../movie_search/views/movie_search_view.dart';
 import '../controllers/movies_controller.dart';
 
 class MoviesView extends GetView<MoviesController> {
@@ -24,7 +23,6 @@ class MoviesView extends GetView<MoviesController> {
     this.genreName,
     Key? key}) : super(key: key);
 
-  final DetailsController detailsController = Get.put(DetailsController());
   final ApiService apiService = ApiService();
 
   RxInt counter = 1.obs;
@@ -34,15 +32,7 @@ class MoviesView extends GetView<MoviesController> {
     double screenWidth = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('$genreName Movies'),
-          centerTitle: true,
-          actions: [
-            IconButton(onPressed: (){
-              Get.to(()=>MovieSearchView());
-            }, icon: const Icon(Icons.search))
-          ],
-        ),
+        appBar: CustomAppBar(title: '$genreName Movies'),
         drawer: const SafeArea(
           child: CustomDrawer(),
         ),
@@ -96,7 +86,7 @@ class MoviesView extends GetView<MoviesController> {
                 releaseDate: moviesList![index].releaseDate,
                 voteAvg: moviesList![index].voteAverage,
                 voteCount: moviesList![index].voteCount,
-                movieGenre: getGenreListOfMovie(index),
+                movieGenre: HomeView().getGenreListOfMovie(moviesList![index].genreIds!),
                 castList: apiService.movieCastsList,
                 crewList: apiService.movieCrewsList,
                 similarMoviesList: apiService.similarMoviesList,
@@ -136,16 +126,5 @@ class MoviesView extends GetView<MoviesController> {
           centerText: 'Page: ${counter.value}',
         ),
     );
-  }
-
-  List<GenreElement> getGenreListOfMovie(int index) {
-    List<int> genreIdList = moviesList![index].genreIds!;
-
-    var genreListOfMovie = detailsController.genreList
-        .where((genre) => genreIdList
-        .contains(genre.id))
-        .toList();
-
-    return genreListOfMovie;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 
 class TwoButtonRowWidget extends StatelessWidget {
   const TwoButtonRowWidget({
@@ -7,8 +8,8 @@ class TwoButtonRowWidget extends StatelessWidget {
     this.btnLeftText = 'Prev',
     this.btnRightText = 'Next',
     this.centerText = '',
-    this.iconLeft = Icons.chevron_left,
-    this.iconRight = Icons.chevron_right,
+    this.iconLeft = IconlyBold.arrowLeft2,
+    this.iconRight = IconlyBold.arrowRight2,
     Key? key}) : super(key: key);
 
   final Function() btnLeftOnTap, btnRightOnTap;
@@ -29,7 +30,12 @@ class TwoButtonRowWidget extends StatelessWidget {
               ],
             )
         ),
-        Text(centerText),
+        Text(centerText,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500
+          ),
+        ),
         ElevatedButton(
             onPressed: btnRightOnTap,
             child: Row(
