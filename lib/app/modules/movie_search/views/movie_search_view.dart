@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
+import 'package:movies_details/app/modules/home/views/home_view.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_card.dart';
@@ -48,8 +49,9 @@ class MovieSearchView extends GetView<MovieSearchController> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   // TODO: Add validator
-                  child: TextFormField(focusNode: focusNode,
+                  child: TextFormField(
                     controller: searchTEController,
+                    focusNode: focusNode,
                     decoration: InputDecoration(
                       labelText: 'Search',
                       hintText: 'Enter a movie name',
@@ -67,14 +69,12 @@ class MovieSearchView extends GetView<MovieSearchController> {
                     style: const TextStyle(color: Colors.white),
                     autofocus: true,
                     textInputAction: TextInputAction.search,
+                    onEditingComplete: () => _searchResult(context),
                   ),
                 ),
                 const SizedBox(height: 10.0),
                 CustomButton(
-                  onTap: () {
-                    apiService.getSearchedMovie(searchTEController.text.trim());
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
+                  onTap: () => _searchResult(context),
                   btnText: 'Search',
                   textSize: 20,
                   bgColor: mainColor,
@@ -125,7 +125,7 @@ class MovieSearchView extends GetView<MovieSearchController> {
               releaseDate: apiService.searchedMoviesList[index].releaseDate,
               voteAvg: apiService.searchedMoviesList[index].voteAverage,
               voteCount: apiService.searchedMoviesList[index].voteCount,
-              movieGenre: getGenreListOfMovie(index),
+              movieGenre: HomeView().getGenreListOfMovie(apiService.searchedMoviesList[index].genreIds!),
               castList: apiService.movieCastsList,
               crewList: apiService.movieCrewsList,
               similarMoviesList: apiService.similarMoviesList,
@@ -155,14 +155,9 @@ class MovieSearchView extends GetView<MovieSearchController> {
       );
   }
 
-  List<GenreElement> getGenreListOfMovie(int index) {
-    List<int> genreIdList = apiService.searchedMoviesList[index].genreIds!;
-
-    var genreListOfMovie = detailsController.genreList
-        .where((genre) => genreIdList
-        .contains(genre.id))
-        .toList();
-
-    return genreListOfMovie;
+  void _searchResult(BuildContext context) {
+    apiService.getSearchedMovie(searchTEController.text.trim());
+    FocusScope.of(context).unfocus();
   }
+
 }
