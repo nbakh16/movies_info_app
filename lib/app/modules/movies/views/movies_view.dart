@@ -12,9 +12,9 @@ import '../../details/views/details_view.dart';
 import '../controllers/movies_controller.dart';
 
 class MoviesView extends GetView<MoviesController> {
-  final RxList<Result>? moviesList;
-  final int? genreId;
-  final String? genreName;
+  RxList<Result>? moviesList;
+  int? genreId;
+  String? genreName;
 
   MoviesView({
     this.moviesList,
@@ -48,9 +48,9 @@ class MoviesView extends GetView<MoviesController> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              pageChangeButtons(),
+                              //pageChangeButtons(),
                               moviesListGridView(screenWidth),
-                              pageChangeButtons(),
+                              //pageChangeButtons(),
                             ],
                           ),
                       )
