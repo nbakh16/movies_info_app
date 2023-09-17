@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:movies_details/app/modules/home/views/home_view.dart';
 import 'package:movies_details/app/widgets/custom_app_bar.dart';
 
 import '../../../data/models/movies_model.dart';
@@ -75,22 +74,8 @@ class MoviesView extends GetView<MoviesController> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
-              apiService.getMovieCasts(moviesList![index].id!);
-              apiService.getMovieCrews(moviesList![index].id!);
-              apiService.getSimilarMovies(moviesList![index].id!);
-
-              Get.to(()=> DetailsView(
-                movieName: moviesList![index].originalTitle,
-                overview: moviesList![index].overview,
-                backdropImagePath: moviesList![index].backdropPath,
-                releaseDate: moviesList![index].releaseDate,
-                voteAvg: moviesList![index].voteAverage,
-                voteCount: moviesList![index].voteCount,
-                movieGenre: HomeView().getGenreListOfMovie(moviesList![index].genreIds!),
-                castList: apiService.movieCastsList,
-                crewList: apiService.movieCrewsList,
-                similarMoviesList: apiService.similarMoviesList,
-              ),
+              Get.to(()=> DetailsView(),
+                  arguments: moviesList![index],
                   transition: Transition.downToUp
               );
             },

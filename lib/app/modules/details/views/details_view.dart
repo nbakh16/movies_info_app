@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
-import 'package:movies_details/app/data/models/genre_model.dart';
 import 'package:movies_details/app/modules/movies/views/movies_view.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
@@ -10,41 +9,33 @@ import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
 import 'package:movies_details/app/widgets/custom_button.dart';
 
-import '../../../data/models/cast_model.dart';
 import '../../../data/models/movies_model.dart';
 import '../../../widgets/custom_divider.dart';
 import '../../../widgets/people_list_widget.dart';
+import '../../home/views/home_view.dart';
 import '../controllers/details_controller.dart';
 
 class DetailsView extends GetView<DetailsController> {
-  String? movieName, overview, backdropImagePath, releaseDate;
-  double? voteAvg;
-  int? voteCount;
-  List<GenreElement>? movieGenre;
-  RxList<Cast>? castList;
-  RxList<Crew>? crewList;
-  RxList<Result>? similarMoviesList;
 
   DetailsView({
-    this.movieName,
-    this.overview,
-    this.backdropImagePath,
-    this.releaseDate,
-    this.voteAvg,
-    this.voteCount,
-    this.movieGenre,
-    this.castList,
-    this.crewList,
-    this.similarMoviesList,
     Key? key}) : super(key: key);
 
-  DetailsController detailsController = Get.put(DetailsController());
-  ApiService apiService = ApiService();
+  final DetailsController detailsController = Get.put(DetailsController());
+  final ApiService apiService = ApiService();
 
   @override
   Widget build(BuildContext context) {
+    var movie = Get.arguments as Result;
+    apiService.getMovieCasts(movie.id!);
+    apiService.getMovieCrews(movie.id!);
+    apiService.getSimilarMovies(movie.id!);
+
+    var castList = apiService.movieCastsList;
+    var similarMoviesList = apiService.similarMoviesList;
+
+
     double screenWidth = MediaQuery.sizeOf(context).width;
-    String backdropImage = 'https://image.tmdb.org/t/p/original$backdropImagePath';
+    String backdropImage = 'https://image.tmdb.org/t/p/original${movie.backdropPath}';
 
     return Container(
       decoration: BoxDecoration(
@@ -89,7 +80,7 @@ class DetailsView extends GetView<DetailsController> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(movieName!.toString(),
+                        child: Text(movie.originalTitle!.toString(),
                           style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold
@@ -114,14 +105,14 @@ class DetailsView extends GetView<DetailsController> {
                   delegate: SliverChildListDelegate (
                     [
                       releaseDataAndRatingRow(
-                          releaseDate!.toString(), voteCount!, voteAvg!
+                          movie.releaseDate!.toString(), movie.voteCount!, movie.voteAverage!
                       ),
                       const CustomDivider(),
                       GridView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.zero,
-                        itemCount: movieGenre!.length,
+                        itemCount: HomeView().getGenreListOfMovie(movie.genreIds!).length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
                           mainAxisExtent: 50,
@@ -129,25 +120,27 @@ class DetailsView extends GetView<DetailsController> {
                           mainAxisSpacing: 3.0,
                         ),
                         itemBuilder: (context, index) {
+                          var movieGenre = HomeView().getGenreListOfMovie(movie.genreIds!);
+
                           return Center(
                             child: CustomButton(
                               onTap: (){
-                                apiService.getMoviesListByGenre(movieGenre![index].id, 1);
+                                apiService.getMoviesListByGenre(movieGenre[index].id, 1);
                                 Get.off(()=>MoviesView(
                                     moviesList: apiService.moviesListByGenre,
-                                    genreId: movieGenre![index].id,
-                                    genreName: movieGenre![index].name,
+                                    genreId: movieGenre[index].id,
+                                    genreName: movieGenre[index].name,
                                   ),
                                   transition: Transition.fadeIn
                                 );
                               },
-                              btnText: movieGenre![index].name,
+                              btnText: movieGenre[index].name,
                             ),
                           );
                         }
                       ),
                       const CustomDivider(),
-                      Text(overview!.toString(),
+                      Text(movie.overview.toString(),
                         style: const TextStyle(fontSize: 16),
                         textAlign: TextAlign.justify,
                       ),
@@ -158,19 +151,19 @@ class DetailsView extends GetView<DetailsController> {
               // TODO: Fix ListView for landscape orientation
               Obx(()=>
                   Visibility(
-                    visible: castList!.isNotEmpty,
+                    visible: castList.isNotEmpty,
                     replacement: const SliverToBoxAdapter(),
                     child: PeopleListWidget(
                       category: 'Cast(s)',
                       listView: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: castList!.length,
+                        itemCount: castList.length,
                         itemBuilder: (context, index){
                           return CustomCardPeople(
-                            image: 'https://image.tmdb.org/t/p/original${castList![index].profilePath}',
-                            title: castList![index].name.toString().trim(),
-                            subTitle: castList![index].character.toString().trim(),
+                            image: 'https://image.tmdb.org/t/p/original${castList[index].profilePath}',
+                            title: castList[index].name.toString().trim(),
+                            subTitle: castList[index].character.toString().trim(),
                             // subTitle: '(${crewList![index].job})',
                           );
                         }
@@ -180,47 +173,22 @@ class DetailsView extends GetView<DetailsController> {
               ),
               Obx(()=>
                   Visibility(
-                    visible: similarMoviesList!.isNotEmpty,
+                    visible: similarMoviesList.isNotEmpty,
                     replacement: const SliverToBoxAdapter(),
                     child: PeopleListWidget(
                       category: 'Related Movies',
                       listView: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: similarMoviesList!.length,
+                        itemCount: similarMoviesList.length,
                         itemBuilder: (context, index){
                           return CustomCardPeople(
                             onTap: () {
-                              // similarMoviesList!.clear();
-                              // apiService.getMovieCasts(similarMoviesList![index].id!);
-                              // apiService.getMovieCrews(similarMoviesList![index].id!);
-                              // apiService.getSimilarMovies(similarMoviesList![index].id!);
-                              //
-                              //
-                              // similarMoviesList!.isEmpty ? CircularProgressIndicator() :
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => Obx(() =>
-                              //     DetailsView(
-                              //     movieName: similarMoviesList![index].originalTitle,
-                              //   )
-                              //   )
-                              //   ),
-                              // );
-                              // movieName= similarMoviesList![index].originalTitle;
-                              // overview= similarMoviesList![index].overview;
-                              // backdropImagePath= similarMoviesList![index].backdropPath;
-                              // releaseDate= similarMoviesList![index].releaseDate;
-                              // voteAvg= similarMoviesList![index].voteAverage;
-                              // voteCount= similarMoviesList![index].voteCount;
-                              // movieGenre= getGenreListOfMovie(index);
-                              // castList= apiService.movieCastsList;
-                              // crewList= apiService.movieCrewsList;
-                              // similarMoviesList= apiService.similarMoviesList;
+
                             },
-                            image: 'https://image.tmdb.org/t/p/original${similarMoviesList![index].posterPath}',
-                            title: similarMoviesList![index].originalTitle.toString().trim(),
-                            subTitle: similarMoviesList![index].voteAverage.toString().trim(),
+                            image: 'https://image.tmdb.org/t/p/original${similarMoviesList[index].posterPath}',
+                            title: similarMoviesList[index].originalTitle.toString().trim(),
+                            subTitle: similarMoviesList[index].voteAverage.toString().trim(),
                             subIcon: Icons.star,
                             // subTitle: '(${crewList![index].job})',
                           );

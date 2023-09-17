@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movies_details/app/data/models/genre_model.dart';
 import 'package:movies_details/app/modules/details/views/details_view.dart';
-import 'package:movies_details/app/modules/movie_search/views/movie_search_view.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/widgets/two_btn_row_widget.dart';
 import '../../../widgets/custom_app_bar.dart';
@@ -68,22 +67,8 @@ class HomeView extends GetView<HomeController> {
             itemBuilder: (context, index) {
               return InkWell(
                   onTap: () {
-                    apiService.getMovieCasts(homeController.moviesList[index].id!);
-                    apiService.getMovieCrews(homeController.moviesList[index].id!);
-                    apiService.getSimilarMovies(homeController.moviesList[index].id!);
-
-                    Get.to(()=> DetailsView(
-                      movieName: homeController.moviesList[index].originalTitle,
-                      overview: homeController.moviesList[index].overview,
-                      backdropImagePath: homeController.moviesList[index].backdropPath,
-                      releaseDate: homeController.moviesList[index].releaseDate,
-                      voteAvg: homeController.moviesList[index].voteAverage,
-                      voteCount: homeController.moviesList[index].voteCount,
-                      movieGenre: getGenreListOfMovie(homeController.moviesList[index].genreIds!),
-                      castList: apiService.movieCastsList,
-                      crewList: apiService.movieCrewsList,
-                      similarMoviesList: apiService.similarMoviesList,
-                    ),
+                    Get.to(()=> DetailsView(),
+                        arguments: homeController.moviesList[index],
                         transition: Transition.downToUp
                     );
                   },

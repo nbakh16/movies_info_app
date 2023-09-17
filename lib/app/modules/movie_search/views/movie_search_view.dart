@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
-import 'package:movies_details/app/modules/home/views/home_view.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_card.dart';
 import 'package:movies_details/app/widgets/custom_button.dart';
 
-import '../../../data/models/genre_model.dart';
 import '../../details/controllers/details_controller.dart';
 import '../../details/views/details_view.dart';
 import '../../home/controllers/home_controller.dart';
@@ -113,23 +111,8 @@ class MovieSearchView extends GetView<MovieSearchController> {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            apiService.getMovieCasts(apiService.searchedMoviesList[index].id!);
-            apiService.getMovieCrews(apiService.searchedMoviesList[index].id!);
-            apiService.getSimilarMovies(apiService.searchedMoviesList[index].id!);
-
-
-            Get.to(()=> DetailsView(
-              movieName: apiService.searchedMoviesList[index].originalTitle,
-              overview: apiService.searchedMoviesList[index].overview,
-              backdropImagePath: apiService.searchedMoviesList[index].backdropPath,
-              releaseDate: apiService.searchedMoviesList[index].releaseDate,
-              voteAvg: apiService.searchedMoviesList[index].voteAverage,
-              voteCount: apiService.searchedMoviesList[index].voteCount,
-              movieGenre: HomeView().getGenreListOfMovie(apiService.searchedMoviesList[index].genreIds!),
-              castList: apiService.movieCastsList,
-              crewList: apiService.movieCrewsList,
-              similarMoviesList: apiService.similarMoviesList,
-            ),
+            Get.to(()=> DetailsView(),
+                arguments: apiService.searchedMoviesList[index],
                 transition: Transition.downToUp
             );
           },
