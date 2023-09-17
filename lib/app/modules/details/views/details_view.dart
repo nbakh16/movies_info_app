@@ -65,7 +65,7 @@ class DetailsView extends GetView<DetailsController> {
                 leading: IconButton(
                   icon: Icon(IconlyLight.arrowLeft2,
                       size: MediaQuery.sizeOf(context).height * 0.05),
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => Get.back(),
                 ),
                 bottom: PreferredSize(
                   preferredSize: const Size.fromHeight(10),
@@ -95,7 +95,7 @@ class DetailsView extends GetView<DetailsController> {
                 expandedHeight: 300.0,
                 flexibleSpace: Center(
                     child: CustomNetworkImage(
-                      imgUrl: backdropImage(movie.value.backdropPath!),
+                      imgUrl: backdropImage(movie.value.backdropPath ?? Icons.image.toString()),
                     ),
                   ),
                   // flexibleSpace: Positioned.fill(
