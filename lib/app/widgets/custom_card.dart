@@ -62,13 +62,16 @@ class CustomCard extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: Text(title,
-                        style: TextStyle(
-                          fontSize: screenWidth<400 ? 14 : screenWidth<700 ? 16 : 20,
-                          fontWeight: FontWeight.bold,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(title,
+                          style: TextStyle(
+                            fontSize: screenWidth<400 ? 14 : screenWidth<700 ? 16 : 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Expanded(

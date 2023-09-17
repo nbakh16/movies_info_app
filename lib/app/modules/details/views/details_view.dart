@@ -16,26 +16,25 @@ import '../../home/views/home_view.dart';
 import '../controllers/details_controller.dart';
 
 class DetailsView extends GetView<DetailsController> {
+  DetailsView({Key? key}) : super(key: key);
 
-  DetailsView({
-    Key? key}) : super(key: key);
-
-  final DetailsController detailsController = Get.put(DetailsController());
   final ApiService apiService = ApiService();
 
   @override
   Widget build(BuildContext context) {
-    var movie = Get.arguments as Result;
-    apiService.getMovieCasts(movie.id!);
-    apiService.getMovieCrews(movie.id!);
-    apiService.getSimilarMovies(movie.id!);
+    final selectedMovie = Get.arguments as Result;
+
+    final Rx<Result> movie = selectedMovie.obs;
+    apiService.getMovieCasts(movie.value.id!);
+    apiService.getMovieCrews(movie.value.id!);
+    apiService.getSimilarMovies(movie.value.id!);
 
     var castList = apiService.movieCastsList;
     var similarMoviesList = apiService.similarMoviesList;
 
 
     double screenWidth = MediaQuery.sizeOf(context).width;
-    String backdropImage = 'https://image.tmdb.org/t/p/original${movie.backdropPath}';
+    String backdropImage(String path) => 'https://image.tmdb.org/t/p/original$path';
 
     return Container(
       decoration: BoxDecoration(
@@ -60,7 +59,7 @@ class DetailsView extends GetView<DetailsController> {
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             slivers: [
-              SliverAppBar(
+              Obx(()=>SliverAppBar(
                 // title: Text('Movie Name'),
                 toolbarHeight: 100,
                 leading: IconButton(
@@ -80,7 +79,7 @@ class DetailsView extends GetView<DetailsController> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(movie.originalTitle!.toString(),
+                        child: Text(movie.value.originalTitle!.toString(),
                           style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold
@@ -94,60 +93,64 @@ class DetailsView extends GetView<DetailsController> {
                 stretch: true,
                 stretchTriggerOffset: 22,
                 expandedHeight: 300.0,
-                flexibleSpace: Center(child: CustomNetworkImage(imgUrl: backdropImage,)),
-                // flexibleSpace: Positioned.fill(
+                flexibleSpace: Center(
+                    child: CustomNetworkImage(
+                      imgUrl: backdropImage(movie.value.backdropPath!),
+                    ),
+                  ),
+                  // flexibleSpace: Positioned.fill(
                 //     child: CustomNetworkImage(imgUrl: backdropImage,)
                 // ),
-              ),
-              SliverPadding(
+              ),),
+              Obx(()=> SliverPadding(
                 padding: const EdgeInsets.all(12.0),
                 sliver: SliverList(
-                  delegate: SliverChildListDelegate (
-                    [
-                      releaseDataAndRatingRow(
-                          movie.releaseDate!.toString(), movie.voteCount!, movie.voteAverage!
-                      ),
-                      const CustomDivider(),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemCount: HomeView().getGenreListOfMovie(movie.genreIds!).length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
-                          mainAxisExtent: 50,
-                          crossAxisSpacing: 3.0,
-                          mainAxisSpacing: 3.0,
-                        ),
-                        itemBuilder: (context, index) {
-                          var movieGenre = HomeView().getGenreListOfMovie(movie.genreIds!);
+                    delegate: SliverChildListDelegate (
+                        [
+                          releaseDataAndRatingRow(
+                              movie.value.releaseDate!.toString(), movie.value.voteCount!, movie.value.voteAverage!
+                          ),
+                          const CustomDivider(),
+                          GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.zero,
+                              itemCount: HomeView().getGenreListOfMovie(movie.value.genreIds!).length,
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
+                                mainAxisExtent: 50,
+                                crossAxisSpacing: 3.0,
+                                mainAxisSpacing: 3.0,
+                              ),
+                              itemBuilder: (context, index) {
+                                var movieGenre = HomeView().getGenreListOfMovie(movie.value.genreIds!);
 
-                          return Center(
-                            child: CustomButton(
-                              onTap: (){
-                                apiService.getMoviesListByGenre(movieGenre[index].id, 1);
-                                Get.off(()=>MoviesView(
-                                    moviesList: apiService.moviesListByGenre,
-                                    genreId: movieGenre[index].id,
-                                    genreName: movieGenre[index].name,
+                                return Center(
+                                  child: CustomButton(
+                                    onTap: (){
+                                      apiService.getMoviesListByGenre(movieGenre[index].id, 1);
+                                      Get.off(()=>MoviesView(
+                                        moviesList: apiService.moviesListByGenre,
+                                        genreId: movieGenre[index].id,
+                                        genreName: movieGenre[index].name,
+                                      ),
+                                          transition: Transition.fadeIn
+                                      );
+                                    },
+                                    btnText: movieGenre[index].name,
                                   ),
-                                  transition: Transition.fadeIn
                                 );
-                              },
-                              btnText: movieGenre[index].name,
-                            ),
-                          );
-                        }
-                      ),
-                      const CustomDivider(),
-                      Text(movie.overview.toString(),
-                        style: const TextStyle(fontSize: 16),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ]
-                  )
+                              }
+                          ),
+                          const CustomDivider(),
+                          Text(movie.value.overview.toString(),
+                            style: const TextStyle(fontSize: 16),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ]
+                    )
                 ),
-              ),
+              ),),
               // TODO: Fix ListView for landscape orientation
               Obx(()=>
                   Visibility(
@@ -184,7 +187,10 @@ class DetailsView extends GetView<DetailsController> {
                         itemBuilder: (context, index){
                           return CustomCardPeople(
                             onTap: () {
-
+                              movie.value = similarMoviesList[index];
+                              apiService.getMovieCasts(movie.value.id!);
+                              apiService.getMovieCrews(movie.value.id!);
+                              apiService.getSimilarMovies(movie.value.id!);
                             },
                             image: 'https://image.tmdb.org/t/p/original${similarMoviesList[index].posterPath}',
                             title: similarMoviesList[index].originalTitle.toString().trim(),
