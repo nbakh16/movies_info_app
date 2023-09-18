@@ -17,13 +17,27 @@ void main() {
         iconTheme: const IconThemeData(color: Colors.yellowAccent),
         progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
         textTheme: TextTheme(
-            bodyMedium: GoogleFonts.urbanist(
-              textStyle: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500
-              )
+          titleLarge: GoogleFonts.urbanist(
+            textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.w800
             )
+          ),
+          bodyLarge: GoogleFonts.urbanist(
+              textStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500
+              )
+          ),
+          bodyMedium: GoogleFonts.urbanist(
+            textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w500
+            )
+          ),
         ),
         inputDecorationTheme: const InputDecorationTheme(
           labelStyle: TextStyle(color: Colors.white, fontSize: 18),

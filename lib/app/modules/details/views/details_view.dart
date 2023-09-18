@@ -62,8 +62,7 @@ class DetailsView extends GetView<DetailsController> {
                 // title: Text('Movie Name'),
                 toolbarHeight: 100,
                 leading: IconButton(
-                  icon: Icon(IconlyLight.arrowLeft2,
-                      size: MediaQuery.sizeOf(context).height * 0.05),
+                  icon: const Icon(IconlyLight.arrowLeft2, size: 35),
                   onPressed: () => Get.back(),
                 ),
                 bottom: PreferredSize(
@@ -77,12 +76,9 @@ class DetailsView extends GetView<DetailsController> {
                           )
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                         child: Text(movie.value.title!.toString(),
-                          style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold
-                          ),
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                       )
                   ),
@@ -143,7 +139,7 @@ class DetailsView extends GetView<DetailsController> {
                           ),
                           const CustomDivider(),
                           Text(movie.value.overview.toString(),
-                            style: const TextStyle(fontSize: 16),
+                            style: Theme.of(context).textTheme.bodyLarge,
                             textAlign: TextAlign.justify,
                           ),
                         ]
