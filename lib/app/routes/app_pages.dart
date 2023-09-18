@@ -16,26 +16,32 @@ class AppPages {
 
   static const INITIAL = Routes.HOME;
 
+  static const Transition pageTransition = Transition.downToUp;
+
   static final routes = [
     GetPage(
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
+      transition: pageTransition
     ),
     GetPage(
       name: _Paths.DETAILS,
       page: () => DetailsView(),
       binding: DetailsBinding(),
+      transition: pageTransition
     ),
     GetPage(
       name: _Paths.MOVIE_SEARCH,
       page: () => MovieSearchView(),
       binding: MovieSearchBinding(),
+      transition: pageTransition
     ),
     GetPage(
       name: _Paths.MOVIES,
       page: () => MoviesView(),
       binding: MoviesBinding(),
+      transition: pageTransition
     ),
   ];
 }

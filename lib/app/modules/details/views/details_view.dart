@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
-import 'package:movies_details/app/modules/movies/views/movies_view.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_card_people.dart';
@@ -10,6 +9,7 @@ import 'package:movies_details/app/widgets/custom_network_image.dart';
 import 'package:movies_details/app/widgets/custom_button.dart';
 
 import '../../../data/models/movies_model.dart';
+import '../../../routes/app_pages.dart';
 import '../../../widgets/custom_divider.dart';
 import '../../../widgets/people_list_widget.dart';
 import '../../home/views/home_view.dart';
@@ -31,7 +31,6 @@ class DetailsView extends GetView<DetailsController> {
 
     var castList = apiService.movieCastsList;
     var similarMoviesList = apiService.similarMoviesList;
-
 
     double screenWidth = MediaQuery.sizeOf(context).width;
     String backdropImage(String path) => 'https://image.tmdb.org/t/p/original$path';
@@ -79,7 +78,7 @@ class DetailsView extends GetView<DetailsController> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(movie.value.originalTitle!.toString(),
+                        child: Text(movie.value.title!.toString(),
                           style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold
@@ -112,35 +111,35 @@ class DetailsView extends GetView<DetailsController> {
                           ),
                           const CustomDivider(),
                           GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.zero,
-                              itemCount: HomeView().getGenreListOfMovie(movie.value.genreIds!).length,
-                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
-                                mainAxisExtent: 50,
-                                crossAxisSpacing: 3.0,
-                                mainAxisSpacing: 3.0,
-                              ),
-                              itemBuilder: (context, index) {
-                                var movieGenre = HomeView().getGenreListOfMovie(movie.value.genreIds!);
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemCount: HomeView().getGenreListOfMovie(movie.value.genreIds!).length,
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
+                              mainAxisExtent: 50,
+                              crossAxisSpacing: 3.0,
+                              mainAxisSpacing: 3.0,
+                            ),
+                            itemBuilder: (context, index) {
+                              var movieGenre = HomeView().getGenreListOfMovie(movie.value.genreIds!);
 
-                                return Center(
-                                  child: CustomButton(
-                                    onTap: (){
-                                      apiService.getMoviesListByGenre(movieGenre[index].id, 1);
-                                      Get.off(()=>MoviesView(
-                                        moviesList: apiService.moviesListByGenre,
-                                        genreId: movieGenre[index].id,
-                                        genreName: movieGenre[index].name,
-                                      ),
-                                          transition: Transition.fadeIn
-                                      );
-                                    },
-                                    btnText: movieGenre[index].name,
-                                  ),
-                                );
-                              }
+                              return Center(
+                                child: CustomButton(
+                                  onTap: (){
+                                    apiService.getMoviesListByGenre(movieGenre[index].id, 1);
+                                    Get.toNamed(Routes.MOVIES,
+                                        arguments: {
+                                          'moviesList': apiService.moviesListByGenre,
+                                          'genreId': movieGenre[index].id,
+                                          'genreName': movieGenre[index].name,
+                                        },
+                                    );
+                                  },
+                                  btnText: movieGenre[index].name,
+                                ),
+                              );
+                            }
                           ),
                           const CustomDivider(),
                           Text(movie.value.overview.toString(),
@@ -193,7 +192,7 @@ class DetailsView extends GetView<DetailsController> {
                               apiService.getSimilarMovies(movie.value.id!);
                             },
                             image: 'https://image.tmdb.org/t/p/original${similarMoviesList[index].posterPath}',
-                            title: similarMoviesList[index].originalTitle.toString().trim(),
+                            title: similarMoviesList[index].title.toString().trim(),
                             subTitle: similarMoviesList[index].voteAverage.toString().trim(),
                             subIcon: Icons.star,
                             // subTitle: '(${crewList![index].job})',

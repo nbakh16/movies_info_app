@@ -118,7 +118,7 @@ class MovieSearchView extends GetView<MovieSearchController> {
           },
           child: CustomCard(
             image: '${apiService.baseImageUrl}${apiService.searchedMoviesList[index].posterPath}',
-            title: apiService.searchedMoviesList[index].originalTitle!,
+            title: apiService.searchedMoviesList[index].title!,
             subTitle: apiService.searchedMoviesList[index].voteAverage.toString(),
             subIcon: Icons.star,
           ),

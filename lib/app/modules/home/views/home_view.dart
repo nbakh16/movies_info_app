@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/data/models/genre_model.dart';
-import 'package:movies_details/app/modules/details/views/details_view.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/widgets/two_btn_row_widget.dart';
+import '../../../routes/app_pages.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_drawer.dart';
@@ -67,14 +67,13 @@ class HomeView extends GetView<HomeController> {
             itemBuilder: (context, index) {
               return InkWell(
                   onTap: () {
-                    Get.to(()=> DetailsView(),
+                    Get.toNamed(Routes.DETAILS,
                         arguments: homeController.moviesList[index],
-                        transition: Transition.downToUp
                     );
                   },
                   child: CustomCard(
                     image: '${homeController.baseImageUrl}${homeController.moviesList[index].posterPath}',
-                    title: homeController.moviesList[index].originalTitle.toString(),
+                    title: homeController.moviesList[index].title.toString(),
                     subTitle: homeController.moviesList[index].voteAverage.toString(),
                     subIcon: Icons.star,
                   )
