@@ -27,14 +27,14 @@ class PeopleListWidget extends StatelessWidget {
               children: [
                 const CustomDivider(),
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
+                  padding: const EdgeInsets.all(8.0, ),
                   child: Text(category!,
                     style: Theme.of(context).textTheme.titleMedium
                   ),
                 ),
-                    Expanded(
-                      child: listView!
-                    )
+                Expanded(
+                  child: listView!
+                )
               ],
             ),
           ),

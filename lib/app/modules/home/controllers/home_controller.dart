@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -36,44 +37,24 @@ class HomeController extends GetxController {
     }
   }
 
-  ///upcoming movies
+  RxList<Result> popularMoviesList = <Result>[].obs;
   RxList<Result> upcomingMoviesList = <Result>[].obs;
-  void getUpcomingMovies(int page) async {
-    upcomingMoviesList.clear();
-    String responseUrl = '${baseUrl}movie/upcoming?page=$page&api_key=$apiKey';
-    Response response = await get(Uri.parse(responseUrl));
-
-    if(response.statusCode == 200) {
-      Map<String, dynamic> decodedResponse = jsonDecode(response.body);
-
-      for(var e in decodedResponse['results']) {
-        upcomingMoviesList.add(
-            Result.fromJson(e)
-        );
-      }
-      upcomingMoviesList.refresh();
-    }
-    else {
-      throw Exception('Failed to load movies list');
-    }
-  }
-
-  ///top movies
   RxList<Result> topRatedMoviesList = <Result>[].obs;
-  void getTopRatedMovies(int page) async {
-    topRatedMoviesList.clear();
-    String responseUrl = '${baseUrl}movie/top_rated?page=$page&api_key=$apiKey';
+
+  void getMoviesByCategories(int page, String category, RxList<Result> movieList) async {
+    movieList.clear();
+    String responseUrl = '${baseUrl}movie/$category?page=$page&api_key=$apiKey';
     Response response = await get(Uri.parse(responseUrl));
 
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
 
       for(var e in decodedResponse['results']) {
-        topRatedMoviesList.add(
+        movieList.add(
             Result.fromJson(e)
         );
       }
-      topRatedMoviesList.refresh();
+      movieList.refresh();
     }
     else {
       throw Exception('Failed to load movies list');
@@ -83,9 +64,17 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    //workaround to make initial loading smoother
     getMovies(pageNumber);
-    getUpcomingMovies(pageNumber);
-    getTopRatedMovies(pageNumber);
+    Timer(const Duration(seconds: 1), (){
+      getMoviesByCategories(pageNumber, 'popular', popularMoviesList);
+      Timer(const Duration(seconds: 1), (){
+        getMoviesByCategories(2, 'upcoming', upcomingMoviesList);
+        Timer(const Duration(seconds: 2), (){
+          getMoviesByCategories(pageNumber, 'top_rated', topRatedMoviesList);
+        });
+      });
+    });
   }
 
   @override

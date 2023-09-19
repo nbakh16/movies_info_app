@@ -47,7 +47,14 @@ class CastDetailsView extends GetView<CastDetailsController>{
                 return const CircularProgressIndicator();
               }
               else if (castDetailsController.castInfo.value == CastBio()) {
-                return const Center(child: Text('No Data found!'));
+                return Center(child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text('No Data found!',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.yellowAccent
+                    ),
+                  ),
+                ),);
               }
               else {
                 final castInfo = castDetailsController.castInfo.value;
@@ -117,7 +124,11 @@ class CastDetailsView extends GetView<CastDetailsController>{
                     SliverToBoxAdapter(
                       child: Visibility(
                         visible: castInfo!.birthday != null && castInfo.biography != "",
-                        replacement: const Center(child: Text('Not enough data to show!')),
+                        replacement: Center(child: Text('Not enough data to show!',
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Colors.yellowAccent
+                          ),
+                        )),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Column(
