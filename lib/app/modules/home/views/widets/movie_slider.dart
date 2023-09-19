@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movies_details/app/widgets/movie_slider_card.dart';
 
 import '../../../../data/models/movies_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../utils/colors.dart';
-import '../../../../widgets/custom_card.dart';
 import '../../../../widgets/shimmer_loading/container_shimmer.dart';
 import '../../controllers/home_controller.dart';
 
@@ -18,6 +18,7 @@ class MovieSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.sizeOf(context).width;
+    final int totalItem = 6;
 
     return Obx(()=>Visibility(
       visible: homeController.moviesList.isNotEmpty,
@@ -35,7 +36,7 @@ class MovieSlider extends StatelessWidget {
                   _selectedSlider.value = page;
                 }
             ),
-            itemCount: homeController.moviesList.length,
+            itemCount: totalItem,
             itemBuilder: (context, index, pageIndex) {
               Result movie = homeController.moviesList[index];
               return InkWell(
@@ -44,7 +45,7 @@ class MovieSlider extends StatelessWidget {
                       arguments: movie,
                     );
                   },
-                  child: CustomCard(
+                  child: MovieSliderCard(
                     image: '${homeController.baseImageUrl}${movie.posterPath}',
                     title: movie.title.toString(),
                     subTitle: movie.voteAverage.toString(),
@@ -58,7 +59,7 @@ class MovieSlider extends StatelessWidget {
             valueListenable: _selectedSlider,
             builder: (context, value, _) {
               List<Widget> list = [];
-              for (int i = 0; i < homeController.moviesList.length; i++) {
+              for (int i = 0; i < totalItem; i++) {
                 list.add(
                     AnimatedContainer(
                       width: value == i ? 16 : 8,

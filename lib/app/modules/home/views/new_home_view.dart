@@ -18,7 +18,7 @@ class NewHomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CustomAppBar(title: 'Movie App'),
+        appBar: const CustomAppBar(title: 'M for Movie'),
         drawer: const SafeArea(
           child: CustomDrawer(),
         ),
