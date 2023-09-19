@@ -160,7 +160,9 @@ class DetailsView extends GetView<DetailsController> {
                         itemBuilder: (context, index){
                           return CustomCardPeople(
                             onTap: () {
-                              Get.toNamed(Routes.CAST_DETAILS);
+                              Get.toNamed(Routes.CAST_DETAILS,
+                                arguments: castList[index].id
+                              );
                             },
                             image: 'https://image.tmdb.org/t/p/original${castList[index].profilePath}',
                             title: castList[index].name.toString().trim(),

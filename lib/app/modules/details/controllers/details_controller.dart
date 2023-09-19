@@ -2,21 +2,12 @@ import 'dart:convert';
 
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:movies_details/app/data/models/movies_model.dart';
 
 import '../../../data/models/genre_model.dart';
 import '../../../utils/api_key.dart';
 import 'package:http/http.dart';
 
 class DetailsController extends GetxController {
-  var movieDetails = Result().obs;
-
-  void getMovieDetails(Result movie) {
-    movieDetails.value = movie;
-  }
-
-  //TODO: Implement DetailsController
-
   RxBool isLoading = true.obs;
   RxList<GenreElement> genreList = <GenreElement>[].obs;
 
