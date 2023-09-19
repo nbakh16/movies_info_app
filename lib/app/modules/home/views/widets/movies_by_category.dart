@@ -5,6 +5,7 @@ import '../../../../data/models/movies_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../widgets/custom_card_people.dart';
 import '../../../../widgets/people_list_widget.dart';
+import '../../../../widgets/shimmer_loading/horizontal_listview_shimmer.dart';
 
 class MoviesByCategory extends StatelessWidget {
   const MoviesByCategory({super.key,
@@ -20,13 +21,15 @@ class MoviesByCategory extends StatelessWidget {
     return Obx(()=>
         Visibility(
           visible: list.isNotEmpty,
-          replacement: const SliverToBoxAdapter(),
+          replacement: const SliverToBoxAdapter(
+            child: HorizontalListViewShimmerLoading()
+          ),
           child: PeopleListWidget(
               category: categoryTitle,
               listView: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: list.length,
                   itemBuilder: (context, index){
                     Result movie = list[index];

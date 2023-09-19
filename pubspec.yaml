@@ -13,6 +13,7 @@ dependencies:
   get: 4.6.5
   expandable_text: ^2.3.0
   carousel_slider: ^4.2.1
+  flutter_animate: ^4.2.0+1
 
   #fonts and icons
   google_fonts: ^5.1.0

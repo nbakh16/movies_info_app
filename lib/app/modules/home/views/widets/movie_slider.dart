@@ -6,6 +6,7 @@ import '../../../../data/models/movies_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../utils/colors.dart';
 import '../../../../widgets/custom_card.dart';
+import '../../../../widgets/shimmer_loading/container_shimmer.dart';
 import '../../controllers/home_controller.dart';
 
 
@@ -16,9 +17,11 @@ class MovieSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.sizeOf(context).width;
+
     return Obx(()=>Visibility(
       visible: homeController.moviesList.isNotEmpty,
-      replacement: const CircularProgressIndicator(),
+      replacement: const ContainerShimmerLoading(),
       child: Column(
         children: [
           CarouselSlider.builder(
@@ -27,7 +30,7 @@ class MovieSlider extends StatelessWidget {
                 autoPlay: true,
                 autoPlayInterval: const Duration(seconds: 3),
                 aspectRatio: 5,
-                viewportFraction: 0.9,
+                viewportFraction: screenWidth<700 ? 0.9 : screenWidth<900 ? 0.5 : 0.4,
                 onPageChanged: (int page, _) {
                   _selectedSlider.value = page;
                 }

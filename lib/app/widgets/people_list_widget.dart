@@ -18,7 +18,7 @@ class PeopleListWidget extends StatelessWidget {
 
     return SliverToBoxAdapter(
         child: SizedBox(
-          height: screenHeight<400 ? screenHeight*0.25 : screenWidth<700 ? screenHeight*0.35 : screenHeight*0.65,
+          height: screenWidth<400 ? screenHeight*0.25 : screenWidth<700 ? screenHeight*0.35 : screenHeight*0.65,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

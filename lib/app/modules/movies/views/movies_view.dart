@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/widgets/custom_app_bar.dart';
+import 'package:movies_details/app/widgets/shimmer_loading/movie_view_shimmer.dart';
 
 import '../../../data/models/movies_model.dart';
 import '../../../routes/app_pages.dart';
@@ -39,7 +40,7 @@ class MoviesView extends GetView<MoviesController> {
                 child: Obx(()=>
                     Visibility(
                       visible: moviesList!.isNotEmpty,
-                      replacement: const CircularProgressIndicator(),
+                      replacement: const MovieViewShimmerLoading(),
                       child:
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
