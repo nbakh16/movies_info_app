@@ -3,19 +3,23 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/widgets/custom_divider.dart';
+import 'package:movies_details/app/widgets/label_and_text.dart';
 
 import '../../../data/models/cast_bio_model.dart';
+import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/custom_card_people.dart';
 import '../../../widgets/custom_network_image.dart';
+import '../../../widgets/people_list_widget.dart';
 import '../controllers/cast_details_controller.dart';
 
 class CastDetailsView extends GetView<CastDetailsController>{
-  CastDetailsView({super.key});
-
-  final CastDetailsController castDetailsController = Get.find();
+  const CastDetailsView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final CastDetailsController castDetailsController = Get.find();
+
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -41,7 +45,7 @@ class CastDetailsView extends GetView<CastDetailsController>{
                 return const CircularProgressIndicator();
               }
               else if (castDetailsController.castInfo.value == CastBio()) {
-                return const Text('No Data!');
+                return const Center(child: Text('No Data found!'));
               }
               else {
                 final castInfo = castDetailsController.castInfo.value;
@@ -96,10 +100,17 @@ class CastDetailsView extends GetView<CastDetailsController>{
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               castInfo.birthday == null ? const SizedBox() :
-                              Text('Born: ${castInfo.birthday} (${castInfo.placeOfBirth})'),
+                              LabelAndText(label: 'Born', text: castInfo.birthday.toString()),
+
+                              castInfo.placeOfBirth == null ? const SizedBox() :
+                              LabelAndText(label: 'Place of Birth', text: castInfo.placeOfBirth.toString()),
+
+                              const SizedBox(height: 6.0,),
                               castInfo.deathday == null ? const SizedBox() :
-                              Text('Died: ${castInfo.deathday}'),
+                              LabelAndText(label: 'Died', text: castInfo.deathday.toString()),
+
                               const CustomDivider(),
+
                               Text(
                                 castInfo.biography ?? '',
                                 style: Theme.of(context).textTheme.bodyLarge,
@@ -109,7 +120,37 @@ class CastDetailsView extends GetView<CastDetailsController>{
                           ),
                         ),
                       ),
-                    )
+                    ),
+                    Obx(()=>
+                        Visibility(
+                          visible: castDetailsController.castMoviesList.isNotEmpty,
+                          replacement: const SliverToBoxAdapter(),
+                          child: PeopleListWidget(
+                              category: 'Know For',
+                              listView: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: castDetailsController.castMoviesList.length,
+                                  itemBuilder: (context, index){
+                                    final movies = castDetailsController.castMoviesList[index];
+                                    return CustomCardPeople(
+                                      onTap: () {
+                                        Get.toNamed(Routes.DETAILS,
+                                          arguments: movies,
+                                        );
+
+                                        Get.delete<CastDetailsController>();
+                                      },
+                                      image: 'https://image.tmdb.org/t/p/original${movies.posterPath}',
+                                      title: movies.title.toString().trim(),
+                                      subTitle: movies.voteAverage.toString().trim(),
+                                      subIcon: Icons.star,
+                                    );
+                                  }
+                              )
+                          ),
+                        )
+                    ),
                   ],
                 );
               }

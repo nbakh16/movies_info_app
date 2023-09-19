@@ -26,8 +26,11 @@ class PeopleListWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const CustomDivider(),
-                Text(category!,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Text(category!,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
                 ),
                     Expanded(
                       child: listView!

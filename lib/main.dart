@@ -16,27 +16,33 @@ void main() {
         scaffoldBackgroundColor: mainColor.shade800,
         iconTheme: const IconThemeData(color: Colors.yellowAccent),
         progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
-        textTheme: TextTheme(
-          titleLarge: GoogleFonts.urbanist(
-            textStyle: const TextStyle(
+        textTheme: GoogleFonts.urbanistTextTheme(
+          const TextTheme(
+            titleLarge: TextStyle(
               color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.w800
-            )
-          ),
-          bodyLarge: GoogleFonts.urbanist(
-              textStyle: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500
-              )
-          ),
-          bodyMedium: GoogleFonts.urbanist(
-            textStyle: const TextStyle(
+            ),
+            titleMedium: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w500
+            ),
+            labelMedium: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w800
+            ),
+            bodyLarge: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500
+            ),
+            bodyMedium: TextStyle(
               color: Colors.white,
               fontSize: 14,
               fontWeight: FontWeight.w500
-            )
+            ),
           ),
         ),
         inputDecorationTheme: const InputDecorationTheme(
