@@ -8,10 +8,12 @@ import 'package:movies_details/app/widgets/label_and_text.dart';
 import '../../../data/models/cast_bio_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/circular_icon_btn.dart';
 import '../../../widgets/custom_card_people.dart';
 import '../../../widgets/custom_network_image.dart';
 import '../../../widgets/people_list_widget.dart';
 import '../controllers/cast_details_controller.dart';
+import 'package:expandable_text/expandable_text.dart';
 
 class CastDetailsView extends GetView<CastDetailsController>{
   const CastDetailsView({super.key});
@@ -52,12 +54,15 @@ class CastDetailsView extends GetView<CastDetailsController>{
                 String castImage(String path) => 'https://image.tmdb.org/t/p/original$path';
 
                 return CustomScrollView(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
                   slivers: [
                     SliverAppBar(
                       pinned: true,
+                      stretch: true,
+                      stretchTriggerOffset: 20,
                       expandedHeight: 450.0,
                       toolbarHeight: 110.0,
-                      automaticallyImplyLeading: false,
                       elevation: 12,
                       leading: IconButton(
                         icon: const Icon(IconlyLight.arrowLeft2, size: 35),
@@ -70,23 +75,42 @@ class CastDetailsView extends GetView<CastDetailsController>{
                       ),
                       bottom: PreferredSize(
                         preferredSize: const Size.fromHeight(10),
-                        child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                            decoration: BoxDecoration(
-                              color: mainColor.withOpacity(0.85),
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(16),
-                                topLeft: Radius.circular(16),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  castInfo?.homepage == null ? const SizedBox() :
+                                  CircularIconButton(
+                                    onTap: () {
+                                      //TODO: visit homepage via webView
+                                    },
+                                    icon: const Icon(Icons.link),
+                                  )
+                                ],
                               ),
                             ),
-                            child: Center(
-                              child: Text(castInfo?.name ?? '',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                            )
+                            Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                decoration: BoxDecoration(
+                                  color: mainColor.withOpacity(0.85),
+                                  borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(16),
+                                    topLeft: Radius.circular(16),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(castInfo?.name ?? '',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.titleLarge,
+                                  ),
+                                )
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -95,7 +119,7 @@ class CastDetailsView extends GetView<CastDetailsController>{
                         visible: castInfo!.birthday != null && castInfo.biography != "",
                         replacement: const Center(child: Text('Not enough data to show!')),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -111,11 +135,29 @@ class CastDetailsView extends GetView<CastDetailsController>{
 
                               const CustomDivider(),
 
-                              Text(
+                              Text('Biography',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: 6.0,),
+                              ExpandableText(
                                 castInfo.biography ?? '',
+                                expandText: 'show more',
+                                collapseText: 'show less',
+                                maxLines: 5,
+                                linkColor: Colors.yellowAccent,
+                                animation: true,
+                                animationDuration: const Duration(seconds: 2),
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.justify,
+                                linkStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.w700
+                                ),
                               ),
+                              // Text(
+                              //   castInfo.biography ?? '',
+                              //   style: Theme.of(context).textTheme.bodyLarge,
+                              //   textAlign: TextAlign.justify,
+                              // ),
                             ],
                           ),
                         ),
@@ -126,7 +168,7 @@ class CastDetailsView extends GetView<CastDetailsController>{
                           visible: castDetailsController.castMoviesList.isNotEmpty,
                           replacement: const SliverToBoxAdapter(),
                           child: PeopleListWidget(
-                              category: 'Know For',
+                              category: 'Known For',
                               listView: ListView.builder(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,

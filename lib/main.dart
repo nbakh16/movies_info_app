@@ -25,13 +25,18 @@ void main() {
             ),
             titleMedium: TextStyle(
               color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w500
+              fontSize: 20,
+              fontWeight: FontWeight.w700
+            ),
+            titleSmall: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w400
             ),
             labelMedium: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
-                fontWeight: FontWeight.w800
+                fontWeight: FontWeight.w600
             ),
             bodyLarge: TextStyle(
               color: Colors.white,

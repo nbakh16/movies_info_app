@@ -22,9 +22,9 @@ class DetailsView extends GetView<DetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedMovie = Get.arguments as Result;
+    Result selectedMovie = Get.arguments;
 
-    final Rx<Result> movie = selectedMovie.obs;
+    Rx<Result> movie = selectedMovie.obs;
     apiService.getMovieCasts(movie.value.id!);
     apiService.getMovieCrews(movie.value.id!);
     apiService.getSimilarMovies(movie.value.id!);
@@ -34,6 +34,15 @@ class DetailsView extends GetView<DetailsController> {
 
     double screenWidth = MediaQuery.sizeOf(context).width;
     String backdropImage(String path) => 'https://image.tmdb.org/t/p/original$path';
+
+    Future<void> onRefresh() async {
+      apiService.getMovieCasts(movie.value.id!);
+      apiService.getMovieCrews(movie.value.id!);
+      apiService.getSimilarMovies(movie.value.id!);
+
+      castList = apiService.movieCastsList;
+      similarMoviesList = apiService.similarMoviesList;
+    }
 
     return Container(
       decoration: BoxDecoration(
@@ -54,156 +63,158 @@ class DetailsView extends GetView<DetailsController> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: CustomScrollView(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              Obx(()=>SliverAppBar(
-                // title: Text('Movie Name'),
-                toolbarHeight: 100,
-                leading: IconButton(
-                  icon: const Icon(IconlyLight.arrowLeft2, size: 35),
-                  onPressed: () => Get.back(),
-                ),
-                bottom: PreferredSize(
-                  preferredSize: const Size.fromHeight(10),
-                  child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: mainColor.withOpacity(0.5),
-                          border: Border(
-                              bottom: BorderSide(width: 4, color: mainColor.shade900)
-                          )
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                        child: Text(movie.value.title!.toString(),
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      )
+          body: RefreshIndicator(
+            onRefresh: onRefresh,
+            child: CustomScrollView(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                Obx(()=>SliverAppBar(
+                  elevation: 0,
+                  pinned: true,
+                  stretch: true,
+                  stretchTriggerOffset: 22,
+                  expandedHeight: 300.0,
+                  toolbarHeight: 100,
+                  leading: IconButton(
+                    icon: const Icon(IconlyLight.arrowLeft2, size: 35),
+                    onPressed: () => Get.back(),
                   ),
-                ),
-                elevation: 0,
-                pinned: true,
-                stretch: true,
-                stretchTriggerOffset: 22,
-                expandedHeight: 300.0,
-                flexibleSpace: Center(
-                    child: CustomNetworkImage(
-                      imgUrl: backdropImage(movie.value.backdropPath ?? Icons.image.toString()),
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(10),
+                    child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            color: mainColor.withOpacity(0.5),
+                            border: Border(
+                                bottom: BorderSide(width: 4, color: mainColor.shade900)
+                            )
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                          child: Text(movie.value.title!.toString(),
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                        )
                     ),
                   ),
-                  // flexibleSpace: Positioned.fill(
-                //     child: CustomNetworkImage(imgUrl: backdropImage,)
-                // ),
-              ),),
-              Obx(()=> SliverPadding(
-                padding: const EdgeInsets.all(12.0),
-                sliver: SliverList(
-                    delegate: SliverChildListDelegate (
-                        [
-                          releaseDataAndRatingRow(
-                              movie.value.releaseDate!.toString(), movie.value.voteCount!, movie.value.voteAverage!
-                          ),
-                          const CustomDivider(),
-                          GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemCount: HomeView().getGenreListOfMovie(movie.value.genreIds!).length,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
-                              mainAxisExtent: 50,
-                              crossAxisSpacing: 3.0,
-                              mainAxisSpacing: 3.0,
+                  flexibleSpace: Center(
+                      child: CustomNetworkImage(
+                        imgUrl: backdropImage(movie.value.backdropPath ?? Icons.image.toString()),
+                      ),
+                    ),
+                    // flexibleSpace: Positioned.fill(
+                  //     child: CustomNetworkImage(imgUrl: backdropImage,)
+                  // ),
+                ),),
+                Obx(()=> SliverPadding(
+                  padding: const EdgeInsets.all(12.0),
+                  sliver: SliverList(
+                      delegate: SliverChildListDelegate (
+                          [
+                            releaseDataAndRatingRow(
+                                movie.value.releaseDate!.toString(), movie.value.voteCount!, movie.value.voteAverage!
                             ),
-                            itemBuilder: (context, index) {
-                              var movieGenre = HomeView().getGenreListOfMovie(movie.value.genreIds!);
+                            const CustomDivider(),
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.zero,
+                              itemCount: HomeView().getGenreListOfMovie(movie.value.genreIds!).length,
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: screenWidth<700 ? 3 : screenWidth<900 ? 4 : 5,
+                                mainAxisExtent: 50,
+                                crossAxisSpacing: 3.0,
+                                mainAxisSpacing: 3.0,
+                              ),
+                              itemBuilder: (context, index) {
+                                var movieGenre = HomeView().getGenreListOfMovie(movie.value.genreIds!);
 
-                              return Center(
-                                child: CustomButton(
-                                  onTap: (){
-                                    apiService.getMoviesListByGenre(movieGenre[index].id, 1);
-                                    Get.toNamed(Routes.MOVIES,
-                                        arguments: {
-                                          'moviesList': apiService.moviesListByGenre,
-                                          'genreId': movieGenre[index].id,
-                                          'genreName': movieGenre[index].name,
-                                        },
-                                    );
-                                  },
-                                  btnText: movieGenre[index].name,
-                                ),
-                              );
-                            }
-                          ),
-                          const CustomDivider(),
-                          Text(movie.value.overview.toString(),
-                            style: Theme.of(context).textTheme.bodyLarge,
-                            textAlign: TextAlign.justify,
-                          ),
-                        ]
+                                return Center(
+                                  child: CustomButton(
+                                    onTap: (){
+                                      apiService.getMoviesListByGenre(movieGenre[index].id, 1);
+                                      Get.toNamed(Routes.MOVIES,
+                                          arguments: {
+                                            'moviesList': apiService.moviesListByGenre,
+                                            'genreId': movieGenre[index].id,
+                                            'genreName': movieGenre[index].name,
+                                          },
+                                      );
+                                    },
+                                    btnText: movieGenre[index].name,
+                                  ),
+                                );
+                              }
+                            ),
+                            const CustomDivider(),
+                            Text(movie.value.overview.toString(),
+                              style: Theme.of(context).textTheme.bodyLarge,
+                              textAlign: TextAlign.justify,
+                            ),
+                          ]
+                      )
+                  ),
+                ),),
+                // TODO: Fix ListView for landscape orientation
+                Obx(()=>
+                    Visibility(
+                      visible: castList.isNotEmpty,
+                      replacement: const SliverToBoxAdapter(),
+                      child: PeopleListWidget(
+                        category: 'Cast(s)',
+                        listView: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: castList.length,
+                          itemBuilder: (context, index){
+                            return CustomCardPeople(
+                              onTap: () {
+                                Get.toNamed(Routes.CAST_DETAILS,
+                                  arguments: castList[index].id
+                                );
+                              },
+                              image: 'https://image.tmdb.org/t/p/original${castList[index].profilePath}',
+                              title: castList[index].name.toString().trim(),
+                              subTitle: castList[index].character.toString().trim(),
+                              // subTitle: '(${crewList![index].job})',
+                            );
+                          }
+                        )
+                      ),
                     )
                 ),
-              ),),
-              // TODO: Fix ListView for landscape orientation
-              Obx(()=>
-                  Visibility(
-                    visible: castList.isNotEmpty,
-                    replacement: const SliverToBoxAdapter(),
-                    child: PeopleListWidget(
-                      category: 'Cast(s)',
-                      listView: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: castList.length,
-                        itemBuilder: (context, index){
-                          return CustomCardPeople(
-                            onTap: () {
-                              Get.toNamed(Routes.CAST_DETAILS,
-                                arguments: castList[index].id
-                              );
-                            },
-                            image: 'https://image.tmdb.org/t/p/original${castList[index].profilePath}',
-                            title: castList[index].name.toString().trim(),
-                            subTitle: castList[index].character.toString().trim(),
-                            // subTitle: '(${crewList![index].job})',
-                          );
-                        }
-                      )
-                    ),
-                  )
-              ),
-              Obx(()=>
-                  Visibility(
-                    visible: similarMoviesList.isNotEmpty,
-                    replacement: const SliverToBoxAdapter(),
-                    child: PeopleListWidget(
-                      category: 'Related Movies',
-                      listView: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: similarMoviesList.length,
-                        itemBuilder: (context, index){
-                          return CustomCardPeople(
-                            onTap: () {
-                              movie.value = similarMoviesList[index];
-                              apiService.getMovieCasts(movie.value.id!);
-                              apiService.getMovieCrews(movie.value.id!);
-                              apiService.getSimilarMovies(movie.value.id!);
-                            },
-                            image: 'https://image.tmdb.org/t/p/original${similarMoviesList[index].posterPath}',
-                            title: similarMoviesList[index].title.toString().trim(),
-                            subTitle: similarMoviesList[index].voteAverage.toString().trim(),
-                            subIcon: Icons.star,
-                            // subTitle: '(${crewList![index].job})',
-                          );
-                        }
-                      )
-                    ),
-                  )
-              ),
-            ],
+                Obx(()=>
+                    Visibility(
+                      visible: similarMoviesList.isNotEmpty,
+                      replacement: const SliverToBoxAdapter(),
+                      child: PeopleListWidget(
+                        category: 'Related Movies',
+                        listView: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: similarMoviesList.length,
+                          itemBuilder: (context, index){
+                            return CustomCardPeople(
+                              onTap: () {
+                                movie.value = similarMoviesList[index];
+                                apiService.getMovieCasts(movie.value.id!);
+                                apiService.getMovieCrews(movie.value.id!);
+                                apiService.getSimilarMovies(movie.value.id!);
+                              },
+                              image: 'https://image.tmdb.org/t/p/original${similarMoviesList[index].posterPath}',
+                              title: similarMoviesList[index].title.toString().trim(),
+                              subTitle: similarMoviesList[index].voteAverage.toString().trim(),
+                              subIcon: Icons.star,
+                              // subTitle: '(${crewList![index].job})',
+                            );
+                          }
+                        )
+                      ),
+                    )
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -22,7 +22,7 @@ class LabelAndText extends StatelessWidget {
           ),
           TextSpan(
             text: text,
-              style: Theme.of(context).textTheme.titleMedium
+              style: Theme.of(context).textTheme.titleSmall
           ),
         ],
       ),
