@@ -7,6 +7,7 @@ import '../modules/details/bindings/details_binding.dart';
 import '../modules/details/views/details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/home/views/new_home_view.dart';
 import '../modules/movie_search/bindings/movie_search_binding.dart';
 import '../modules/movie_search/views/movie_search_view.dart';
 import '../modules/movies/bindings/movies_binding.dart';
@@ -17,7 +18,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.NEW_HOME;
 
   static const Transition pageTransition = Transition.downToUp;
 
@@ -25,6 +26,11 @@ class AppPages {
     GetPage(
         name: _Paths.HOME,
         page: () => HomeView(),
+        binding: HomeBinding(),
+        transition: pageTransition),
+    GetPage(
+        name: _Paths.NEW_HOME,
+        page: () => NewHomeView(),
         binding: HomeBinding(),
         transition: pageTransition),
     GetPage(

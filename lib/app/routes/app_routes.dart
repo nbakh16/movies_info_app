@@ -4,6 +4,7 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
+  static const NEW_HOME = _Paths.NEW_HOME;
   static const DETAILS = _Paths.DETAILS;
   static const MOVIE_SEARCH = _Paths.MOVIE_SEARCH;
   static const MOVIES = _Paths.MOVIES;
@@ -13,6 +14,7 @@ abstract class Routes {
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
+  static const NEW_HOME = '/new-home';
   static const DETAILS = '/details';
   static const MOVIE_SEARCH = '/movie-search';
   static const MOVIES = '/movies';
