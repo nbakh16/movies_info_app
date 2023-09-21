@@ -84,22 +84,19 @@ class CastDetailsView extends GetView<CastDetailsController>{
                         preferredSize: const Size.fromHeight(10),
                         child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  castInfo?.homepage == null ? const SizedBox() :
-                                  CircularIconButton(
-                                    onTap: () {
-                                      Get.toNamed(Routes.WEB_VIEW,
-                                        arguments: castInfo?.homepage
-                                      );
-                                    },
-                                    icon: const Icon(Icons.link),
-                                  )
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                castInfo?.homepage == null ? const SizedBox() :
+                                CircularIconButton(
+                                  onTap: () {
+                                    Get.toNamed(Routes.WEB_VIEW,
+                                      arguments: castInfo?.homepage
+                                    );
+                                  },
+                                  icon: const Icon(Icons.link),
+                                )
+                              ],
                             ),
                             Container(
                                 width: double.infinity,

@@ -10,6 +10,7 @@ import 'package:movies_details/app/widgets/custom_button.dart';
 
 import '../../../data/models/movies_model.dart';
 import '../../../routes/app_pages.dart';
+import '../../../widgets/circular_icon_btn.dart';
 import '../../../widgets/custom_divider.dart';
 import '../../../widgets/people_list_widget.dart';
 import '../../home/views/home_view.dart';
@@ -80,22 +81,41 @@ class DetailsView extends GetView<DetailsController> {
                     icon: const Icon(IconlyLight.arrowLeft2, size: 35),
                     onPressed: () => Get.back(),
                   ),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(IconlyLight.search, size: 35),
+                      onPressed: () => Get.toNamed(Routes.MOVIE_SEARCH),
+                    ),
+                  ],
                   bottom: PreferredSize(
                     preferredSize: const Size.fromHeight(10),
-                    child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: mainColor.withOpacity(0.5),
-                            border: Border(
-                                bottom: BorderSide(width: 4, color: mainColor.shade900)
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CircularIconButton(
+                          onTap: () {
+                            Get.toNamed(Routes.VIDEO,
+                                arguments: movie.value.id
+                            );
+                          },
+                          icon: const Icon(Icons.play_arrow),
+                        ),
+                        Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: mainColor.withOpacity(0.5),
+                                border: Border(
+                                    bottom: BorderSide(width: 4, color: mainColor.shade900)
+                                )
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                              child: Text(movie.value.title!.toString(),
+                                style: Theme.of(context).textTheme.titleLarge,
+                              ),
                             )
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                          child: Text(movie.value.title!.toString(),
-                            style: Theme.of(context).textTheme.titleLarge,
-                          ),
-                        )
+                      ],
                     ),
                   ),
                   flexibleSpace: Center(

@@ -14,18 +14,21 @@ class CircularIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 45,
-        width: 45,
-        decoration: BoxDecoration(
-            color: mainColor.withOpacity(0.45),
-            borderRadius: BorderRadius.circular(33),
-            border: Border.all(width: 1.25, color: Colors.yellowAccent)
-        ),
-        child: IconButton(
-            onPressed: onTap,
-            icon: icon
-        )
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+          height: 45,
+          width: 45,
+          decoration: BoxDecoration(
+              color: mainColor.withOpacity(0.45),
+              borderRadius: BorderRadius.circular(33),
+              border: Border.all(width: 1.25, color: Colors.yellowAccent)
+          ),
+          child: IconButton(
+              onPressed: onTap,
+              icon: icon
+          )
+      ),
     );
   }
 }
