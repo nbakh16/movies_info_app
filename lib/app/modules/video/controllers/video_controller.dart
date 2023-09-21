@@ -21,9 +21,10 @@ class VideoController extends GetxController {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
 
       for(var e in decodedResponse['results']) {
-        videosList.add(
-            Videos.fromJson(e)
-        );
+        if(e['type'] == 'Trailer' && e['site'] == 'YouTube') {
+          videosList.add(Videos.fromJson(e));
+        }
+        // videosList.add(Videos.fromJson(e));
       }
       print('videos key: ${videosList[1].key}');
       videosList.refresh();
