@@ -75,7 +75,7 @@ class DetailsView extends GetView<DetailsController> {
                   pinned: true,
                   stretch: true,
                   stretchTriggerOffset: 22,
-                  expandedHeight: 300.0,
+                  expandedHeight: screenWidth<700 ? 300.0 : 200.0,
                   toolbarHeight: 100,
                   leading: IconButton(
                     icon: const Icon(IconlyLight.arrowLeft2, size: 35),

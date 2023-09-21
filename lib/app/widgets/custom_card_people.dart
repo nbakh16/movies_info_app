@@ -38,7 +38,7 @@ class CustomCardPeople extends StatelessWidget {
           elevation: 5,
           child: Container(
             height: double.maxFinite,
-            width: MediaQuery.sizeOf(context).width * 0.35,
+            width: screenWidth<700 ? screenWidth * 0.35 : screenWidth * 0.25,
             decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -72,7 +72,7 @@ class CustomCardPeople extends StatelessWidget {
                       children: [
                         Text(title,
                           style: TextStyle(
-                            fontSize: screenWidth<400 ? 14 : screenWidth<700 ? 16 : 20,
+                            fontSize: screenWidth<700 ? 14 : 16,
                             fontWeight: FontWeight.w900,
                           ),
                           maxLines: 2,
@@ -84,15 +84,15 @@ class CustomCardPeople extends StatelessWidget {
                           spacing: 2.5,
                           children: [
                             Icon(subIcon,
-                              size: screenWidth<400 ? 12 : screenWidth<700 ? 14 : 18,
+                              size: screenWidth<700 ? 14 : 18,
                             ),
                             Text(subTitle,
                               style: TextStyle(
-                                fontSize: screenWidth<400 ? 12 : screenWidth<700 ? 14 : 18,
+                                fontSize: screenWidth<700 ? 14 : 18,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white70
                               ),
-                              maxLines: screenWidth<300 ? 1 : 2,
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],

@@ -10,8 +10,8 @@ class VideoController extends GetxController {
   String baseUrl = 'https://api.themoviedb.org/3/';
 
   final movieId = Get.arguments;
-
   RxList<Videos> videosList = <Videos>[].obs;
+
   void getVideos(int movieId) async {
     videosList.clear();
     String responseUrl = '${baseUrl}movie/$movieId/videos?api_key=$apiKey&append_to_response=videos';
