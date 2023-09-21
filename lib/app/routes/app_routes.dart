@@ -9,6 +9,7 @@ abstract class Routes {
   static const MOVIE_SEARCH = _Paths.MOVIE_SEARCH;
   static const MOVIES = _Paths.MOVIES;
   static const CAST_DETAILS = _Paths.CAST_DETAILS;
+  static const WEB_VIEW = _Paths.WEB_VIEW;
 }
 
 abstract class _Paths {
@@ -19,4 +20,5 @@ abstract class _Paths {
   static const MOVIE_SEARCH = '/movie-search';
   static const MOVIES = '/movies';
   static const CAST_DETAILS = '/cast-details';
+  static const WEB_VIEW = '/web-view';
 }

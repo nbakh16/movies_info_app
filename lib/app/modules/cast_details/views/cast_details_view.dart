@@ -92,7 +92,9 @@ class CastDetailsView extends GetView<CastDetailsController>{
                                   castInfo?.homepage == null ? const SizedBox() :
                                   CircularIconButton(
                                     onTap: () {
-                                      //TODO: visit homepage via webView
+                                      Get.toNamed(Routes.WEB_VIEW,
+                                        arguments: castInfo?.homepage
+                                      );
                                     },
                                     icon: const Icon(Icons.link),
                                   )
