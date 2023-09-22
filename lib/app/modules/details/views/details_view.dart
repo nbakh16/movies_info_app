@@ -106,15 +106,29 @@ class DetailsView extends GetView<DetailsController> {
                       bottom: PreferredSize(
                         preferredSize: const Size.fromHeight(75),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            CircularIconButton(
-                              onTap: () {
-                                Get.toNamed(Routes.VIDEO,
-                                    arguments: detailsController.movieId
-                                );
-                              },
-                              icon: const Icon(Icons.play_arrow),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                CircularIconButton(
+                                  onTap: () {
+                                    Get.toNamed(Routes.VIDEO,
+                                        arguments: detailsController.movieId
+                                    );
+                                  },
+                                  icon: const Icon(Icons.play_arrow),
+                                ),
+
+                                movieInfo?.homepage == null ? const SizedBox() :
+                                CircularIconButton(
+                                  onTap: () {
+                                    Get.toNamed(Routes.WEB_VIEW,
+                                        arguments: movieInfo?.homepage
+                                    );
+                                  },
+                                  icon: const Icon(Icons.link),
+                                ),
+                              ],
                             ),
                             Container(
                                 width: double.infinity,
