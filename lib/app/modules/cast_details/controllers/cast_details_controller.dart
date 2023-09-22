@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart';
-import 'package:movies_details/app/data/models/cast_bio_model.dart';
+import 'package:movies_details/app/data/models/cast/cast_bio_model.dart';
 
-import '../../../data/models/movies_model.dart';
+import '../../../data/models/movie/movies_model.dart';
 import '../../../utils/api_key.dart';
 
 class CastDetailsController extends GetxController {

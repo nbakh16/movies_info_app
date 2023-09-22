@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:movies_details/app/widgets/custom_divider.dart';
 import 'package:movies_details/app/widgets/label_and_text.dart';
 
-import '../../../data/models/cast_bio_model.dart';
+import '../../../data/models/cast/cast_bio_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
 import '../../../widgets/circular_icon_btn.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../data/models/movies_model.dart';
+import '../../../../data/models/movie/movies_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../widgets/custom_card_people.dart';
 import '../../../../widgets/people_list_widget.dart';
@@ -37,7 +37,7 @@ class MoviesByCategory extends StatelessWidget {
                     return CustomCardPeople(
                       onTap: () {
                         Get.toNamed(Routes.DETAILS,
-                          arguments: movie,
+                          arguments: movie.id,
                         );
                       },
                       image: 'https://image.tmdb.org/t/p/original${movie.posterPath}',

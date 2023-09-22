@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart';
-import '../../../data/models/movies_model.dart';
+import '../../../data/models/movie/movies_model.dart';
 import '../../../utils/api_key.dart';
 
 class HomeController extends GetxController {

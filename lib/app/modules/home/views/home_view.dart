@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:movies_details/app/data/models/genre_model.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/widgets/two_btn_row_widget.dart';
 import '../../../routes/app_pages.dart';
@@ -108,15 +107,5 @@ class HomeView extends GetView<HomeController> {
               centerText: 'Page: ${counter.value}',
             ),
           );
-  }
-
-  List<GenreElement> getGenreListOfMovie(List<int> genreIdList) {
-
-    var genreListOfMovie = detailsController.genreList
-        .where((genre) => genreIdList
-        .contains(genre.id))
-        .toList();
-
-    return genreListOfMovie;
   }
 }

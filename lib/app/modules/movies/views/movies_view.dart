@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:movies_details/app/widgets/custom_app_bar.dart';
 import 'package:movies_details/app/widgets/shimmer_loading/movie_view_shimmer.dart';
 
-import '../../../data/models/movies_model.dart';
+import '../../../data/models/movie/movies_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/api_service.dart';
 import '../../../widgets/custom_card.dart';

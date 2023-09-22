@@ -1,42 +1,33 @@
 import 'dart:convert';
 
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-
-import '../../../data/models/genre_model.dart';
+import 'package:get/get.dart';
+import '../../../data/models/movie/movie_details_model.dart';
 import '../../../utils/api_key.dart';
 import 'package:http/http.dart';
 
 class DetailsController extends GetxController {
-  RxBool isLoading = true.obs;
-  RxList<GenreElement> genreList = <GenreElement>[].obs;
+  String baseUrl = 'https://api.themoviedb.org/3/';
+  var movieId = Get.arguments;
 
-  Future<List<GenreElement>> fetchGenres() async {
-    isLoading = false.obs;
-    final response = await get(Uri.parse('https://api.themoviedb.org/3/genre/movie/list?api_key=$apiKey'));
+  ///get movie info
+  Rx<MovieDetails?> movieInfo = Rx<MovieDetails?>(null);
+  Future<void> getMovieInfo(int movieId) async {
+    final String responseUrl = '${baseUrl}movie/$movieId?api_key=$apiKey';
+
+    final response = await get(Uri.parse(responseUrl));
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      final List<dynamic> genresData = responseData['genres'];
-
-      genreList = genresData.map((json) => GenreElement.fromJson(json)).toList().obs;
-
-
-      // List<String> genreNames = genres
-      //     .where((genre) => genreKeys.contains(genre.id))
-      //     .map((genre) => genre.name)
-      //     .toList();
-
-      return genresData.map((json) => GenreElement.fromJson(json)).toList();
+      final Map<String, dynamic> data = json.decode(response.body);
+      movieInfo.value = MovieDetails.fromJson(data);
     } else {
-      throw Exception('Failed to fetch genres');
+      throw Exception('Failed to load movie data');
     }
   }
 
   @override
   void onInit() {
     super.onInit();
-    fetchGenres();
+    getMovieInfo(movieId);
   }
 
   @override

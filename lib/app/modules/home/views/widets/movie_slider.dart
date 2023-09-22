@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movies_details/app/widgets/movie_slider_card.dart';
 
-import '../../../../data/models/movies_model.dart';
+import '../../../../data/models/movie/movies_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../utils/colors.dart';
 import '../../../../widgets/shimmer_loading/container_shimmer.dart';
@@ -42,7 +42,7 @@ class MovieSlider extends StatelessWidget {
               return InkWell(
                   onTap: () {
                     Get.toNamed(Routes.DETAILS,
-                      arguments: movie,
+                      arguments: movie.id,
                     );
                   },
                   child: MovieSliderCard(
