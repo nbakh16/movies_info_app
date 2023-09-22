@@ -1,3 +1,4 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
@@ -88,7 +89,7 @@ class DetailsView extends GetView<DetailsController> {
                     ),
                   ],
                   bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(10),
+                    preferredSize: const Size.fromHeight(75),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -111,7 +112,7 @@ class DetailsView extends GetView<DetailsController> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                               child: Text(movie.value.title!.toString(),
-                                style: Theme.of(context).textTheme.titleLarge,
+                                style: Theme.of(context).textTheme.titleMedium,
                               ),
                             )
                         ),
@@ -168,15 +169,22 @@ class DetailsView extends GetView<DetailsController> {
                               }
                             ),
                             const CustomDivider(),
-                            Text(movie.value.overview.toString(),
+                            ExpandableText(
+                              '${movie.value.overview}',
+                              expandText: 'show more',
+                              collapseText: 'show less',
+                              maxLines: 4,
+                              linkColor: Colors.yellowAccent,
+                              animation: true,
+                              animationDuration: const Duration(seconds: 2),
                               style: Theme.of(context).textTheme.bodyLarge,
                               textAlign: TextAlign.justify,
+                              linkStyle: Theme.of(context).textTheme.bodyLarge
                             ),
                           ]
                       )
                   ),
                 ),),
-                // TODO: Fix ListView for landscape orientation
                 Obx(()=>
                     Visibility(
                       visible: castList.isNotEmpty,

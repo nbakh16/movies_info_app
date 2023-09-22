@@ -81,7 +81,7 @@ class CastDetailsView extends GetView<CastDetailsController>{
                         ),
                       ),
                       bottom: PreferredSize(
-                        preferredSize: const Size.fromHeight(10),
+                        preferredSize: const Size.fromHeight(60),
                         child: Column(
                           children: [
                             Row(
@@ -150,7 +150,7 @@ class CastDetailsView extends GetView<CastDetailsController>{
                               ),
                               const SizedBox(height: 6.0,),
                               ExpandableText(
-                                castInfo.biography ?? '',
+                                '${castInfo.biography}',
                                 expandText: 'show more',
                                 collapseText: 'show less',
                                 maxLines: 5,
@@ -159,15 +159,8 @@ class CastDetailsView extends GetView<CastDetailsController>{
                                 animationDuration: const Duration(seconds: 2),
                                 style: Theme.of(context).textTheme.bodyLarge,
                                 textAlign: TextAlign.justify,
-                                linkStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.w700
-                                ),
+                                linkStyle: Theme.of(context).textTheme.bodyLarge
                               ),
-                              // Text(
-                              //   castInfo.biography ?? '',
-                              //   style: Theme.of(context).textTheme.bodyLarge,
-                              //   textAlign: TextAlign.justify,
-                              // ),
                             ],
                           ),
                         ),
