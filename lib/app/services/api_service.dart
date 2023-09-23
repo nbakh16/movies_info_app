@@ -24,9 +24,11 @@ class ApiService{
       // print(decodedResponse);
 
       for(var e in decodedResponse['cast']) {
-        movieCastsList.add(
-            Cast.fromJson(e)
-        );
+        if(e['order'] < 12) {
+          movieCastsList.add(
+              Cast.fromJson(e)
+          );
+        }
       }
     }
     else {
@@ -47,16 +49,27 @@ class ApiService{
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
 
+
+      //sorting according to job
+      List<dynamic> crewMembers = decodedResponse['crew'];
+      Map<String, int> jobPriority = {
+        'Director': 1,
+        'Writer': 2,
+        'Producer': 3,
+      };
+      crewMembers.sort((a, b) {
+        int priorityA = jobPriority[a['job']] ?? 999;
+        int priorityB = jobPriority[b['job']] ?? 999;
+        return priorityA.compareTo(priorityB);
+      });
+
       for(var e in decodedResponse['crew']) {
-        movieCrewsList.add(
-            Crew.fromJson(e)
-        );
+        if(e['job'] == 'Director' || e['job'] == 'Writer' || e['job'] == 'Producer') {
+          movieCrewsList.add(
+              Crew.fromJson(e)
+          );
+        }
       }
-
-      // List<Map<String, dynamic>> castingValues = decodedResponse['crew']
-      //     .where((item) => item['job'] == 'Director')
-      //     .toList();
-
     }
     else {
       throw Exception('Failed to load movie casts');

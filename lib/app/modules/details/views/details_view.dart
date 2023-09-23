@@ -33,6 +33,7 @@ class DetailsView extends GetView<DetailsController> {
     apiService.getSimilarMovies(detailsController.movieId);
 
     RxList<Cast> castList = apiService.movieCastsList;
+    RxList<Crew> crewList = apiService.movieCrewsList;
     RxList<Result> similarMoviesList = apiService.similarMoviesList;
 
     double screenWidth = MediaQuery.sizeOf(context).width;
@@ -164,6 +165,10 @@ class DetailsView extends GetView<DetailsController> {
                       sliver: SliverList(
                           delegate: SliverChildListDelegate (
                               [
+                                Text('${movieInfo?.tagline}',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                const CustomDivider(),
                                 releaseDataAndRatingRow(
                                     '${movieInfo?.releaseDate}', movieInfo?.voteCount ?? 0, movieInfo?.voteAverage ?? 0.0
                                 ),
@@ -204,7 +209,7 @@ class DetailsView extends GetView<DetailsController> {
                                     '${movieInfo?.overview}',
                                     expandText: 'show more',
                                     collapseText: 'show less',
-                                    maxLines: 4,
+                                    maxLines: 5,
                                     linkColor: Colors.yellowAccent,
                                     animation: true,
                                     animationDuration: const Duration(seconds: 2),
@@ -221,7 +226,7 @@ class DetailsView extends GetView<DetailsController> {
                           visible: castList.isNotEmpty,
                           replacement: const SliverToBoxAdapter(),
                           child: PeopleListWidget(
-                              category: 'Cast(s)',
+                              category: 'Top Cast',
                               listView: ListView.builder(
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
@@ -236,6 +241,33 @@ class DetailsView extends GetView<DetailsController> {
                                       image: 'https://image.tmdb.org/t/p/original${castList[index].profilePath}',
                                       title: castList[index].name.toString().trim(),
                                       subTitle: castList[index].character.toString().trim(),
+                                      // subTitle: '(${crewList![index].job})',
+                                    );
+                                  }
+                              )
+                          ),
+                        )
+                    ),
+                    Obx(()=>
+                        Visibility(
+                          visible: crewList.isNotEmpty,
+                          replacement: const SliverToBoxAdapter(),
+                          child: PeopleListWidget(
+                              category: 'Crew',
+                              listView: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: crewList.length,
+                                  itemBuilder: (context, index){
+                                    return CustomCardPeople(
+                                      onTap: () {
+                                        Get.toNamed(Routes.CAST_DETAILS,
+                                            arguments: crewList[index].id
+                                        );
+                                      },
+                                      image: 'https://image.tmdb.org/t/p/original${crewList[index].profilePath}',
+                                      title: crewList[index].name.toString().trim(),
+                                      subTitle: crewList[index].job.toString().trim(),
                                       // subTitle: '(${crewList![index].job})',
                                     );
                                   }
@@ -316,9 +348,7 @@ class DetailsView extends GetView<DetailsController> {
     );
   }
 
-  Row releaseDataAndRatingRow(
-      String releaseDate, int voteCount, double voteAvg
-      ) {
+  Row releaseDataAndRatingRow(String releaseDate, int voteCount, double voteAvg) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.min,

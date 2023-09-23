@@ -17,7 +17,7 @@ void main() {
         iconTheme: const IconThemeData(color: Colors.yellowAccent),
         progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
         textTheme: GoogleFonts.urbanistTextTheme(
-          const TextTheme(
+          TextTheme(
             titleLarge: TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -47,6 +47,12 @@ void main() {
               color: Colors.white,
               fontSize: 14,
               fontWeight: FontWeight.w500
+            ),
+            bodySmall: TextStyle(
+              color: mainColor.shade200,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.italic
             ),
           ),
         ),
