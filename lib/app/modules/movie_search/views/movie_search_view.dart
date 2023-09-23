@@ -7,9 +7,8 @@ import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_card.dart';
 import 'package:movies_details/app/widgets/custom_button.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../details/controllers/details_controller.dart';
-import '../../details/views/details_view.dart';
-import '../../home/controllers/home_controller.dart';
 import '../controllers/movie_search_controller.dart';
 
 class MovieSearchView extends GetView<MovieSearchController> {
@@ -18,8 +17,7 @@ class MovieSearchView extends GetView<MovieSearchController> {
   final TextEditingController searchTEController = TextEditingController();
   final ApiService apiService = ApiService();
 
-  final HomeController homeController = Get.put(HomeController());
-  final DetailsController detailsController = Get.put(DetailsController());
+  // final HomeController homeController = Get.put(HomeController());
 
   final FocusNode focusNode = FocusNode();
 
@@ -111,10 +109,11 @@ class MovieSearchView extends GetView<MovieSearchController> {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            Get.to(()=> DetailsView(),
-                arguments: apiService.searchedMoviesList[index],
-                transition: Transition.downToUp
+
+            Get.toNamed(Routes.DETAILS,
+              arguments: apiService.searchedMoviesList[index].id,
             );
+            Get.put(DetailsController());
           },
           child: CustomCard(
             image: '${apiService.baseImageUrl}${apiService.searchedMoviesList[index].posterPath}',

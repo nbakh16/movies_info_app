@@ -1,6 +1,8 @@
 import 'package:movies_details/app/data/models/movie/production_companies.dart';
 import 'package:movies_details/app/data/models/movie/production_countries.dart';
+import 'package:movies_details/app/data/models/movie/spoken_languages.dart';
 
+import 'belongs_to_collection.dart';
 import 'genre_model.dart';
 
 class MovieDetails {
@@ -147,53 +149,6 @@ class MovieDetails {
     data['video'] = video;
     data['vote_average'] = voteAverage;
     data['vote_count'] = voteCount;
-    return data;
-  }
-}
-
-class BelongsToCollection {
-  int? id;
-  String? name;
-  String? posterPath;
-  String? backdropPath;
-
-  BelongsToCollection({this.id, this.name, this.posterPath, this.backdropPath});
-
-  BelongsToCollection.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    posterPath = json['poster_path'];
-    backdropPath = json['backdrop_path'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['poster_path'] = posterPath;
-    data['backdrop_path'] = backdropPath;
-    return data;
-  }
-}
-
-class SpokenLanguages {
-  String? englishName;
-  String? iso6391;
-  String? name;
-
-  SpokenLanguages({this.englishName, this.iso6391, this.name});
-
-  SpokenLanguages.fromJson(Map<String, dynamic> json) {
-    englishName = json['english_name'];
-    iso6391 = json['iso_639_1'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['english_name'] = englishName;
-    data['iso_639_1'] = iso6391;
-    data['name'] = name;
     return data;
   }
 }

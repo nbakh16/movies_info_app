@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:movies_details/app/modules/details/controllers/details_controller.dart';
 import 'package:movies_details/app/widgets/custom_app_bar.dart';
 import 'package:movies_details/app/widgets/shimmer_loading/movie_view_shimmer.dart';
 
@@ -72,8 +73,9 @@ class MoviesView extends GetView<MoviesController> {
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
+              Get.delete<DetailsController>();
               Get.toNamed(Routes.DETAILS,
-                  arguments: moviesList![index],
+                  arguments: moviesList![index].id,
               );
             },
             child: CustomCard(

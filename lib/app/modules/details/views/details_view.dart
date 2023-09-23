@@ -7,7 +7,10 @@ import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
+import '../../../data/models/cast/cast_model.dart';
 import '../../../data/models/movie/movie_details_model.dart';
+import '../../../data/models/movie/movies_model.dart';
+import '../../../data/models/movie/production_companies.dart';
 import '../../../routes/app_pages.dart';
 import '../../../widgets/circular_icon_btn.dart';
 import '../../../widgets/custom_button.dart';
@@ -29,8 +32,8 @@ class DetailsView extends GetView<DetailsController> {
     apiService.getMovieCrews(detailsController.movieId);
     apiService.getSimilarMovies(detailsController.movieId);
 
-    var castList = apiService.movieCastsList;
-    var similarMoviesList = apiService.similarMoviesList;
+    RxList<Cast> castList = apiService.movieCastsList;
+    RxList<Result> similarMoviesList = apiService.similarMoviesList;
 
     double screenWidth = MediaQuery.sizeOf(context).width;
 
@@ -81,6 +84,8 @@ class DetailsView extends GetView<DetailsController> {
               else {
                 movieInfo = detailsController.movieInfo.value;
                 String backdropImage(String path) => 'https://image.tmdb.org/t/p/original$path';
+
+                var productionCompanies = movieInfo?.productionCompanies.obs;
 
                 return CustomScrollView(
                   shrinkWrap: true,
@@ -140,7 +145,7 @@ class DetailsView extends GetView<DetailsController> {
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                                  child: Text('${movieInfo?.title}', //movie.value.title!.toString(),
+                                  child: Text('${movieInfo?.title}',
                                     style: Theme.of(context).textTheme.titleMedium,
                                   ),
                                 )
@@ -232,6 +237,30 @@ class DetailsView extends GetView<DetailsController> {
                                       title: castList[index].name.toString().trim(),
                                       subTitle: castList[index].character.toString().trim(),
                                       // subTitle: '(${crewList![index].job})',
+                                    );
+                                  }
+                              )
+                          ),
+                        )
+                    ),
+                    Obx(()=>
+                        Visibility(
+                          visible: productionCompanies!.value!.isNotEmpty,
+                          replacement: const SliverToBoxAdapter(),
+                          child: PeopleListWidget(
+                              category: 'Production(s)',
+                              listView: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: productionCompanies.value?.length,
+                                  itemBuilder: (context, index){
+                                    ProductionCompanies productions = productionCompanies.value![index];
+                                    return CustomCardPeople(
+                                      onTap: () {
+                                        //TODO: company details api on showDialog
+                                      },
+                                      image: 'https://image.tmdb.org/t/p/original${productions.logoPath}',
+                                      title: productions.name.toString().trim(),
                                     );
                                   }
                               )
