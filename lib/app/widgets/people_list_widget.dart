@@ -5,11 +5,13 @@ class PeopleListWidget extends StatelessWidget {
   const PeopleListWidget({
     super.key,
     this.category,
-    this.listView
+    this.listView,
+    this.height = 280
   });
 
   final String? category;
   final Widget? listView;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class PeopleListWidget extends StatelessWidget {
     return SliverToBoxAdapter(
         child: SizedBox(
           // height: screenWidth<400 ? screenHeight*0.25 : screenWidth<700 ? screenHeight*0.35 : screenHeight*0.65,
-          height: 280,
+          height: height,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

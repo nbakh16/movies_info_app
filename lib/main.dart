@@ -18,32 +18,32 @@ void main() {
         progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
         textTheme: GoogleFonts.urbanistTextTheme(
           TextTheme(
-            titleLarge: TextStyle(
+            titleLarge: const TextStyle(
               color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.w800
             ),
-            titleMedium: TextStyle(
+            titleMedium: const TextStyle(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.w700
             ),
-            titleSmall: TextStyle(
+            titleSmall: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.w400
             ),
-            labelMedium: TextStyle(
+            labelMedium: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.w600
             ),
-            bodyLarge: TextStyle(
+            bodyLarge: const TextStyle(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w500
             ),
-            bodyMedium: TextStyle(
+            bodyMedium: const TextStyle(
               color: Colors.white,
               fontSize: 14,
               fontWeight: FontWeight.w500
