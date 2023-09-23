@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movies_details/app/modules/home/controllers/home_controller.dart';
 
 import '../../../../data/models/movie/movies_model.dart';
 import '../../../../routes/app_pages.dart';
@@ -36,6 +37,8 @@ class MoviesByCategory extends StatelessWidget {
 
                     return CustomCardPeople(
                       onTap: () {
+                        Get.delete<HomeController>();
+
                         Get.toNamed(Routes.DETAILS,
                           arguments: movie.id,
                         );

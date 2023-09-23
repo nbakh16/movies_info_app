@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
+import 'package:movies_details/app/modules/details/controllers/details_controller.dart';
 import 'package:movies_details/app/widgets/custom_divider.dart';
 import 'package:movies_details/app/widgets/label_and_text.dart';
 
@@ -180,8 +181,10 @@ class CastDetailsView extends GetView<CastDetailsController>{
                                     final movies = castDetailsController.castMoviesList[index];
                                     return CustomCardPeople(
                                       onTap: () {
+                                        Get.delete<DetailsController>();
+
                                         Get.toNamed(Routes.DETAILS,
-                                          arguments: movies,
+                                          arguments: movies.id,
                                         );
 
                                         Get.delete<CastDetailsController>();

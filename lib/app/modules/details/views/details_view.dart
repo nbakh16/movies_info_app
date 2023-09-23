@@ -253,12 +253,18 @@ class DetailsView extends GetView<DetailsController> {
                                       onTap: () {
                                         Get.delete<DetailsController>();
 
-                                        detailsController.movieId = similarMoviesList[index].id;
-                                        apiService.getMovieCasts(detailsController.movieId);
-                                        apiService.getMovieCrews(detailsController.movieId);
-                                        apiService.getSimilarMovies(detailsController.movieId);
+                                        Navigator.pushNamed(
+                                          context,
+                                          Routes.DETAILS,
+                                          arguments: similarMoviesList[index].id,
+                                        );
 
-                                        detailsController.getMovieInfo(detailsController.movieId);
+                                        // detailsController.movieId = similarMoviesList[index].id;
+                                        // apiService.getMovieCasts(detailsController.movieId);
+                                        // apiService.getMovieCrews(detailsController.movieId);
+                                        // apiService.getSimilarMovies(detailsController.movieId);
+                                        //
+                                        // detailsController.getMovieInfo(detailsController.movieId);
                                       },
                                       image: 'https://image.tmdb.org/t/p/original${similarMoviesList[index].posterPath}',
                                       title: similarMoviesList[index].title.toString().trim(),

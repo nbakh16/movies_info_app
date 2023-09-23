@@ -41,6 +41,8 @@ class MovieSlider extends StatelessWidget {
               Result movie = homeController.moviesList[index];
               return InkWell(
                   onTap: () {
+                    Get.delete<HomeController>();
+
                     Get.toNamed(Routes.DETAILS,
                       arguments: movie.id,
                     );
