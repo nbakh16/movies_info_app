@@ -190,9 +190,9 @@ class DetailsView extends GetView<DetailsController> {
 
                                 LabelAndText(label: 'Language', text: '${languageMap[movieInfo?.originalLanguage]}'),
                                 movieInfo?.budget == 0 ? const SizedBox() :
-                                LabelAndText(label: 'Budget', text: NumberFormatter().convertToCurrency(movieInfo!.budget ?? 0)),
+                                LabelAndText(label: 'Budget', text: NumberFormatter().formatCurrency(movieInfo!.budget ?? 0)),
                                 movieInfo?.revenue == 0 ? const SizedBox() :
-                                LabelAndText(label: 'Revenue', text: NumberFormatter().convertToCurrency(movieInfo!.revenue ?? 0)),
+                                LabelAndText(label: 'Revenue', text: NumberFormatter().formatCurrency(movieInfo!.revenue ?? 0)),
                                 const CustomDivider(),
 
                                 overviewText(movieInfo, context),
@@ -400,10 +400,11 @@ class DetailsView extends GetView<DetailsController> {
             )
           ],
         ),
+        duration == 0 ? const SizedBox() :
         Chip(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           backgroundColor: mainColor.shade700,
-          label: Text('$duration minutes',
+          label: Text(NumberFormatter().formatDuration(duration),
             style: TextStyle(
               color: mainColor.shade200,
               fontWeight: FontWeight.w400
