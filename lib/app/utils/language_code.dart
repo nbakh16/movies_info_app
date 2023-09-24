@@ -28,6 +28,7 @@ Map<String, String> languageMap = {
   'ch': 'Chamorro',
   'ce': 'Chechen',
   'zh': 'Chinese',
+  'cn': 'Chinese',
   'cu': 'Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic',
   'cv': 'Chuvash',
   'kw': 'Cornish',

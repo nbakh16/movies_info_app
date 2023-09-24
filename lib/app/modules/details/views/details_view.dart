@@ -8,6 +8,7 @@ import 'package:movies_details/app/modules/details/views/widgets/elements_list_w
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/utils/language_code.dart';
+import 'package:movies_details/app/utils/number_formatter.dart';
 import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
 import 'package:movies_details/app/widgets/label_and_text.dart';
@@ -177,18 +178,21 @@ class DetailsView extends GetView<DetailsController> {
                                 movieInfo?.tagline == '' ? const SizedBox() :
                                 const CustomDivider(),
 
-                                releaseDataAndRatingRow(
+                                releaseRatingDuration(
                                     '${movieInfo?.releaseDate}',
                                     movieInfo?.voteCount ?? 0,
-                                    movieInfo?.voteAverage ?? 0.0),
+                                    movieInfo?.voteAverage ?? 0.0,
+                                    movieInfo?.runtime ?? 0,),
                                 const CustomDivider(),
 
                                 genreGridView(movieInfo, screenWidth),
                                 const CustomDivider(),
 
                                 LabelAndText(label: 'Language', text: '${languageMap[movieInfo?.originalLanguage]}'),
-                                LabelAndText(label: 'Budget', text: '${movieInfo?.budget} USD'),
-                                LabelAndText(label: 'Revenue', text: '${movieInfo?.revenue} USD'),
+                                movieInfo?.budget == 0 ? const SizedBox() :
+                                LabelAndText(label: 'Budget', text: NumberFormatter().convertToCurrency(movieInfo!.budget ?? 0)),
+                                movieInfo?.revenue == 0 ? const SizedBox() :
+                                LabelAndText(label: 'Revenue', text: NumberFormatter().convertToCurrency(movieInfo!.revenue ?? 0)),
                                 const CustomDivider(),
 
                                 overviewText(movieInfo, context),
@@ -374,24 +378,37 @@ class DetailsView extends GetView<DetailsController> {
     );
   }
 
-  Row releaseDataAndRatingRow(String releaseDate, int voteCount, double voteAvg) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      mainAxisSize: MainAxisSize.min,
+  Column releaseRatingDuration(String releaseDate, int voteCount, double voteAvg, int duration) {
+    return Column(
       children: [
-        Text(releaseDate.toString()),
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const Icon(Icons.star, size: 26,),
-            Column(
+            Text(releaseDate.toString()),
+            Row(
               children: [
-                Text('$voteAvg/10',
-                  style: const TextStyle(fontWeight: FontWeight.w900),),
-                Text(voteCount.toString(),
-                  style: const TextStyle(fontWeight: FontWeight.w400),)
+                const Icon(Icons.star, size: 26,),
+                Column(
+                  children: [
+                    Text('$voteAvg/10',
+                      style: const TextStyle(fontWeight: FontWeight.w900),),
+                    Text(voteCount.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.w400),)
+                  ],
+                )
               ],
             )
           ],
+        ),
+        Chip(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          backgroundColor: mainColor.shade700,
+          label: Text('$duration minutes',
+            style: TextStyle(
+              color: mainColor.shade200,
+              fontWeight: FontWeight.w400
+            ),
+          ),
         )
       ],
     );

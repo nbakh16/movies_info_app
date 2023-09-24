@@ -29,14 +29,15 @@ void main() {
               fontWeight: FontWeight.w700
             ),
             titleSmall: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w400
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              letterSpacing: 1
             ),
             labelMedium: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600
             ),
             bodyLarge: const TextStyle(
               color: Colors.white,
