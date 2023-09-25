@@ -36,9 +36,9 @@ class CustomButton extends StatelessWidget {
         backgroundColor: bgColor,
         shadowColor: shadowColor,
       ),
-      child: FittedBox(child: Text(btnText,
+      child: Text(btnText,
         style: TextStyle(fontSize: textSize, fontWeight: FontWeight.w500),
-      ),),
+      ),
     );
   }
 }

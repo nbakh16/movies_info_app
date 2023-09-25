@@ -33,12 +33,12 @@ class MovieSearchView extends GetView<MovieSearchController> {
           centerTitle: true,
           leading: IconButton(
             icon: const Icon(IconlyLight.arrowLeft2),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Get.back(),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
