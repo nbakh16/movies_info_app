@@ -10,7 +10,7 @@ class MovieCollectionController extends GetxController {
   String baseUrl = 'https://api.themoviedb.org/3/';
   var movieCollectionId = Get.arguments;
 
-  RxList<int?> moviesIdList = <int>[].obs;
+  RxList<Parts> moviesIdList = <Parts>[].obs;
   void getMoviesIdsFromCollection(int collectionId) async {
     String responseUrl = '${baseUrl}collection/$collectionId?language=en-US&api_key=$apiKey';
     final response = await get(Uri.parse(responseUrl));
@@ -20,7 +20,7 @@ class MovieCollectionController extends GetxController {
 
       for(var e in decodedResponse['parts']) {
         moviesIdList.add(
-            Parts.fromJson(e).id
+            Parts.fromJson(e)
         );
       }
     }
