@@ -17,12 +17,11 @@ import '../controllers/cast_details_controller.dart';
 import 'package:expandable_text/expandable_text.dart';
 
 class CastDetailsView extends GetView<CastDetailsController>{
-  const CastDetailsView({super.key});
+  CastDetailsView({super.key});
+  final CastDetailsController castDetailsController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    final CastDetailsController castDetailsController = Get.find();
-
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(

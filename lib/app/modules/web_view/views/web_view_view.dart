@@ -7,11 +7,11 @@ import 'package:movies_details/app/utils/colors.dart';
 import '../controllers/web_view_controller.dart';
 
 class WebViewView extends GetView<WebViewController> {
-  const WebViewView({super.key});
+  WebViewView({super.key});
+  final WebViewController webViewController = Get.find<WebViewController>();
 
   @override
   Widget build(BuildContext context) {
-    WebViewController webViewController = Get.find<WebViewController>();
     late InAppWebViewController inAppWebViewController;
 
     final String url = Get.arguments;

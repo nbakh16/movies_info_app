@@ -253,7 +253,9 @@ class DetailsView extends GetView<DetailsController> {
                           height: 150,
                           listView: InkWell(
                             onTap: () {
-                              //TODO: call collections movie list api.
+                              Get.toNamed(Routes.MOVIE_COLLECTION,
+                                arguments: movieInfo?.belongsToCollection?.id
+                              );
                             },
                             child: SizedBox(
                                 width: double.infinity,

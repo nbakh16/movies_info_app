@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import 'package:movies_details/app/modules/cast_details/bindings/cast_details_binding.dart';
 import 'package:movies_details/app/modules/cast_details/views/cast_details_view.dart';
+import 'package:movies_details/app/modules/movie_collection/bindings/movie_collection_binding.dart';
+import 'package:movies_details/app/modules/movie_collection/views/movie_collection_view.dart';
 import 'package:movies_details/app/modules/video/bindings/video_binding.dart';
 import 'package:movies_details/app/modules/video/views/video_view.dart';
 import 'package:movies_details/app/modules/web_view/bindings/web_view_binding.dart';
@@ -58,14 +60,19 @@ class AppPages {
         binding: CastDetailsBinding(),
         transition: pageTransition),
     GetPage(
-      name: _Paths.WEB_VIEW,
-      page: () => WebViewView(),
-      binding: WebViewBinding(),
-      transition: pageTransition),
+        name: _Paths.WEB_VIEW,
+        page: () => WebViewView(),
+        binding: WebViewBinding(),
+        transition: pageTransition),
     GetPage(
-      name: _Paths.VIDEO,
-      page: () => VideoView(),
-      binding: VideoBinding(),
+        name: _Paths.VIDEO,
+        page: () => VideoView(),
+        binding: VideoBinding(),
+        transition: pageTransition),
+    GetPage(
+      name: _Paths.MOVIE_COLLECTION,
+      page: () => MovieCollectionView(),
+      binding: MovieCollectionBinding(),
       transition: pageTransition),
   ];
 }
