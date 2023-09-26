@@ -10,6 +10,8 @@ class MovieCollectionController extends GetxController {
   String baseUrl = 'https://api.themoviedb.org/3/';
   var movieCollectionId = Get.arguments;
 
+  Rx<MovieCollection?> collectionInfo = Rx<MovieCollection?>(null);
+
   RxList<Parts> moviesIdList = <Parts>[].obs;
   void getMoviesIdsFromCollection(int collectionId) async {
     String responseUrl = '${baseUrl}collection/$collectionId?language=en-US&api_key=$apiKey';
@@ -17,6 +19,8 @@ class MovieCollectionController extends GetxController {
 
     if(response.statusCode == 200) {
       Map<String, dynamic> decodedResponse = jsonDecode(response.body);
+
+      collectionInfo.value = MovieCollection.fromJson(decodedResponse);
 
       for(var e in decodedResponse['parts']) {
         moviesIdList.add(
