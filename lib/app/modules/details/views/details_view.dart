@@ -253,6 +253,8 @@ class DetailsView extends GetView<DetailsController> {
                           height: 150,
                           listView: InkWell(
                             onTap: () {
+                              Get.delete<DetailsController>();
+
                               Get.toNamed(Routes.MOVIE_COLLECTION,
                                 arguments: movieInfo?.belongsToCollection?.id
                               );

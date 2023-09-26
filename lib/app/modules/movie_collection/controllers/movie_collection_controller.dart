@@ -12,7 +12,7 @@ class MovieCollectionController extends GetxController {
 
   Rx<MovieCollection?> collectionInfo = Rx<MovieCollection?>(null);
 
-  RxList<Parts> moviesIdList = <Parts>[].obs;
+  RxList<Parts> collectionMoviesList = <Parts>[].obs;
   void getMoviesIdsFromCollection(int collectionId) async {
     String responseUrl = '${baseUrl}collection/$collectionId?language=en-US&api_key=$apiKey';
     final response = await get(Uri.parse(responseUrl));
@@ -23,7 +23,7 @@ class MovieCollectionController extends GetxController {
       collectionInfo.value = MovieCollection.fromJson(decodedResponse);
 
       for(var e in decodedResponse['parts']) {
-        moviesIdList.add(
+        collectionMoviesList.add(
             Parts.fromJson(e)
         );
       }

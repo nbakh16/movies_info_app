@@ -3,9 +3,12 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
 
+import '../../../data/models/movie/movie_collection_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/colors.dart';
+import '../../../widgets/custom_divider.dart';
 import '../../../widgets/custom_network_image.dart';
+import '../../../widgets/movie_horizontal_card.dart';
 import '../controllers/movie_collection_controller.dart';
 
 class MovieCollectionView extends GetView<MovieCollectionController> {
@@ -36,11 +39,12 @@ class MovieCollectionView extends GetView<MovieCollectionController> {
           backgroundColor: Colors.transparent,
           body: Obx((){
             if(movieCollectionController.collectionInfo.value == null) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             else {
               double screenWidth = MediaQuery.sizeOf(context).width;
-              var collectionInfo = movieCollectionController.collectionInfo.value;
+              MovieCollection? collectionInfo = movieCollectionController.collectionInfo.value;
+              RxList<Parts> collectionMovies = movieCollectionController.collectionMoviesList;
               String backdropImage(String path) => 'https://image.tmdb.org/t/p/original$path';
 
               return CustomScrollView(
@@ -53,7 +57,7 @@ class MovieCollectionView extends GetView<MovieCollectionController> {
                     stretch: true,
                     stretchTriggerOffset: 22,
                     expandedHeight: screenWidth<700 ? 300.0 : 200.0,
-                    toolbarHeight: 100,
+                    toolbarHeight: 60,
                     leading: IconButton(
                       icon: const Icon(IconlyLight.arrowLeft2, size: 35),
                       onPressed: () => Get.back(),
@@ -90,6 +94,52 @@ class MovieCollectionView extends GetView<MovieCollectionController> {
                       ),
                     ),
                   ),
+                  SliverPadding(
+                    padding: const EdgeInsets.all(12.0),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate([
+                        collectionInfo?.overview == '' ? const SizedBox() :
+                        Text('${collectionInfo?.overview}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        collectionInfo?.overview == '' ? const SizedBox() :
+                        const CustomDivider(),
+
+                        Obx(()=>
+                          Visibility(
+                            visible: collectionMovies.isNotEmpty,
+                            replacement: const CircularProgressIndicator(),
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: collectionMovies.length,
+                              itemBuilder: (context, index){
+                                return MovieHorizontalCard(
+                                  onTap: () {
+                                    Get.delete<MovieCollectionController>();
+
+                                    Get.toNamed(Routes.DETAILS,
+                                      arguments: collectionMovies[index].id,
+                                    );
+                                  },
+                                  image: backdropImage(collectionMovies[index].posterPath ?? Icons.image.toString()),
+                                  title: '${collectionMovies[index].title}',
+                                  subTitleTop: '${collectionMovies[index].popularity?.toStringAsFixed(2)}',
+                                  subTitleBottom: '${collectionMovies[index].releaseDate?.split('-').first}',
+                                );
+                              },
+                              separatorBuilder: (BuildContext context, int index) {
+                                return const Padding(
+                                  padding: EdgeInsets.only(bottom: 6.0),
+                                  child: CustomDivider(),
+                                );
+                            },
+                            ),
+                          )
+                        )
+                      ]),
+                    )
+                  )
                 ],
               );
             }
