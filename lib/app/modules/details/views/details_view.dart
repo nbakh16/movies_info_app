@@ -266,9 +266,8 @@ class DetailsView extends GetView<DetailsController> {
                                   children: [
                                     ColorFiltered(
                                       colorFilter: ColorFilter.mode(mainColor.shade800.withOpacity(0.55), BlendMode.darken),
-                                      child: Image.network('https://image.tmdb.org/t/p/original${movieInCollection?.value?.backdropPath}',
-                                        width: double.infinity, fit: BoxFit.fitWidth,
-                                        colorBlendMode: BlendMode.colorBurn,
+                                      child: CustomNetworkImage(
+                                        imgUrl: 'https://image.tmdb.org/t/p/original${movieInCollection?.value?.backdropPath}',
                                       ),
                                     ),
                                     Text('${movieInCollection?.value?.name}',
