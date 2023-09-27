@@ -26,4 +26,11 @@ class NumberFormatter {
       }
     }
   }
+
+  String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    String formattedDate = DateFormat('dd MMMM y').format(dateTime);
+
+    return formattedDate;
+  }
 }

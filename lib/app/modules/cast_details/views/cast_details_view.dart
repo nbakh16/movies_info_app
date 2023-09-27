@@ -3,6 +3,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/modules/details/controllers/details_controller.dart';
+import 'package:movies_details/app/utils/number_formatter.dart';
 import 'package:movies_details/app/widgets/custom_divider.dart';
 import 'package:movies_details/app/widgets/label_and_text.dart';
 
@@ -134,14 +135,14 @@ class CastDetailsView extends GetView<CastDetailsController>{
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               castInfo.birthday == null ? const SizedBox() :
-                              LabelAndText(label: 'Born', text: castInfo.birthday.toString()),
+                              LabelAndText(label: 'Born', text: NumberFormatter().formatDate(castInfo.birthday ?? '')),
 
                               castInfo.placeOfBirth == null ? const SizedBox() :
                               LabelAndText(label: 'Place of Birth', text: castInfo.placeOfBirth.toString()),
 
                               const SizedBox(height: 6.0,),
                               castInfo.deathday == null ? const SizedBox() :
-                              LabelAndText(label: 'Died', text: castInfo.deathday.toString()),
+                              LabelAndText(label: 'Died', text: NumberFormatter().formatDate(castInfo.deathday ?? '')),
 
                               const CustomDivider(),
 

@@ -21,39 +21,45 @@ void main() {
             titleLarge: const TextStyle(
               color: Colors.white,
               fontSize: 24,
-              fontWeight: FontWeight.w800
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1.5
             ),
             titleMedium: const TextStyle(
               color: Colors.white,
               fontSize: 20,
-              fontWeight: FontWeight.w700
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.25
             ),
             titleSmall: const TextStyle(
               color: Colors.white,
-              fontSize: 18,
+              fontSize: 17,
               fontWeight: FontWeight.w400,
               letterSpacing: 1
             ),
             labelMedium: const TextStyle(
               color: Colors.white,
               fontSize: 18,
-              fontWeight: FontWeight.w600
+              fontWeight: FontWeight.w600,
+              letterSpacing: 1
             ),
             bodyLarge: const TextStyle(
               color: Colors.white,
               fontSize: 16,
-              fontWeight: FontWeight.w500
+              fontWeight: FontWeight.w500,
+              letterSpacing: 1
             ),
             bodyMedium: const TextStyle(
               color: Colors.white,
               fontSize: 14,
-              fontWeight: FontWeight.w500
+              fontWeight: FontWeight.w500,
+              letterSpacing: 1
             ),
             bodySmall: TextStyle(
               color: mainColor.shade200,
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              fontStyle: FontStyle.italic
+              fontStyle: FontStyle.italic,
+              letterSpacing: 1
             ),
           ),
         ),

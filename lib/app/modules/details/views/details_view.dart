@@ -5,6 +5,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:movies_details/app/data/models/movie/belongs_to_collection.dart';
 import 'package:movies_details/app/modules/details/views/widgets/elements_list_widget.dart';
+import 'package:movies_details/app/modules/details/views/widgets/release_rating_duration.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/utils/language_code.dart';
@@ -178,11 +179,12 @@ class DetailsView extends GetView<DetailsController> {
                                 movieInfo?.tagline == '' ? const SizedBox() :
                                 const CustomDivider(),
 
-                                releaseRatingDuration(
-                                    '${movieInfo?.releaseDate}',
-                                    movieInfo?.voteCount ?? 0,
-                                    movieInfo?.voteAverage ?? 0.0,
-                                    movieInfo?.runtime ?? 0,),
+                                ReleaseRatingDuration(
+                                  releaseDate: movieInfo?.releaseDate ?? '',
+                                  voteCount: movieInfo?.voteCount ?? 0,
+                                  voteAvg: movieInfo?.voteAverage ?? 0.0,
+                                  duration: movieInfo?.runtime ?? 0
+                                ),
                                 const CustomDivider(),
 
                                 genreGridView(movieInfo, screenWidth),
@@ -378,43 +380,6 @@ class DetailsView extends GetView<DetailsController> {
           ),
         );
       }
-    );
-  }
-
-  Column releaseRatingDuration(String releaseDate, int voteCount, double voteAvg, int duration) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(releaseDate.toString()),
-            Row(
-              children: [
-                const Icon(Icons.star, size: 26,),
-                Column(
-                  children: [
-                    Text('$voteAvg/10',
-                      style: const TextStyle(fontWeight: FontWeight.w900),),
-                    Text(voteCount.toString(),
-                      style: const TextStyle(fontWeight: FontWeight.w400),)
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-        duration == 0 ? const SizedBox() :
-        Chip(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          backgroundColor: mainColor.shade700,
-          label: Text(NumberFormatter().formatDuration(duration),
-            style: TextStyle(
-              color: mainColor.shade200,
-              fontWeight: FontWeight.w400
-            ),
-          ),
-        )
-      ],
     );
   }
 }
