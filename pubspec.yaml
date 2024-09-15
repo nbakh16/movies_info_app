@@ -18,6 +18,7 @@ dependencies:
   intl: ^0.18.1
   photo_view: ^0.14.0
   connectivity_plus: ^6.0.5
+  lottie: ^3.1.2
 
   #fonts and icons
   cupertino_icons: ^1.0.2
@@ -40,6 +41,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/lottie/
 
 flutter_native_splash:
   android: true

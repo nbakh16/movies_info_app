@@ -63,14 +63,17 @@ class HomeController extends GetxController {
     }
   }
 
+  RxBool isLoading = false.obs;
   Future<void> fetchMovies() async {
     hasMovies.value = true;
     hasPopularMovies.value = true;
     hasUpcomingMovies.value = true;
     hasTopMovies.value = true;
 
+    isLoading.value = true;
+
     getMovies(pageNumber).catchError((_) {
-      hasPopularMovies.value = false;
+      hasMovies.value = false;
     });
 
     await getMoviesByCategories(
@@ -96,6 +99,9 @@ class HomeController extends GetxController {
     ).catchError((_) {
       hasTopMovies.value = false;
     });
+
+    await Future.delayed(const Duration(seconds: 1));
+    isLoading.value = false;
   }
 
   @override

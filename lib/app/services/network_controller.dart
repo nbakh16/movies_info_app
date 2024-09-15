@@ -16,9 +16,9 @@ class NetworkController extends GetxController {
         durationSecond: 8192,
       );
     } else {
+      HomeController.to.fetchMovies();
       if (Get.isSnackbarOpen) {
         Get.closeCurrentSnackbar();
-        HomeController.to.fetchMovies();
       }
     }
   }
