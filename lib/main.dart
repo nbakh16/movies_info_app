@@ -12,49 +12,34 @@ void main() {
     GetMaterialApp(
       title: "Movies Details",
       theme: ThemeData(
+        useMaterial3: false,
         primarySwatch: mainColor,
         scaffoldBackgroundColor: mainColor.shade800,
         iconTheme: const IconThemeData(color: Colors.yellowAccent),
-        progressIndicatorTheme: const ProgressIndicatorThemeData(color: Colors.white),
+        progressIndicatorTheme:
+            const ProgressIndicatorThemeData(color: Colors.white),
         textTheme: GoogleFonts.urbanistTextTheme(
           TextTheme(
             titleLarge: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.w800
-            ),
+                color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800),
             titleMedium: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w700
-            ),
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
             titleSmall: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-              letterSpacing: 1
-            ),
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 1),
             labelMedium: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w600
-            ),
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
             bodyLarge: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500
-            ),
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
             bodyMedium: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.w500
-            ),
+                color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
             bodySmall: TextStyle(
-              color: mainColor.shade200,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              fontStyle: FontStyle.italic
-            ),
+                color: mainColor.shade200,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                fontStyle: FontStyle.italic),
           ),
         ),
         inputDecorationTheme: const InputDecorationTheme(
@@ -63,12 +48,10 @@ void main() {
           counterStyle: TextStyle(color: Colors.white),
           outlineBorder: BorderSide(color: Colors.white),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: mainColor),
-              borderRadius: BorderRadius.all(Radius.circular(18))
-          ),
+              borderSide: BorderSide(color: mainColor),
+              borderRadius: BorderRadius.all(Radius.circular(18))),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(18))
-          ),
+              borderRadius: BorderRadius.all(Radius.circular(18))),
         ),
       ),
       debugShowCheckedModeBanner: false,

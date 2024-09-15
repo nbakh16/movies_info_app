@@ -3,7 +3,7 @@ version: 1.0.0+1
 publish_to: none
 description: Movies Details
 environment: 
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: '>=3.2.5 <4.0.0'
 
 dependencies:
   flutter:
@@ -17,6 +17,7 @@ dependencies:
   youtube_player_flutter: ^8.1.2
   intl: ^0.18.1
   photo_view: ^0.14.0
+  connectivity_plus: ^6.0.5
 
   #fonts and icons
   cupertino_icons: ^1.0.2
