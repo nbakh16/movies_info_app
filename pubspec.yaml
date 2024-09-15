@@ -16,6 +16,7 @@ dependencies:
   flutter_inappwebview: ^5.7.2+3
   youtube_player_flutter: ^8.1.2
   intl: ^0.18.1
+  photo_view: ^0.14.0
 
   #fonts and icons
   cupertino_icons: ^1.0.2
