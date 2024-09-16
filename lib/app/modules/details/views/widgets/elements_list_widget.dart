@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../routes/app_pages.dart';
 import '../../../../widgets/custom_card_people.dart';
 import '../../../../widgets/people_list_widget.dart';
 
-class ElementsListWidget extends StatelessWidget {
+class ElementsListWidget extends StatefulWidget {
   const ElementsListWidget(
       {super.key,
       required this.title,
@@ -17,29 +16,45 @@ class ElementsListWidget extends StatelessWidget {
   final bool isCast;
 
   @override
+  State<ElementsListWidget> createState() => _ElementsListWidgetState();
+}
+
+class _ElementsListWidgetState extends State<ElementsListWidget> {
+  PageController pageController =
+      PageController(viewportFraction: Get.width < 700 ? 0.4 : 0.2);
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PeopleListWidget(
-        category: title,
-        listView: ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: elementsList.length,
-            itemBuilder: (context, index){
-              return CustomCardPeople(
-                onTap: () {
-                  Get.toNamed(Routes.CAST_DETAILS,
-                      arguments: elementsList[index].id
-                  );
-                },
-                image: 'https://image.tmdb.org/t/p/original${elementsList[index].profilePath}',
-                title: elementsList[index].name.toString().trim(),
-                subTitle: isCast
-                    ? elementsList[index].character.toString().trim()
-                    : elementsList[index].job.toString().trim(),
-                // subTitle: '(${crewList![index].job})',
-              );
-            }
-        )
+      category: widget.title,
+      listView: PageView.builder(
+        controller: pageController,
+        pageSnapping: true,
+        padEnds: false,
+        scrollDirection: Axis.horizontal,
+        itemCount: widget.elementsList.length,
+        itemBuilder: (context, index) {
+          return CustomCardPeople(
+            onTap: () {
+              Get.toNamed(Routes.CAST_DETAILS,
+                  arguments: widget.elementsList[index].id);
+            },
+            image:
+                'https://image.tmdb.org/t/p/original${widget.elementsList[index].profilePath}',
+            title: widget.elementsList[index].name.toString().trim(),
+            subTitle: widget.isCast
+                ? widget.elementsList[index].character.toString().trim()
+                : widget.elementsList[index].job.toString().trim(),
+            // subTitle: '(${crewList![index].job})',
+          );
+        },
+      ),
     );
   }
 }
