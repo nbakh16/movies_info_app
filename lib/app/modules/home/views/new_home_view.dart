@@ -11,45 +11,80 @@ import 'widets/movies_by_category.dart';
 class NewHomeView extends GetView<HomeController> {
   NewHomeView({Key? key}) : super(key: key);
 
+  //TODO code cleanup, fix error: incorrect use of parent widget
+
   final HomeController homeController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: const CustomAppBar(title: 'M for Movie'),
-          drawer: const SafeArea(
-            child: CustomDrawer(),
-          ),
-          body: Center(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                homeController.fetchMovies();
-              },
-              child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Obx(
-                      () => (homeController.hasMovies.value ||
-                              homeController.hasPopularMovies.value ||
-                              homeController.hasUpcomingMovies.value ||
-                              homeController.hasTopMovies.value)
-                          ? _moviesList()
-                          : _errorLottie(context),
-                    ),
-                  )),
-            ),
-          ),
-        ),
-        Obx(
-          () => Visibility(
-            visible: homeController.isLoading.value,
-            child: const SplashView(),
-          ),
-        ),
-      ],
+    return Obx(
+      () => AnimatedSwitcher(
+        duration: Duration(seconds: 3),
+        child: homeController.isLoading.value
+            ? SplashView()
+            : Scaffold(
+                appBar: const CustomAppBar(title: 'M for Movie'),
+                drawer: const SafeArea(
+                  child: CustomDrawer(),
+                ),
+                body: Center(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      homeController.fetchMovies();
+                    },
+                    child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Obx(
+                            () => (homeController.hasMovies.value ||
+                                    homeController.hasPopularMovies.value ||
+                                    homeController.hasUpcomingMovies.value ||
+                                    homeController.hasTopMovies.value)
+                                ? _moviesList()
+                                : _errorLottie(context),
+                          ),
+                        )),
+                  ),
+                ),
+              ),
+      ),
     );
+    // return Stack(
+    //   children: [
+    //     Scaffold(
+    //       appBar: const CustomAppBar(title: 'M for Movie'),
+    //       drawer: const SafeArea(
+    //         child: CustomDrawer(),
+    //       ),
+    //       body: Center(
+    //         child: RefreshIndicator(
+    //           onRefresh: () async {
+    //             homeController.fetchMovies();
+    //           },
+    //           child: SingleChildScrollView(
+    //               physics: const AlwaysScrollableScrollPhysics(),
+    //               child: Padding(
+    //                 padding: const EdgeInsets.all(8.0),
+    //                 child: Obx(
+    //                   () => (homeController.hasMovies.value ||
+    //                           homeController.hasPopularMovies.value ||
+    //                           homeController.hasUpcomingMovies.value ||
+    //                           homeController.hasTopMovies.value)
+    //                       ? _moviesList()
+    //                       : _errorLottie(context),
+    //                 ),
+    //               )),
+    //         ),
+    //       ),
+    //     ),
+    //     Obx(
+    //       () => Visibility(
+    //         visible: homeController.isLoading.value,
+    //         child: const SplashView(),
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 
   Column _moviesList() {
