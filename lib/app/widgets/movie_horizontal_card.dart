@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../utils/colors.dart';
 import 'custom_network_image.dart';
 
-
 class MovieHorizontalCard extends StatelessWidget {
   const MovieHorizontalCard({
     super.key,
@@ -31,24 +30,29 @@ class MovieHorizontalCard extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               elevation: 4.0,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14.0)
+                  borderRadius: BorderRadius.circular(14.0)),
+              child: CustomNetworkImage(
+                imgUrl: image,
               ),
-              child: CustomNetworkImage(imgUrl: image,),
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(
-            left: 8.0, right: 8.0,
-            top: 4.0, bottom: 0.0,
+            left: 8.0,
+            right: 8.0,
+            top: 4.0,
+            bottom: 0.0,
           ),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 flex: 7,
-                child: Text(title,
+                child: Text(
+                  title,
                   style: Theme.of(context).textTheme.titleLarge,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -66,7 +70,8 @@ class MovieHorizontalCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const Icon(Icons.star),
-                          Text(subTitleTop,
+                          Text(
+                            subTitleTop,
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                         ],
