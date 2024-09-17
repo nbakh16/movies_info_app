@@ -8,11 +8,9 @@ import 'package:movies_details/app/modules/video/bindings/video_binding.dart';
 import 'package:movies_details/app/modules/video/views/video_view.dart';
 import 'package:movies_details/app/modules/web_view/bindings/web_view_binding.dart';
 import 'package:movies_details/app/modules/web_view/views/web_view_view.dart';
-
 import '../modules/details/bindings/details_binding.dart';
 import '../modules/details/views/details_view.dart';
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 import '../modules/home/views/new_home_view.dart';
 import '../modules/movie_search/bindings/movie_search_binding.dart';
 import '../modules/movie_search/views/movie_search_view.dart';
@@ -29,11 +27,11 @@ class AppPages {
   static const Transition pageTransition = Transition.downToUp;
 
   static final routes = [
-    GetPage(
-        name: _Paths.HOME,
-        page: () => HomeView(),
-        binding: HomeBinding(),
-        transition: pageTransition),
+    // GetPage(
+    //     name: _Paths.HOME,
+    //     page: () => HomeView(),
+    //     binding: HomeBinding(),
+    //     transition: pageTransition),
     GetPage(
         name: _Paths.NEW_HOME,
         page: () => NewHomeView(),
@@ -70,9 +68,9 @@ class AppPages {
         binding: VideoBinding(),
         transition: pageTransition),
     GetPage(
-      name: _Paths.MOVIE_COLLECTION,
-      page: () => MovieCollectionView(),
-      binding: MovieCollectionBinding(),
-      transition: pageTransition),
+        name: _Paths.MOVIE_COLLECTION,
+        page: () => MovieCollectionView(),
+        binding: MovieCollectionBinding(),
+        transition: pageTransition),
   ];
 }

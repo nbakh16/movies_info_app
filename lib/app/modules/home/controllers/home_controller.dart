@@ -100,7 +100,7 @@ class HomeController extends GetxController {
       hasTopMovies.value = false;
     });
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 3));
     isLoading.value = false;
   }
 

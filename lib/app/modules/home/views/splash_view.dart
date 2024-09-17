@@ -11,12 +11,9 @@ class SplashView extends StatelessWidget {
         color: Theme.of(context).primaryColor,
         height: double.infinity,
         width: double.infinity,
-        child: Positioned(
-          right: 500,
-          child: Center(
-              child: Lottie.asset('assets/lottie/movie.json',
-                  width: MediaQuery.sizeOf(context).width * 0.5)),
-        ),
+        child: Center(
+            child: Lottie.asset('assets/lottie/error.json',
+                width: MediaQuery.sizeOf(context).width * 0.5)),
       ),
     );
   }
