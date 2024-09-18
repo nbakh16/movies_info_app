@@ -11,14 +11,13 @@ import '../../../services/api_service.dart';
 import '../../../widgets/custom_card.dart';
 import '../../../widgets/custom_drawer.dart';
 import '../../../widgets/two_btn_row_widget.dart';
-import '../controllers/movies_controller.dart';
 
-class MoviesView extends GetView<MoviesController> {
-  MoviesView({Key? key}) : super(key: key);
+class MoviesView extends StatelessWidget {
+  MoviesView({super.key});
 
-  RxList<Result>? moviesList = Get.arguments['moviesList'];
-  int? genreId = Get.arguments['genreId'];
-  String? genreName = Get.arguments['genreName'];
+  final RxList<Result>? moviesList = Get.arguments['moviesList'];
+  final int? genreId = Get.arguments['genreId'];
+  final String? genreName = Get.arguments['genreName'];
 
   final ApiService apiService = ApiService();
 
@@ -26,7 +25,6 @@ class MoviesView extends GetView<MoviesController> {
 
   @override
   Widget build(BuildContext context) {
-
     double screenWidth = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
@@ -37,27 +35,22 @@ class MoviesView extends GetView<MoviesController> {
         body: Center(
           child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Obx(()=>
-                    Visibility(
-                      visible: moviesList!.isNotEmpty,
-                      replacement: const MovieViewShimmerLoading(),
-                      child:
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              //pageChangeButtons(),
-                              moviesListGridView(screenWidth),
-                              //pageChangeButtons(),
-                            ],
-                          ),
-                      )
-                ),
-              )
-          ),
-        )
-    );
+            padding: const EdgeInsets.all(8.0),
+            child: Obx(() => Visibility(
+                  visible: moviesList!.isNotEmpty,
+                  replacement: const MovieViewShimmerLoading(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      //pageChangeButtons(),
+                      moviesListGridView(screenWidth),
+                      //pageChangeButtons(),
+                    ],
+                  ),
+                )),
+          )),
+        ));
   }
 
   GridView moviesListGridView(double screenWidth) {
@@ -66,49 +59,52 @@ class MoviesView extends GetView<MoviesController> {
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: screenWidth<700 ? 2 : screenWidth<900 ? 3 : 4,
-          childAspectRatio: 0.65
-      ),
+          crossAxisCount: screenWidth < 700
+              ? 2
+              : screenWidth < 900
+                  ? 3
+                  : 4,
+          childAspectRatio: 0.65),
       itemCount: moviesList!.length,
       itemBuilder: (context, index) {
         return InkWell(
             onTap: () {
               Get.delete<DetailsController>();
-              Get.toNamed(Routes.DETAILS,
-                  arguments: moviesList![index].id,
+              Get.toNamed(
+                Routes.DETAILS,
+                arguments: moviesList![index].id,
               );
             },
             child: CustomCard(
-              image: '${apiService.baseImageUrl}${moviesList![index].posterPath}',
+              image: apiService.imageUrl(moviesList![index].posterPath ?? ''),
               title: moviesList![index].title.toString(),
               subTitle: moviesList![index].voteAverage.toString(),
               subIcon: Icons.star,
-            )
-        );
+            ));
       },
     );
   }
 
   //TODO: Fix page change
   Obx pageChangeButtons() {
-    return Obx(()=>
-        TwoButtonRowWidget(
-          btnLeftOnTap: (){
-            if(counter > 1) {
-              counter--;
-              moviesList!.clear();
-              apiService.getMoviesListByGenre(genreId!, counter.value);
-              moviesList!.addAll(apiService.moviesListByGenre);
-            }
-          },
-          btnRightOnTap: (){
-            counter++;
+    return Obx(
+      () => TwoButtonRowWidget(
+        btnLeftOnTap: () {
+          if (counter > 1) {
+            counter--;
             moviesList!.clear();
             apiService.getMoviesListByGenre(genreId!, counter.value);
             moviesList!.addAll(apiService.moviesListByGenre);
-          },
-          centerText: 'Page: ${counter.value}',
-        ),
+          }
+        },
+        btnRightOnTap: () {
+          counter++;
+          moviesList!.clear();
+          apiService.getMoviesListByGenre(genreId!, counter.value);
+          moviesList!.addAll(apiService.moviesListByGenre);
+        },
+        centerText: 'Page: ${counter.value}',
+      ),
     );
   }
 }

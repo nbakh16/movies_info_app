@@ -16,7 +16,7 @@ class NewHomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Obx(
       () => AnimatedSwitcher(
-        duration: const Duration(seconds: 3),
+        duration: const Duration(milliseconds: 1250),
         child: homeController.isLoading.value
             ? const SplashView()
             : Scaffold(
@@ -31,16 +31,13 @@ class NewHomeView extends GetView<HomeController> {
                     },
                     child: SingleChildScrollView(
                         physics: const AlwaysScrollableScrollPhysics(),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Obx(
-                            () => (homeController.hasMovies.value ||
-                                    homeController.hasPopularMovies.value ||
-                                    homeController.hasUpcomingMovies.value ||
-                                    homeController.hasTopMovies.value)
-                                ? _moviesList()
-                                : _errorLottie(context),
-                          ),
+                        child: Obx(
+                          () => (homeController.hasMovies.value ||
+                                  homeController.hasPopularMovies.value ||
+                                  homeController.hasUpcomingMovies.value ||
+                                  homeController.hasTopMovies.value)
+                              ? _moviesList()
+                              : _errorLottie(context),
                         )),
                   ),
                 ),

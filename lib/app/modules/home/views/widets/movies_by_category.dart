@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../data/models/movie/movies_model.dart';
 import '../../../../routes/app_pages.dart';
+import '../../../../services/api_service.dart';
 import '../../../../widgets/custom_card_people.dart';
 import '../../../../widgets/people_list_widget.dart';
 import '../../../../widgets/shimmer_loading/horizontal_listview_shimmer.dart';
@@ -20,7 +21,7 @@ class MoviesByCategory extends StatefulWidget {
 
 class _MoviesByCategoryState extends State<MoviesByCategory> {
   PageController pageController =
-      PageController(viewportFraction: Get.width < 700 ? 0.4 : 0.2);
+      PageController(viewportFraction: Get.width < 700 ? 0.42 : 0.2);
 
   @override
   void dispose() {
@@ -56,7 +57,7 @@ class _MoviesByCategoryState extends State<MoviesByCategory> {
                     arguments: movie.id,
                   );
                 },
-                image: 'https://image.tmdb.org/t/p/original${movie.posterPath}',
+                image: ApiService().imageUrl(movie.posterPath ?? ''),
                 title: movie.title.toString().trim(),
                 subTitle: movie.voteAverage.toString().trim(),
                 subIcon: Icons.star,

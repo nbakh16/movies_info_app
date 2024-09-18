@@ -8,7 +8,12 @@ import '../utils/api_key.dart';
 class ApiService {
   RxBool isLoading = true.obs;
   String baseUrl = 'https://api.themoviedb.org/3/';
-  String baseImageUrl = 'https://image.tmdb.org/t/p/original';
+  String imageUrl(String path, {int imgW = 500}) =>
+      'https://image.tmdb.org/t/p/w$imgW$path';
+  /*
+  acceptable width:45,92,154,185,300,500,780,1280,original
+  https://www.themoviedb.org/talk/53c11d4ec3a3684cf4006400
+  */
 
   ///get movie actors list
   RxList<Cast> movieCastsList = <Cast>[].obs;

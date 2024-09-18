@@ -4,6 +4,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 
 import 'package:get/get.dart';
 import 'package:movies_details/app/modules/details/controllers/details_controller.dart';
+import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/widgets/custom_divider.dart';
 import 'package:movies_details/app/widgets/label_and_text.dart';
 
@@ -60,8 +61,7 @@ class CastDetailsView extends GetView<CastDetailsController> {
                   );
                 } else {
                   final castInfo = castDetailsController.castInfo.value;
-                  String castImage(String path) =>
-                      'https://image.tmdb.org/t/p/original$path';
+                  String castImage(String path) => ApiService().imageUrl(path);
 
                   return CustomScrollView(
                     shrinkWrap: true,
@@ -218,15 +218,15 @@ class CastDetailsView extends GetView<CastDetailsController> {
                                         onTap: () {
                                           Get.delete<DetailsController>();
 
-                                          Get.toNamed(
+                                          Get.offNamed(
                                             Routes.DETAILS,
                                             arguments: movies.id,
                                           );
 
                                           Get.delete<CastDetailsController>();
                                         },
-                                        image:
-                                            'https://image.tmdb.org/t/p/original${movies.posterPath}',
+                                        image: ApiService()
+                                            .imageUrl(movies.posterPath ?? ''),
                                         title: movies.title.toString().trim(),
                                         subTitle: movies.voteAverage
                                             .toString()

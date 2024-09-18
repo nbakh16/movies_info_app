@@ -3,7 +3,7 @@ import 'custom_divider.dart';
 
 class PeopleListWidget extends StatelessWidget {
   const PeopleListWidget(
-      {super.key, this.category, this.listView, this.height = 280});
+      {super.key, this.category, this.listView, this.height = 320});
 
   final String? category;
   final Widget? listView;

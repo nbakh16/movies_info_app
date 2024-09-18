@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
+import 'package:movies_details/app/services/api_service.dart';
 import '../../../data/models/movie/movies_model.dart';
 import '../../../utils/api_key.dart';
 
@@ -10,15 +11,12 @@ class HomeController extends GetxController {
 
   int pageNumber = 1;
 
-  String baseUrl = 'https://api.themoviedb.org/3/';
-  String baseImageUrl = 'https://image.tmdb.org/t/p/original';
-
   ///trending movies
   RxList<Result> moviesList = <Result>[].obs;
   Future<void> getMovies(int page) async {
     moviesList.clear();
     String moviesListUrl =
-        '${baseUrl}discover/movie?page=$page&api_key=$apiKey';
+        '${ApiService().baseUrl}discover/movie?page=$page&api_key=$apiKey';
     var response = await get(Uri.parse(moviesListUrl));
 
     if (response.statusCode == 200) {
@@ -48,7 +46,8 @@ class HomeController extends GetxController {
     required RxList<Result> movieList,
   }) async {
     movieList.clear();
-    String responseUrl = '${baseUrl}movie/$category?page=$page&api_key=$apiKey';
+    String responseUrl =
+        '${ApiService().baseUrl}movie/$category?page=$page&api_key=$apiKey';
     var response = await get(Uri.parse(responseUrl));
 
     if (response.statusCode == 200) {

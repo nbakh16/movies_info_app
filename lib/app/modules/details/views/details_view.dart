@@ -93,7 +93,7 @@ class DetailsView extends GetView<DetailsController> {
                 } else {
                   movieInfo = detailsController.movieInfo.value;
                   String backdropImage(String path) =>
-                      'https://image.tmdb.org/t/p/original$path';
+                      ApiService().imageUrl(path);
 
                   Rx<List<ProductionCompanies>?>? productionCompanies =
                       movieInfo?.productionCompanies.obs;
@@ -260,8 +260,8 @@ class DetailsView extends GetView<DetailsController> {
                                         onTap: () {
                                           //TODO: company details api on showDialog
                                         },
-                                        image:
-                                            'https://image.tmdb.org/t/p/original${productions.logoPath}',
+                                        image: ApiService().imageUrl(
+                                            productions.logoPath ?? ''),
                                         title:
                                             productions.name.toString().trim(),
                                       );
@@ -292,8 +292,10 @@ class DetailsView extends GetView<DetailsController> {
                                                 .withOpacity(0.55),
                                             BlendMode.darken),
                                         child: CustomNetworkImage(
-                                          imgUrl:
-                                              'https://image.tmdb.org/t/p/original${movieInCollection?.value?.backdropPath}',
+                                          imgUrl: ApiService().imageUrl(
+                                              movieInCollection
+                                                      ?.value?.backdropPath ??
+                                                  ''),
                                         ),
                                       ),
                                       Text(
@@ -338,8 +340,10 @@ class DetailsView extends GetView<DetailsController> {
                                           //
                                           // detailsController.getMovieInfo(detailsController.movieId);
                                         },
-                                        image:
-                                            'https://image.tmdb.org/t/p/original${similarMoviesList[index].posterPath}',
+                                        image: ApiService().imageUrl(
+                                            similarMoviesList[index]
+                                                    .posterPath ??
+                                                ''),
                                         title: similarMoviesList[index]
                                             .title
                                             .toString()

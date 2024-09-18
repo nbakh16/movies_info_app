@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movies_details/app/services/api_service.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../widgets/custom_card_people.dart';
 import '../../../../widgets/people_list_widget.dart';
@@ -46,7 +47,7 @@ class _ElementsListWidgetState extends State<ElementsListWidget> {
                   arguments: widget.elementsList[index].id);
             },
             image:
-                'https://image.tmdb.org/t/p/original${widget.elementsList[index].profilePath}',
+                ApiService().imageUrl(widget.elementsList[index].profilePath),
             title: widget.elementsList[index].name.toString().trim(),
             subTitle: widget.isCast
                 ? widget.elementsList[index].character.toString().trim()

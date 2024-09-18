@@ -53,7 +53,7 @@ class CustomCardPeople extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
-                      flex: 3,
+                      flex: 5,
                       child: CustomNetworkImage(imgUrl: image),
                     ),
                     Expanded(
@@ -65,11 +65,12 @@ class CustomCardPeople extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: TextStyle(
-                              fontSize: screenWidth < 700 ? 14 : 16,
+                            style: const TextStyle(
+                              fontSize: 14,
                               fontWeight: FontWeight.w900,
                             ),
                             maxLines: 2,
+                            textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Wrap(
@@ -79,15 +80,16 @@ class CustomCardPeople extends StatelessWidget {
                             children: [
                               Icon(
                                 subIcon,
-                                size: screenWidth < 700 ? 14 : 18,
+                                size: 14,
                               ),
                               Text(
                                 subTitle,
-                                style: TextStyle(
-                                    fontSize: screenWidth < 700 ? 14 : 18,
+                                style: const TextStyle(
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.white70),
                                 maxLines: 1,
+                                textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ],
