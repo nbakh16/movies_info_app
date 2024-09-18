@@ -9,6 +9,7 @@ import 'package:movies_details/app/modules/details/views/widgets/elements_list_w
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/utils/language_code.dart';
+import 'package:movies_details/app/utils/my_formatter.dart';
 import 'package:movies_details/app/utils/number_formatter.dart';
 import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
@@ -243,6 +244,52 @@ class DetailsView extends GetView<DetailsController> {
                             elementsList: crewList,
                             isCast: false,
                           ))),
+                      Visibility(
+                        visible: movieInfo?.belongsToCollection != null,
+                        replacement: const SliverToBoxAdapter(),
+                        child: PeopleListWidget(
+                            category: 'Belongs To',
+                            height: 200,
+                            listView: InkWell(
+                              onTap: () {
+                                Get.delete<DetailsController>();
+
+                                Get.toNamed(Routes.MOVIE_COLLECTION,
+                                    arguments:
+                                        movieInfo?.belongsToCollection?.id);
+                              },
+                              child: SizedBox(
+                                  width: double.infinity,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      ColorFiltered(
+                                        colorFilter: ColorFilter.mode(
+                                            mainColor.shade800
+                                                .withOpacity(0.65),
+                                            BlendMode.darken),
+                                        child: CustomNetworkImage(
+                                          imgUrl: ApiService().imageUrl(
+                                              movieInCollection
+                                                      ?.value?.backdropPath ??
+                                                  '',
+                                              imgW: 300),
+                                        ),
+                                      ),
+                                      Text(
+                                        '${movieInCollection?.value?.name}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                                fontWeight: FontWeight.w900,
+                                                letterSpacing: 2.5),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    ],
+                                  )),
+                            )),
+                      ),
                       Obx(() => Visibility(
                             visible: productionCompanies!.value!.isNotEmpty,
                             replacement: const SliverToBoxAdapter(),
@@ -267,51 +314,6 @@ class DetailsView extends GetView<DetailsController> {
                                       );
                                     })),
                           )),
-                      Visibility(
-                        visible: movieInfo?.belongsToCollection != null,
-                        replacement: const SliverToBoxAdapter(),
-                        child: PeopleListWidget(
-                            category: 'Belongs To',
-                            height: 150,
-                            listView: InkWell(
-                              onTap: () {
-                                Get.delete<DetailsController>();
-
-                                Get.toNamed(Routes.MOVIE_COLLECTION,
-                                    arguments:
-                                        movieInfo?.belongsToCollection?.id);
-                              },
-                              child: SizedBox(
-                                  width: double.infinity,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      ColorFiltered(
-                                        colorFilter: ColorFilter.mode(
-                                            mainColor.shade800
-                                                .withOpacity(0.55),
-                                            BlendMode.darken),
-                                        child: CustomNetworkImage(
-                                          imgUrl: ApiService().imageUrl(
-                                              movieInCollection
-                                                      ?.value?.backdropPath ??
-                                                  ''),
-                                        ),
-                                      ),
-                                      Text(
-                                        '${movieInCollection?.value?.name}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(
-                                                fontWeight: FontWeight.w900,
-                                                letterSpacing: 2.5),
-                                        textAlign: TextAlign.center,
-                                      )
-                                    ],
-                                  )),
-                            )),
-                      ),
                       Obx(() => Visibility(
                             visible: similarMoviesList.isNotEmpty,
                             replacement: const SliverToBoxAdapter(),
@@ -424,7 +426,7 @@ class DetailsView extends GetView<DetailsController> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(releaseDate.toString()),
+            Text(MyFormatter.formatDate(releaseDate.toString())),
             Row(
               children: [
                 const Icon(

@@ -34,19 +34,19 @@ class CustomCardPeople extends StatelessWidget {
             elevation: 5,
             child: Container(
               height: double.maxFinite,
-              width:
-                  screenWidth < 700 ? screenWidth * 0.35 : screenWidth * 0.25,
+              width: screenWidth < 700 ? screenWidth * 0.4 : screenWidth * 0.25,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        mainColor.shade700,
-                        mainColor.shade700,
-                        mainColor,
-                        mainColor.shade400,
-                      ]),
-                  borderRadius: BorderRadius.circular(borderRadius)),
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      mainColor.shade700,
+                      mainColor.shade700,
+                      mainColor,
+                      mainColor.shade400,
+                    ]),
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Column(

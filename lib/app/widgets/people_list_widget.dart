@@ -29,7 +29,7 @@ class PeopleListWidget extends StatelessWidget {
               padding: const EdgeInsets.all(
                 8.0,
               ),
-              child: Text(category!,
+              child: Text(category ?? '',
                   style: Theme.of(context).textTheme.titleMedium),
             ),
             Expanded(child: listView!)

@@ -12,7 +12,7 @@ class ElementsListWidget extends StatefulWidget {
       required this.elementsList,
       this.isCast = true});
 
-  final String title;
+  final String? title;
   final RxList elementsList;
   final bool isCast;
 
@@ -22,7 +22,7 @@ class ElementsListWidget extends StatefulWidget {
 
 class _ElementsListWidgetState extends State<ElementsListWidget> {
   PageController pageController =
-      PageController(viewportFraction: Get.width < 700 ? 0.4 : 0.2);
+      PageController(viewportFraction: Get.width < 700 ? 0.42 : 0.2);
 
   @override
   void dispose() {

@@ -5,6 +5,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:movies_details/app/modules/details/controllers/details_controller.dart';
 import 'package:movies_details/app/services/api_service.dart';
+import 'package:movies_details/app/utils/my_formatter.dart';
 import 'package:movies_details/app/widgets/custom_divider.dart';
 import 'package:movies_details/app/widgets/label_and_text.dart';
 
@@ -159,7 +160,8 @@ class CastDetailsView extends GetView<CastDetailsController> {
                                     ? const SizedBox()
                                     : LabelAndText(
                                         label: 'Born',
-                                        text: castInfo.birthday.toString()),
+                                        text: MyFormatter.formatDate(
+                                            castInfo.birthday.toString())),
                                 castInfo.placeOfBirth == null
                                     ? const SizedBox()
                                     : LabelAndText(
