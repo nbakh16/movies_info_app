@@ -114,8 +114,57 @@ class MovieCollectionView extends GetView<MovieCollectionController> {
                                   visible: collectionMovies.isNotEmpty,
                                   replacement:
                                       const CircularProgressIndicator(),
-                                  child: ListView.separated(
+                                  // child: GridView.builder(
+                                  //   shrinkWrap: true,
+                                  //   physics: const BouncingScrollPhysics(),
+                                  //   itemCount: collectionMovies.length,
+                                  // gridDelegate:
+                                  //     const SliverGridDelegateWithFixedCrossAxisCount(
+                                  //   crossAxisCount: 2, // 2 items per row
+                                  //   crossAxisSpacing:
+                                  //       8.0, // Space between columns
+                                  //   mainAxisSpacing:
+                                  //       8.0, // Space between rows
+                                  //   childAspectRatio:
+                                  //       0.7, // Adjust based on the size of the items
+                                  // ),
+                                  //   itemBuilder: (context, index) {
+                                  //     return MovieHorizontalCard(
+                                  //       onTap: () {
+                                  //         Get.delete<
+                                  //             MovieCollectionController>();
+
+                                  //         Get.toNamed(
+                                  //           Routes.DETAILS,
+                                  //           arguments:
+                                  //               collectionMovies[index].id,
+                                  //         );
+                                  //       },
+                                  //       image: backdropImage(
+                                  //         collectionMovies[index].posterPath ??
+                                  //             Icons.image.toString(),
+                                  //       ),
+                                  //       title:
+                                  //           '${collectionMovies[index].title}',
+                                  //       subTitleTop:
+                                  //           '${collectionMovies[index].popularity?.toStringAsFixed(2)}',
+                                  //       subTitleBottom:
+                                  //           '${collectionMovies[index].releaseDate?.split('-').first}',
+                                  //     );
+                                  //   },
+                                  // ),
+                                  child: GridView.builder(
                                     shrinkWrap: true,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2, // 2 items per row
+                                      crossAxisSpacing:
+                                          8.0, // Space between columns
+                                      mainAxisSpacing:
+                                          58.0, // Space between rows
+                                      // childAspectRatio:
+                                      //     0.5, // Adjust based on the size of the items
+                                    ),
                                     physics: const BouncingScrollPhysics(),
                                     itemCount: collectionMovies.length,
                                     itemBuilder: (context, index) {
@@ -142,13 +191,13 @@ class MovieCollectionView extends GetView<MovieCollectionController> {
                                             '${collectionMovies[index].releaseDate?.split('-').first}',
                                       );
                                     },
-                                    separatorBuilder:
-                                        (BuildContext context, int index) {
-                                      return const Padding(
-                                        padding: EdgeInsets.only(bottom: 6.0),
-                                        child: CustomDivider(),
-                                      );
-                                    },
+                                    // separatorBuilder:
+                                    //     (BuildContext context, int index) {
+                                    //   return const Padding(
+                                    //     padding: EdgeInsets.only(bottom: 6.0),
+                                    //     child: CustomDivider(),
+                                    //   );
+                                    // },
                                   ),
                                 ))
                           ]),

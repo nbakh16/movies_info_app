@@ -27,7 +27,7 @@ class MovieSlider extends StatelessWidget {
             children: [
               CarouselSlider.builder(
                 options: CarouselOptions(
-                    height: 200.0,
+                    height: screenWidth < 900 ? 200.0 : 290,
                     autoPlay: true,
                     autoPlayInterval: const Duration(seconds: 3),
                     aspectRatio: 5,
