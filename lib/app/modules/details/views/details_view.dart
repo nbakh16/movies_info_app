@@ -2,19 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-
 import 'package:get/get.dart';
-import 'package:movies_details/app/data/models/movie/belongs_to_collection.dart';
-import 'package:movies_details/app/modules/details/views/widgets/elements_list_widget.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/utils/language_code.dart';
 import 'package:movies_details/app/utils/my_formatter.dart';
-import 'package:movies_details/app/utils/number_formatter.dart';
 import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';
 import 'package:movies_details/app/widgets/label_and_text.dart';
 import '../../../data/models/cast/cast_model.dart';
+import '../../../data/models/movie/belongs_to_collection.dart';
 import '../../../data/models/movie/movie_details_model.dart';
 import '../../../data/models/movie/movies_model.dart';
 import '../../../data/models/movie/production_companies.dart';
@@ -25,6 +22,7 @@ import '../../../widgets/custom_dialog.dart';
 import '../../../widgets/custom_divider.dart';
 import '../../../widgets/people_list_widget.dart';
 import '../controllers/details_controller.dart';
+import 'widgets/elements_list_widget.dart';
 
 class DetailsView extends GetView<DetailsController> {
   DetailsView({Key? key}) : super(key: key);
@@ -217,14 +215,14 @@ class DetailsView extends GetView<DetailsController> {
                               ? const SizedBox()
                               : LabelAndText(
                                   label: 'Budget',
-                                  text: NumberFormatter()
-                                      .formatCurrency(movieInfo!.budget ?? 0)),
+                                  text: MyFormatter.formatCurrency(
+                                      movieInfo!.budget ?? 0)),
                           movieInfo?.revenue == 0
                               ? const SizedBox()
                               : LabelAndText(
                                   label: 'Revenue',
-                                  text: NumberFormatter()
-                                      .formatCurrency(movieInfo!.revenue ?? 0)),
+                                  text: MyFormatter.formatCurrency(
+                                      movieInfo!.revenue ?? 0)),
                           const CustomDivider(),
                           overviewText(movieInfo, context),
                         ])),
@@ -455,7 +453,7 @@ class DetailsView extends GetView<DetailsController> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 backgroundColor: mainColor.shade700,
                 label: Text(
-                  NumberFormatter().formatDuration(duration),
+                  MyFormatter.formatDuration(duration),
                   style: TextStyle(
                       color: mainColor.shade200, fontWeight: FontWeight.w400),
                 ),
