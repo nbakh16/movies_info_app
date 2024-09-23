@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:movies_details/app/widgets/custom_dialog.dart';
 import '../utils/colors.dart';
+import '../utils/const.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
@@ -23,12 +24,40 @@ class CustomDrawer extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
                 child: Image.asset('assets/images/app_logo.jpeg', height: 125)),
           ),
-          _drawerTile(textTheme: textTheme, title: 'Movies'),
           _drawerTile(
-              textTheme: textTheme, title: 'Series', isComingSoon: true),
-          _drawerTile(textTheme: textTheme, title: 'Anime', isComingSoon: true),
+            onTap: Get.back,
+            textTheme: textTheme,
+            title: 'Movies',
+          ),
+          _drawerTile(
+            onTap: null,
+            textTheme: textTheme,
+            title: 'Series',
+            isComingSoon: true,
+          ),
+          _drawerTile(
+            onTap: null,
+            textTheme: textTheme,
+            title: 'Anime',
+            isComingSoon: true,
+          ),
+          _drawerTile(
+            onTap: null,
+            textTheme: textTheme,
+            title: 'Favorites ❤️',
+            isComingSoon: true,
+          ),
           const Spacer(),
-          Text('v0.6.0', style: textTheme.bodySmall),
+          _drawerTile(
+            onTap: () {
+              Get.back();
+              aboutDialog(context: context);
+            },
+            textTheme: textTheme,
+            title: 'About',
+          ),
+          const SizedBox(height: 2),
+          Text('v${App().version}', style: textTheme.bodySmall),
           const SizedBox(height: 6),
         ],
       ),
@@ -39,11 +68,12 @@ class CustomDrawer extends StatelessWidget {
     required TextTheme textTheme,
     required String title,
     bool isComingSoon = false,
+    VoidCallback? onTap,
   }) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
       child: InkWell(
-        onTap: isComingSoon ? null : Get.back,
+        onTap: onTap,
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(

@@ -5,7 +5,7 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import 'package:movies_details/app/utils/colors.dart';
-import 'package:movies_details/app/utils/language_code.dart';
+import 'package:movies_details/app/utils/const.dart';
 import 'package:movies_details/app/utils/my_formatter.dart';
 import 'package:movies_details/app/widgets/custom_card_people.dart';
 import 'package:movies_details/app/widgets/custom_network_image.dart';

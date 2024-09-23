@@ -1,3 +1,8 @@
+class App {
+  final String _version = '0.6.0';
+  String get version => _version;
+}
+
 Map<String, String> languageMap = {
   'aa': 'Afar',
   'ab': 'Abkhazian',
@@ -29,7 +34,8 @@ Map<String, String> languageMap = {
   'ce': 'Chechen',
   'zh': 'Chinese',
   'cn': 'Chinese',
-  'cu': 'Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic',
+  'cu':
+      'Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic',
   'cv': 'Chuvash',
   'kw': 'Cornish',
   'co': 'Corsican',
