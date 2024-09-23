@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movies_details/app/utils/colors.dart';
 import 'package:movies_details/app/utils/const.dart';
+import 'package:movies_details/app/utils/launch_url.dart';
 import 'package:movies_details/app/widgets/custom_button.dart';
 import 'package:photo_view/photo_view.dart';
 
@@ -30,26 +31,53 @@ void aboutDialog({
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                launchThisUrl('https://www.themoviedb.org');
+              },
               borderRadius: BorderRadius.circular(4),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 1.25, horizontal: 3),
+                    const EdgeInsets.symmetric(vertical: 1.5, horizontal: 6),
                 child: Text(
-                  'https://www.themoviedb.org',
+                  'themoviedb.org',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        decoration: TextDecoration.underline,
                         fontStyle: FontStyle.italic,
                       ),
                 ),
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 28),
             FittedBox(
               child: Text(
                 'This project is intended for learning and demonstration.\nOpen-source project.\nAny contributions are appreciated.',
                 style: Theme.of(context).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),
+            ),
+            const SizedBox(height: 28),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _iconBtn(
+                  context: context,
+                  onTap: () {
+                    launchThisUrl('https://github.com/nbakh16/movies_info_app');
+                  },
+                  text: 'Contribute',
+                  img: 'assets/images/github-logo.png',
+                ),
+                const SizedBox(width: 32),
+                _iconBtn(
+                  context: context,
+                  onTap: () {
+                    launchThisUrl(
+                        'https://play.google.com/store/apps/dev?id=8454097256620416364');
+                  },
+                  text: 'More Apps',
+                  img: 'assets/images/playstore-logo.png',
+                ),
+              ],
             ),
             const SizedBox(height: 28),
             Padding(
@@ -62,6 +90,28 @@ void aboutDialog({
           ],
         ),
       ));
+}
+
+InkWell _iconBtn({
+  required BuildContext context,
+  required VoidCallback onTap,
+  required String text,
+  required String img,
+}) {
+  return InkWell(
+    borderRadius: BorderRadius.circular(6),
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.all(2.5),
+      child: Column(
+        children: [
+          Image.asset(img, height: 48),
+          const SizedBox(height: 4),
+          Text(text, style: Theme.of(context).textTheme.bodyMedium),
+        ],
+      ),
+    ),
+  );
 }
 
 void imageViewDialog({
