@@ -17,7 +17,7 @@ class MovieSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.sizeOf(context).width;
+    double screenW = MediaQuery.sizeOf(context).width;
     const int totalItem = 6;
 
     return Obx(() => Visibility(
@@ -27,22 +27,25 @@ class MovieSlider extends StatelessWidget {
             children: [
               CarouselSlider.builder(
                 options: CarouselOptions(
-                    height: screenWidth < 900 ? 200.0 : 290,
-                    autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 3),
-                    aspectRatio: 5,
-                    viewportFraction: screenWidth < 700
-                        ? 0.9
-                        : screenWidth < 900
-                            ? 0.5
-                            : 0.4,
-                    onPageChanged: (int page, _) {
-                      _selectedSlider.value = page;
-                    }),
+                  height: screenW < 900 ? 200.0 : 290,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  aspectRatio: 5,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0.2,
+                  enlargeStrategy: CenterPageEnlargeStrategy.zoom,
+                  viewportFraction:
+                      screenW < 700 ? 0.9 : (screenW < 900 ? 0.5 : 0.4),
+                  onPageChanged: (int page, _) {
+                    _selectedSlider.value = page;
+                  },
+                ),
                 itemCount: totalItem,
                 itemBuilder: (context, index, pageIndex) {
                   Result movie = homeController.moviesList[index];
-                  return InkWell(
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: MovieSliderCard(
                       onTap: () {
                         Get.delete<HomeController>();
 
@@ -51,12 +54,12 @@ class MovieSlider extends StatelessWidget {
                           arguments: movie.id,
                         );
                       },
-                      child: MovieSliderCard(
-                        image: ApiService().imageUrl(movie.posterPath ?? ''),
-                        title: movie.title.toString(),
-                        subTitle: movie.voteAverage.toString(),
-                        subIcon: Icons.star,
-                      ));
+                      image: ApiService().imageUrl(movie.posterPath ?? ''),
+                      title: movie.title.toString(),
+                      subTitle: movie.voteAverage.toString(),
+                      subIcon: Icons.star,
+                    ),
+                  );
                 },
               ),
               const SizedBox(
