@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-
 import 'package:get/get.dart';
-import 'package:movies_details/app/utils/colors.dart';
-import 'package:movies_details/app/utils/my_formatter.dart';
-import 'package:movies_details/app/widgets/custom_divider.dart';
-import 'package:movies_details/app/widgets/shimmer_loading/container_shimmer.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
+import '../../../utils/colors.dart';
+import '../../../utils/my_formatter.dart';
+import '../../../widgets/custom_divider.dart';
+import '../../../widgets/shimmer_loading/container_shimmer.dart';
 import '../controllers/video_controller.dart';
 
 class VideoView extends GetView<VideoController> {
@@ -20,6 +18,7 @@ class VideoView extends GetView<VideoController> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenW = MediaQuery.sizeOf(context).width;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Trailers'),
@@ -32,11 +31,18 @@ class VideoView extends GetView<VideoController> {
       body: Obx(() {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListView.separated(
+          child: GridView.builder(
             itemCount: videoController.videosList.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: screenW < 700 ? 1 : (screenW < 900 ? 2 : 3),
+              crossAxisSpacing: 10.0,
+              childAspectRatio: 1.3,
+            ),
+            physics: const BouncingScrollPhysics(),
             itemBuilder: (context, index) {
               if (videoController.videosList.isNotEmpty) {
                 _controller = YoutubePlayerController(
+                  //avengers
                   initialVideoId: videoController.videosList[index].key!,
                   flags: const YoutubePlayerFlags(
                     autoPlay: false,
@@ -71,7 +77,7 @@ class VideoView extends GetView<VideoController> {
                       ),
                     );
             },
-            separatorBuilder: (_, __) => const SizedBox(height: 14),
+            // separatorBuilder: (_, __) => const SizedBox(height: 14),
           ),
         );
       }),
