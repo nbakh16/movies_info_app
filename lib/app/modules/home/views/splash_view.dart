@@ -12,7 +12,7 @@ class SplashView extends StatelessWidget {
         height: double.infinity,
         width: double.infinity,
         child: Center(
-            child: Lottie.asset('assets/lottie/error.json',
+            child: Lottie.asset('assets/lottie/movie.json',
                 width: MediaQuery.sizeOf(context).width * 0.5)),
       ),
     );
