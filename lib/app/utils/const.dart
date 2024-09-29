@@ -3,6 +3,44 @@ class App {
   String get version => _version;
 }
 
+String getGreetingMessage() {
+  final hour = DateTime.now().hour;
+
+  if (hour >= 5 && hour < 12) {
+    List<String> msg = [
+      'Good morning 👋, Great day ahead!',
+      'Rise and shine 👋, Embrace the possibilities!',
+      'Good morning 👋, Let’s make today unforgettable!',
+      'Morning sunshine 👋, Today is a gift!',
+    ];
+    return (msg..shuffle()).first;
+  } else if (hour >= 12 && hour < 18) {
+    List<String> msg = [
+      'Good Afternoon 🌞, Hope your day is going well!',
+      'Happy Afternoon 🌞, A little break can boost your energy!',
+      'Afternoon vibes 🌞, Keep pushing through the day!',
+      'Good Afternoon 🌞, Almost time to unwind!',
+    ];
+    return (msg..shuffle()).first;
+  } else if (hour >= 18 && hour < 23) {
+    List<String> msg = [
+      'Good Evening 👋, Time to relax and enjoy the moment!',
+      'Good Evening 👋, Let’s savor the night ahead!',
+      'Happy Evening 👋, Time to unwind and enjoy!',
+      'Happy Evening 👋, Perfect time to reflect and recharge!',
+    ];
+    return (msg..shuffle()).first;
+  } else {
+    List<String> msg = [
+      'Hello! Night Owl 🦉, Rest and recharge for tomorrow!',
+      'Hello! Night Owl 🦉, Tomorrow is a new chance to shine!',
+      'Hello! Night Owl 🦉, Time to relax and enjoy the moment!',
+      'Hello! Night Owl 🦉, Drift off into sweet slumber!',
+    ];
+    return (msg..shuffle()).first;
+  }
+}
+
 Map<String, String> languageMap = {
   'aa': 'Afar',
   'ab': 'Abkhazian',
