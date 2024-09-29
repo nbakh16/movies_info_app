@@ -25,7 +25,9 @@ class CustomNetworkImage extends StatelessWidget {
           imageUrl: imgUrl,
           imageBuilder: (context, imageProvider) => Container(
             height: double.infinity,
-            width: double.infinity,
+            width: MediaQuery.sizeOf(context).width < 700
+                ? double.infinity
+                : MediaQuery.sizeOf(context).width * 0.5,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               image: DecorationImage(
