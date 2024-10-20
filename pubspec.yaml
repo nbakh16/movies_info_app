@@ -1,5 +1,5 @@
 name: movies_details
-version: 0.6.0
+version: 0.6.1+1
 publish_to: none
 description: Movies Details
 environment: 
