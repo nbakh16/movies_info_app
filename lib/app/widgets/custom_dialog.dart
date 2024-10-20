@@ -62,22 +62,53 @@ void aboutDialog({
                 _iconBtn(
                   context: context,
                   onTap: () {
-                    launchThisUrl('https://github.com/nbakh16/movies_info_app');
-                  },
-                  text: 'Contribute',
-                  img: 'assets/images/github-logo.png',
-                ),
-                const SizedBox(width: 32),
-                _iconBtn(
-                  context: context,
-                  onTap: () {
                     launchThisUrl(
                         'https://play.google.com/store/apps/dev?id=8454097256620416364');
                   },
                   text: 'More Apps',
                   img: 'assets/images/playstore-logo.png',
                 ),
+                const SizedBox(width: 32),
+                _iconBtn(
+                  context: context,
+                  onTap: () {
+                    launchThisUrl('https://github.com/nbakh16/movies_info_app');
+                  },
+                  text: 'Contribute',
+                  img: 'assets/images/github-logo.png',
+                ),
               ],
+            ),
+            const SizedBox(height: 28),
+            InkWell(
+              onTap: () {
+                launchThisUrl(
+                    'https://play.google.com/store/apps/details?id=com.nbakh.movie_pop');
+              },
+              borderRadius: BorderRadius.circular(4),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 0.75,
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 3, horizontal: 12),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.star, color: Colors.amber, size: 24),
+                      Text(
+                        '   Rate the app!',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: 28),
             Padding(
