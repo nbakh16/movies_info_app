@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movies_details/app/modules/home/controllers/home_controller.dart';
 import 'package:movies_details/app/widgets/custom_dialog.dart';
 import '../utils/colors.dart';
 import '../utils/const.dart';
@@ -48,6 +49,13 @@ class CustomDrawer extends StatelessWidget {
             isComingSoon: true,
           ),
           const Spacer(),
+          _drawerTile(
+            onTap: () {
+              HomeController.to.checkForUpdate();
+            },
+            textTheme: textTheme,
+            title: 'Update',
+          ),
           _drawerTile(
             onTap: () {
               Get.back();

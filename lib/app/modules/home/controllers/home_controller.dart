@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
+import 'package:in_app_update/in_app_update.dart';
 import 'package:movies_details/app/services/api_service.dart';
 import '../../../data/models/movie/movies_model.dart';
 import '../../../utils/api_key.dart';
@@ -103,9 +104,32 @@ class HomeController extends GetxController {
     isLoading.value = false;
   }
 
+  Future<void> checkForUpdate() async {
+    print('checking for Update');
+    InAppUpdate.checkForUpdate().then((info) {
+      if (info.updateAvailability == UpdateAvailability.updateAvailable) {
+        print('update available');
+        update();
+      } else {
+        print('no update available');
+      }
+    }).catchError((e) {
+      print('Error updating: $e');
+    });
+  }
+
+  void updateApp() async {
+    print('Updating');
+    await InAppUpdate.startFlexibleUpdate();
+    InAppUpdate.completeFlexibleUpdate().then((_) {}).catchError((e) {
+      print(e.toString());
+    });
+  }
+
   @override
   void onInit() {
     super.onInit();
     fetchMovies();
+    checkForUpdate();
   }
 }

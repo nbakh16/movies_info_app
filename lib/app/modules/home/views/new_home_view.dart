@@ -21,9 +21,7 @@ class NewHomeView extends GetView<HomeController> {
             ? const SplashView()
             : Scaffold(
                 appBar: const CustomAppBar(title: 'Movies'),
-                drawer: const SafeArea(
-                  child: CustomDrawer(),
-                ),
+                drawer: const SafeArea(child: CustomDrawer()),
                 body: Center(
                   child: RefreshIndicator(
                     onRefresh: () async {

@@ -20,6 +20,7 @@ dependencies:
   connectivity_plus: ^6.0.5
   lottie: ^3.1.2
   url_launcher: ^6.3.0
+  in_app_update: ^4.2.3
 
   #fonts and icons
   cupertino_icons: ^1.0.2
